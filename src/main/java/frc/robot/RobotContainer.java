@@ -11,12 +11,14 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.SwerveDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.commands.FlipRotation;
 import frc.robot.commands.SnapRotation;
 
 public class RobotContainer {
     private final SwerveDrive swerveDrive = new SwerveDrive();
     private final SnapRotation snap90 = new SnapRotation(90, swerveDrive);
-    
+    private final FlipRotation flip180 = new FlipRotation(swerveDrive);
+
     Controller controller = new Controller(OperatorConstants.CONTROLLER_PORT);
 
     public RobotContainer() {
@@ -31,13 +33,18 @@ public class RobotContainer {
                         swerveDrive));
 
         controller.getLeftTrigger().onTrue(snap90);
-    
+        controller.getRightTrigger().whileTrue(flip180);
     }
 
     private void configureButtonBindings() {
-        controller.getRightBumper()
+        controller.getLeftStick()
                 .whileTrue(new RunCommand(
                         () -> swerveDrive.lockPosition(),
+                        swerveDrive));
+
+        controller.getRightStick()
+                .onTrue(new RunCommand(
+                        () -> swerveDrive.zeroHeading(),
                         swerveDrive));
     }
 
