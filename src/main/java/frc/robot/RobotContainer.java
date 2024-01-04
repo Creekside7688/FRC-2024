@@ -11,23 +11,27 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.SwerveDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.commands.Snap;
 
 public class RobotContainer {
     private final SwerveDrive swerveDrive = new SwerveDrive();
-
+    private final Snap snap90 = new Snap(90, swerveDrive);
+    
     Controller controller = new Controller(OperatorConstants.CONTROLLER_PORT);
 
     public RobotContainer() {
         configureButtonBindings();
-
         swerveDrive.setDefaultCommand(
                 new RunCommand(
-                        () -> swerveDrive.drive(
+                        () -> swerveDrive.joystickDrive(
                                 -MathUtil.applyDeadband(controller.getLeftY(), OperatorConstants.DEADBAND),
                                 -MathUtil.applyDeadband(controller.getLeftX(), OperatorConstants.DEADBAND),
                                 -MathUtil.applyDeadband(controller.getRightX(), OperatorConstants.DEADBAND),
                                 true, true),
                         swerveDrive));
+
+        controller.getLeftTrigger().onTrue(snap90);
+    
     }
 
     private void configureButtonBindings() {

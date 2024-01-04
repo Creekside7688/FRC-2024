@@ -52,6 +52,8 @@ public class SwerveDrive extends SubsystemBase {
     private SlewRateLimiter rotationLimiter = new SlewRateLimiter(DriveConstants.ROTATION_SLEW_RATE);
     private double previousTime = WPIUtilJNI.now() * 1e-6;
 
+    private Double rotationPIDInput = null;
+
     // Track robot position with odometry
     SwerveDriveOdometry odometry = new SwerveDriveOdometry(
             DriveConstants.SWERVE_KINEMATICS,
@@ -124,6 +126,22 @@ public class SwerveDrive extends SubsystemBase {
                 pose);
     }
 
+    public void setPIDInput(Double input) {
+        rotationPIDInput = input;
+    }
+
+    public void joystickDrive(double xSpeed, double ySpeed, double rSpeed, boolean fieldRelative, boolean rateLimit) {
+        xSpeed = Math.pow(xSpeed, 5);
+        ySpeed = Math.pow(ySpeed, 5);
+        rSpeed = Math.pow(rSpeed, 5);
+
+        xSpeed += (Math.abs(xSpeed) != 0 ? Math.signum(xSpeed) * OperatorConstants.OFFSET : 0.0);
+        ySpeed += (Math.abs(ySpeed) != 0 ? Math.signum(ySpeed) * OperatorConstants.OFFSET : 0.0);
+        rSpeed += (Math.abs(rSpeed) != 0 ? Math.signum(rSpeed) * OperatorConstants.OFFSET : 0.0);
+
+        this.drive(xSpeed, ySpeed, rSpeed, fieldRelative, rateLimit);
+    }
+
     /**
      * Method to drive the robot using joystick info.
      *
@@ -135,14 +153,10 @@ public class SwerveDrive extends SubsystemBase {
      */
     public void drive(double xSpeed, double ySpeed, double rSpeed, boolean fieldRelative, boolean rateLimit) {
 
-        // https://www.desmos.com/calculator/ivg5yr9pdy
-        xSpeed = Math.pow(xSpeed, 5);
-        ySpeed = Math.pow(ySpeed, 5);
-        rSpeed = Math.pow(rSpeed, 5);
+        if(rSpeed == 0 && rotationPIDInput != null) {
+            rSpeed = rotationPIDInput;
+        }
 
-        xSpeed += (Math.abs(xSpeed) != 0 ? Math.signum(xSpeed) * OperatorConstants.OFFSET : 0.0);
-        ySpeed += (Math.abs(ySpeed) != 0 ? Math.signum(ySpeed) * OperatorConstants.OFFSET : 0.0);
-        rSpeed += (Math.abs(rSpeed) != 0 ? Math.signum(rSpeed) * OperatorConstants.OFFSET : 0.0);
 
         double xSpeedCommand;
         double ySpeedCommand;
@@ -259,4 +273,6 @@ public class SwerveDrive extends SubsystemBase {
     public double getTurnRate() {
         return gyro.getRate() * (DriveConstants.GYRO_INVERTED ? -1.0 : 1.0);
     }
+
+    
 }
