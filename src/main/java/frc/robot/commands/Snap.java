@@ -37,10 +37,7 @@ public class Snap extends CommandBase {
     public void execute() {
         double targetAngle = getNearestAngle();
         PIDController.setSetpoint(targetAngle);
-        SmartDashboard.putNumber("unclamped", PIDController.calculate(swerveDrive.getRotation2d().getDegrees()));
         double output = MathUtil.clamp(PIDController.calculate(swerveDrive.getRotation2d().getDegrees()), -1, 1);
-        SmartDashboard.putNumber("clamped", output);
-        
         swerveDrive.setPIDInput(output);
     }
 
