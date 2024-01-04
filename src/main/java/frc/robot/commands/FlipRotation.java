@@ -34,7 +34,7 @@ public class FlipRotation extends CommandBase {
         rotationPIDController.setSetpoint(this.targetAngle);
 
         double output = rotationPIDController.calculate(swerveDrive.getRotation2d().getDegrees());
-        output = MathUtil.clamp(output, -0.3, 0.3);
+        output = MathUtil.clamp(output, -0.2, 0.2);
 
         swerveDrive.setPIDInput(output);
     }
