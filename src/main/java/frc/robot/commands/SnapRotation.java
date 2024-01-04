@@ -14,6 +14,7 @@ public class SnapRotation extends CommandBase {
     private final SwerveDrive swerveDrive;
     private final PIDController rotationPIDController;
     private final int angleSnap;
+    private double targetAngle;
 
     public SnapRotation(int angleSnap, SwerveDrive swerveDrive) {
         this.angleSnap = angleSnap;
@@ -25,14 +26,12 @@ public class SnapRotation extends CommandBase {
 
     @Override
     public void initialize() {
-
+        this.targetAngle = this.getNearestAngle();
     }
 
     @Override
     public void execute() {
-        double targetAngle = this.getNearestAngle();
-
-        rotationPIDController.setSetpoint(targetAngle);
+        rotationPIDController.setSetpoint(this.targetAngle);
 
         double output = MathUtil.clamp(rotationPIDController.calculate(swerveDrive.getRotation2d().getDegrees()), -1, 1);
 

@@ -12,6 +12,7 @@ import frc.robot.subsystems.SwerveDrive;
 public class FlipRotation extends CommandBase {
     private final SwerveDrive swerveDrive;
     private final PIDController rotationPIDController;
+    private double targetAngle;
 
     public FlipRotation(SwerveDrive swerveDrive) {
         this.swerveDrive = swerveDrive;
@@ -23,15 +24,13 @@ public class FlipRotation extends CommandBase {
 
     @Override
     public void initialize() {
-
+        targetAngle = this.getTargetAngle();
     }
 
 
     @Override
     public void execute() {
-        double targetAngle = this.getTargetAngle();
-
-        rotationPIDController.setSetpoint(targetAngle);
+        rotationPIDController.setSetpoint(this.targetAngle);
 
         double output = rotationPIDController.calculate(swerveDrive.getRotation2d().getDegrees());
 
