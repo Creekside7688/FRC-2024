@@ -9,10 +9,8 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.SwerveDrive;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Snap extends CommandBase {
-    /** Creates a new snap90. */
     private final SwerveDrive swerveDrive;
     private final PIDController PIDController;
     private final int angleSnap;
@@ -25,29 +23,27 @@ public class Snap extends CommandBase {
         PIDController.setTolerance(2);
     }
 
-    // Called when the command is initially scheduled.
     @Override
     public void initialize() {
 
-        // pid.setSetpoint(90);
     }
 
-    // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
         double targetAngle = getNearestAngle();
+
         PIDController.setSetpoint(targetAngle);
+
         double output = MathUtil.clamp(PIDController.calculate(swerveDrive.getRotation2d().getDegrees()), -1, 1);
+
         swerveDrive.setPIDInput(output);
     }
 
-    // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
         swerveDrive.setPIDInput(null);
     }
 
-    // Returns true when the command should end.
     @Override
     public boolean isFinished() {
         return PIDController.atSetpoint();
