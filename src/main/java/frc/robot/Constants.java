@@ -53,6 +53,10 @@ public final class Constants {
         public static final double SNAP_P = 0.01;
         public static final double SNAP_I = 0;
         public static final double SNAP_D = 0;
+
+        public static final double FLIP_P = 0.01;
+        public static final double FLIP_I = 0;
+        public static final double FLIP_D = 0;
     }
 
     public static final class ModuleConstants {

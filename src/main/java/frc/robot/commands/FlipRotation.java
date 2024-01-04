@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
@@ -17,7 +18,7 @@ public class FlipRotation extends CommandBase {
     public FlipRotation(SwerveDrive swerveDrive) {
         this.swerveDrive = swerveDrive;
 
-        rotationPIDController = new PIDController(DriveConstants.SNAP_P, DriveConstants.SNAP_I, DriveConstants.SNAP_D);
+        rotationPIDController = new PIDController(DriveConstants.FLIP_P, DriveConstants.FLIP_I, DriveConstants.FLIP_D);
         rotationPIDController.setTolerance(2);
     }
 
@@ -33,6 +34,7 @@ public class FlipRotation extends CommandBase {
         rotationPIDController.setSetpoint(this.targetAngle);
 
         double output = rotationPIDController.calculate(swerveDrive.getRotation2d().getDegrees());
+        output = MathUtil.clamp(output, -0.3, 0.3);
 
         swerveDrive.setPIDInput(output);
     }
