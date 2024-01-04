@@ -10,17 +10,17 @@ import frc.robot.subsystems.SwerveDrive;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 
-public class Snap extends CommandBase {
+public class SnapRotation extends CommandBase {
     private final SwerveDrive swerveDrive;
-    private final PIDController PIDController;
+    private final PIDController rotationPIDController;
     private final int angleSnap;
 
-    public Snap(int angleSnap, SwerveDrive swerveDrive) {
+    public SnapRotation(int angleSnap, SwerveDrive swerveDrive) {
         this.angleSnap = angleSnap;
         this.swerveDrive = swerveDrive;
 
-        PIDController = new PIDController(DriveConstants.SNAP_P, DriveConstants.SNAP_I, DriveConstants.SNAP_D);
-        PIDController.setTolerance(2);
+        rotationPIDController = new PIDController(DriveConstants.SNAP_P, DriveConstants.SNAP_I, DriveConstants.SNAP_D);
+        rotationPIDController.setTolerance(2);
     }
 
     @Override
@@ -30,11 +30,11 @@ public class Snap extends CommandBase {
 
     @Override
     public void execute() {
-        double targetAngle = getNearestAngle();
+        double targetAngle = this.getNearestAngle();
 
-        PIDController.setSetpoint(targetAngle);
+        rotationPIDController.setSetpoint(targetAngle);
 
-        double output = MathUtil.clamp(PIDController.calculate(swerveDrive.getRotation2d().getDegrees()), -1, 1);
+        double output = MathUtil.clamp(rotationPIDController.calculate(swerveDrive.getRotation2d().getDegrees()), -1, 1);
 
         swerveDrive.setPIDInput(output);
     }
@@ -46,13 +46,13 @@ public class Snap extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return PIDController.atSetpoint();
+        return rotationPIDController.atSetpoint();
     }
 
     private double getNearestAngle() {
-        double currentPos = swerveDrive.getRotation2d().getDegrees();
+        double currentRotation = swerveDrive.getRotation2d().getDegrees();
 
-        double y = currentPos / angleSnap;
+        double y = currentRotation / angleSnap;
 
         y = Math.floor(y);
 
@@ -61,7 +61,7 @@ public class Snap extends CommandBase {
 
         double nearestAngle;
 
-        if(Math.abs(currentPos - upperLimit) > Math.abs(currentPos - lowerLimit)) {
+        if(Math.abs(currentRotation - upperLimit) > Math.abs(currentRotation - lowerLimit)) {
             nearestAngle = lowerLimit;
         } else {
             nearestAngle = upperLimit;

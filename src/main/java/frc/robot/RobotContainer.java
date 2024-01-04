@@ -11,11 +11,11 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.SwerveDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.commands.Snap;
+import frc.robot.commands.SnapRotation;
 
 public class RobotContainer {
     private final SwerveDrive swerveDrive = new SwerveDrive();
-    private final Snap snap90 = new Snap(90, swerveDrive);
+    private final SnapRotation snap90 = new SnapRotation(90, swerveDrive);
     
     Controller controller = new Controller(OperatorConstants.CONTROLLER_PORT);
 
