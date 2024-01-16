@@ -74,6 +74,7 @@ public class SwerveDrive extends SubsystemBase {
                 this::getChassisSpeeds,
                 this::driveRelative,
                 AutonomousConstants.pathFollowConfig,
+                () -> false,
                 this);
     }
 
