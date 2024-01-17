@@ -12,6 +12,7 @@ import frc.robot.swerve.commands.SnapRotation;
 
 public class RobotContainer {
     private final SwerveDrive swerveDrive = new SwerveDrive();
+
     private final SnapRotation snap90 = new SnapRotation(90, swerveDrive);
     private final FlipRotation flip180 = new FlipRotation(swerveDrive);
 
