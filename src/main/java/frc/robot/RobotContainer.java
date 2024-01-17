@@ -4,6 +4,12 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
 import frc.lib.zylve.Controller;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.elevator.Elevator;
+import frc.robot.elevator.commands.ElevatorCommand;
+import frc.robot.intake.Intake;
+import frc.robot.intake.commands.IntakeCommand;
+import frc.robot.shooter.Shooter;
+import frc.robot.shooter.commands.ShooterCommand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.swerve.SwerveDrive;
@@ -15,10 +21,20 @@ public class RobotContainer {
     private final SnapRotation snap90 = new SnapRotation(90, swerveDrive);
     private final FlipRotation flip180 = new FlipRotation(swerveDrive);
 
+    private final Elevator elevator = new Elevator();
+    private final ElevatorCommand elevatorCommand = new ElevatorCommand(elevator);
+
+    private final Intake intake = new Intake();
+    private final IntakeCommand intakeCommand = new IntakeCommand(intake);
+
+    private final Shooter shooter = new Shooter();
+    private final ShooterCommand shooterCommand = new ShooterCommand(shooter);
+
     Controller controller = new Controller(OperatorConstants.CONTROLLER_PORT);
 
     public RobotContainer() {
         configureButtonBindings();
+
         swerveDrive.setDefaultCommand(
                 new RunCommand(
                         () -> swerveDrive.joystickDrive(
@@ -27,9 +43,6 @@ public class RobotContainer {
                                 -MathUtil.applyDeadband(controller.getRightX(), OperatorConstants.DEADBAND),
                                 true, true),
                         swerveDrive));
-
-        controller.getLeftTrigger().onTrue(snap90);
-        controller.getRightTrigger().whileTrue(flip180);
     }
 
     private void configureButtonBindings() {
@@ -42,6 +55,13 @@ public class RobotContainer {
                 .whileTrue(new RunCommand(
                         () -> swerveDrive.zeroHeading(),
                         swerveDrive));
+
+        controller.getLeftTrigger().onTrue(snap90);
+        controller.getRightTrigger().whileTrue(flip180);
+
+        controller.getA().onTrue(elevatorCommand);
+        controller.getB().onTrue(intakeCommand);
+        controller.getX().onTrue(shooterCommand);
     }
 
     public Command getAutonomousCommand() {
