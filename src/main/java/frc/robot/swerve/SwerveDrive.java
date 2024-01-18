@@ -22,24 +22,24 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SwerveDrive extends SubsystemBase {
     private final SwerveModule frontLeft = new SwerveModule(
-            DriveConstants.FL_DRIVE_MOTOR,
-            DriveConstants.FL_TURN_MOTOR,
-            DriveConstants.FL_OFFSET);
+        DriveConstants.FL_DRIVE_MOTOR,
+        DriveConstants.FL_TURN_MOTOR,
+        DriveConstants.FL_OFFSET);
 
     private final SwerveModule frontRight = new SwerveModule(
-            DriveConstants.FR_DRIVE_MOTOR,
-            DriveConstants.FR_TURN_MOTOR,
-            DriveConstants.FR_OFFSET);
+        DriveConstants.FR_DRIVE_MOTOR,
+        DriveConstants.FR_TURN_MOTOR,
+        DriveConstants.FR_OFFSET);
 
     private final SwerveModule backLeft = new SwerveModule(
-            DriveConstants.BL_DRIVE_MOTOR,
-            DriveConstants.BL_TURN_MOTOR,
-            DriveConstants.BL_OFFSET);
+        DriveConstants.BL_DRIVE_MOTOR,
+        DriveConstants.BL_TURN_MOTOR,
+        DriveConstants.BL_OFFSET);
 
     private final SwerveModule backRight = new SwerveModule(
-            DriveConstants.BR_DRIVE_MOTOR,
-            DriveConstants.BR_TURN_MOTOR,
-            DriveConstants.BR_OFFSET);
+        DriveConstants.BR_DRIVE_MOTOR,
+        DriveConstants.BR_TURN_MOTOR,
+        DriveConstants.BR_OFFSET);
 
     // Gyro.
     private final AHRS gyro = new AHRS(SerialPort.Port.kUSB);
@@ -57,14 +57,14 @@ public class SwerveDrive extends SubsystemBase {
 
     // Track robot position with odometry
     private final SwerveDriveOdometry odometry = new SwerveDriveOdometry(
-            DriveConstants.SWERVE_KINEMATICS,
-            this.getRotation2d(),
-            new SwerveModulePosition[] {
-                    frontLeft.getPosition(),
-                    frontRight.getPosition(),
-                    backLeft.getPosition(),
-                    backRight.getPosition()
-            });
+        DriveConstants.SWERVE_KINEMATICS,
+        this.getRotation2d(),
+        new SwerveModulePosition[] {
+            frontLeft.getPosition(),
+            frontRight.getPosition(),
+            backLeft.getPosition(),
+            backRight.getPosition()
+        });
 
     private final Field2d field = new Field2d();
 
@@ -73,26 +73,26 @@ public class SwerveDrive extends SubsystemBase {
         this.zeroHeading();
 
         AutoBuilder.configureHolonomic(
-                this::getPose,
-                this::resetOdometry,
-                this::getChassisSpeeds,
-                this::driveRelative,
-                AutonomousConstants.pathFollowConfig,
-                () -> false,
-                this);
+            this::getPose,
+            this::resetOdometry,
+            this::getChassisSpeeds,
+            this::driveRelative,
+            AutonomousConstants.pathFollowConfig,
+            () -> false,
+            this);
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Radius", DriveConstants.CHASSIS_RADIUS);
+        SmartDashboard.putNumber("Radius",DriveConstants.CHASSIS_RADIUS);
         odometry.update(
-                this.getRotation2d(),
-                new SwerveModulePosition[] {
-                        frontLeft.getPosition(),
-                        frontRight.getPosition(),
-                        backLeft.getPosition(),
-                        backRight.getPosition()
-                });
+            this.getRotation2d(),
+            new SwerveModulePosition[] {
+                frontLeft.getPosition(),
+                frontRight.getPosition(),
+                backLeft.getPosition(),
+                backRight.getPosition()
+            });
 
         field.setRobotPose(this.getPose());
     }
@@ -106,12 +106,12 @@ public class SwerveDrive extends SubsystemBase {
 
     public ChassisSpeeds getChassisSpeeds() {
         return DriveConstants.SWERVE_KINEMATICS.toChassisSpeeds(
-                new SwerveModuleState[] {
-                        frontLeft.getState(),
-                        frontRight.getState(),
-                        backLeft.getState(),
-                        backRight.getState()
-                });
+            new SwerveModuleState[] {
+                frontLeft.getState(),
+                frontRight.getState(),
+                backLeft.getState(),
+                backRight.getState()
+            });
     }
 
     /**
@@ -119,14 +119,14 @@ public class SwerveDrive extends SubsystemBase {
      */
     public void resetOdometry(Pose2d pose) {
         odometry.resetPosition(
-                this.getRotation2d(),
-                new SwerveModulePosition[] {
-                        frontLeft.getPosition(),
-                        frontRight.getPosition(),
-                        backLeft.getPosition(),
-                        backRight.getPosition()
-                },
-                pose);
+            this.getRotation2d(),
+            new SwerveModulePosition[] {
+                frontLeft.getPosition(),
+                frontRight.getPosition(),
+                backLeft.getPosition(),
+                backRight.getPosition()
+            },
+            pose);
     }
 
     public void setPIDInput(Double input) {
@@ -159,7 +159,6 @@ public class SwerveDrive extends SubsystemBase {
         if(rSpeed == 0 && rotationPIDInput != null) {
             rSpeed = rotationPIDInput;
         }
-
 
         double xSpeedCommand;
         double ySpeedCommand;
@@ -214,9 +213,9 @@ public class SwerveDrive extends SubsystemBase {
         double rotDelivered = currentRotation * DriveConstants.MAXIMUM_ANGULAR_SPEED_RADIANS_PER_SECOND;
 
         SwerveModuleState[] swerveModuleStates = DriveConstants.SWERVE_KINEMATICS.toSwerveModuleStates(
-                fieldRelative
-                        ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, this.getRotation2d())
-                        : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
+            fieldRelative
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, this.getRotation2d())
+                : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
 
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.MAXIMUM_SPEED_METRES_PER_SECOND);
 
@@ -277,5 +276,4 @@ public class SwerveDrive extends SubsystemBase {
         return gyro.getRate() * (DriveConstants.GYRO_INVERTED ? -1.0 : 1.0);
     }
 
-    
 }
