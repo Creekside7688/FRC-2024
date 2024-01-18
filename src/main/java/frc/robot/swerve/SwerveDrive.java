@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.SwerveUtils;
 import frc.robot.Constants.AutonomousConstants;
@@ -55,7 +56,7 @@ public class SwerveDrive extends SubsystemBase {
     private Double rotationPIDInput = null;
 
     // Track robot position with odometry
-    SwerveDriveOdometry odometry = new SwerveDriveOdometry(
+    private final SwerveDriveOdometry odometry = new SwerveDriveOdometry(
             DriveConstants.SWERVE_KINEMATICS,
             this.getRotation2d(),
             new SwerveModulePosition[] {
@@ -65,7 +66,10 @@ public class SwerveDrive extends SubsystemBase {
                     backRight.getPosition()
             });
 
+    private final Field2d field = new Field2d();
+
     public SwerveDrive() {
+        SmartDashboard.putData(field);
         this.zeroHeading();
 
         AutoBuilder.configureHolonomic(
@@ -90,9 +94,7 @@ public class SwerveDrive extends SubsystemBase {
                         backRight.getPosition()
                 });
 
-        SmartDashboard.putNumber("Robot X", odometry.getPoseMeters().getX());
-        SmartDashboard.putNumber("Robot Y", odometry.getPoseMeters().getY());
-        SmartDashboard.putNumber("Robot Rotation", odometry.getPoseMeters().getRotation().getDegrees());
+        field.setRobotPose(this.getPose());
     }
 
     /**
