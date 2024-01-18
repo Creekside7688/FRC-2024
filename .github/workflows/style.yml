@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches: [ "**" ]
 
 jobs:
   checkstyle:
@@ -17,3 +17,4 @@ jobs:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
           level: warning
+          checkstyle_config: checkstyle.xml
