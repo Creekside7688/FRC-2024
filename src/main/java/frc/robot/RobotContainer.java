@@ -36,25 +36,25 @@ public class RobotContainer {
         configureButtonBindings();
 
         swerveDrive.setDefaultCommand(
-                new RunCommand(
-                        () -> swerveDrive.joystickDrive(
-                                -MathUtil.applyDeadband(controller.getLeftY(), OperatorConstants.DEADBAND),
-                                -MathUtil.applyDeadband(controller.getLeftX(), OperatorConstants.DEADBAND),
-                                -MathUtil.applyDeadband(controller.getRightX(), OperatorConstants.DEADBAND),
-                                true, true),
-                        swerveDrive));
+            new RunCommand(
+                () -> swerveDrive.joystickDrive(
+                    -MathUtil.applyDeadband(controller.getLeftY(), OperatorConstants.DEADBAND),
+                    -MathUtil.applyDeadband(controller.getLeftX(), OperatorConstants.DEADBAND),
+                    -MathUtil.applyDeadband(controller.getRightX(), OperatorConstants.DEADBAND),
+                    true, true),
+                swerveDrive));
     }
 
     private void configureButtonBindings() {
         controller.getLeftStick()
-                .whileTrue(new RunCommand(
-                        () -> swerveDrive.lockPosition(),
-                        swerveDrive));
+            .whileTrue(new RunCommand(
+                () -> swerveDrive.lockPosition(),
+                swerveDrive));
 
         controller.getRightStick()
-                .whileTrue(new RunCommand(
-                        () -> swerveDrive.zeroHeading(),
-                        swerveDrive));
+            .whileTrue(new RunCommand(
+                () -> swerveDrive.zeroHeading(),
+                swerveDrive));
 
         controller.getLeftTrigger().onTrue(snap90);
         controller.getRightTrigger().whileTrue(flip180);
