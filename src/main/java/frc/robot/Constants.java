@@ -23,13 +23,13 @@ public final class Constants {
         public static final double WHEEL_BASE = TRACK_WIDTH; // Distance between front and back wheels on robot
 
         public static final double CHASSIS_RADIUS = Units.inchesToMeters(
-                (TRACK_WIDTH / 2) / Math.sin(45 * (Math.PI / 180)));
+            (TRACK_WIDTH / 2) / Math.sin(45 * (Math.PI / 180)));
 
         public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
-                new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2),
-                new Translation2d(WHEEL_BASE / 2, -TRACK_WIDTH / 2),
-                new Translation2d(-WHEEL_BASE / 2, TRACK_WIDTH / 2),
-                new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2));
+            new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2),
+            new Translation2d(WHEEL_BASE / 2, -TRACK_WIDTH / 2),
+            new Translation2d(-WHEEL_BASE / 2, TRACK_WIDTH / 2),
+            new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2));
 
         // Angular offset relative to chassis in radians.
         public static final double FL_OFFSET = -Math.PI / 2;
@@ -121,14 +121,14 @@ public final class Constants {
 
         // Constraint for the motion profiled robot angle controller
         public static final TrapezoidProfile.Constraints THETA_CONTROLLER_CONSTRAINTS = new TrapezoidProfile.Constraints(MAXIMUM_ANGULAR_SPEED_RADIANS_PER_SECOND,
-                MAXIMUM_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_SQUARED);
+            MAXIMUM_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_SQUARED);
 
         public static final HolonomicPathFollowerConfig pathFollowConfig = new HolonomicPathFollowerConfig(
-                new PIDConstants(TRANSLATION_P, 0, 0),
-                new PIDConstants(ROTATION_P, 0, 0),
-                MAXIMUM_SPEED_METRES_PER_SECOND,
-                DriveConstants.CHASSIS_RADIUS,
-                new ReplanningConfig());
+            new PIDConstants(TRANSLATION_P, 0, 0),
+            new PIDConstants(ROTATION_P, 0, 0),
+            MAXIMUM_SPEED_METRES_PER_SECOND,
+            DriveConstants.CHASSIS_RADIUS,
+            new ReplanningConfig());
     }
 
     public static final class NeoConstants {
