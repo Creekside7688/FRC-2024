@@ -84,7 +84,7 @@ public class SwerveDrive extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Radius", DriveConstants.CHASSIS_RADIUS);
+        SmartDashboard.putNumber("Radius",DriveConstants.CHASSIS_RADIUS);
         odometry.update(
             this.getRotation2d(),
             new SwerveModulePosition[] {
