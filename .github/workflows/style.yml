@@ -1,11 +1,5 @@
 name: reviewdog
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
+on: [pull_request]
 jobs:
   checkstyle:
     name: runner / checkstyle
@@ -15,7 +9,5 @@ jobs:
       - uses: dbelyaev/action-checkstyle@master
         with:
           github_token: ${{ secrets.github_token }}
-          reporter: github-check
+          reporter: github-pr-review
           level: warning
-          checkstyle_config: checkstyle.xml
-          filter_mode: nofilter
