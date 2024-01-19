@@ -7,12 +7,31 @@
     "**/.hg": true,
     "**/CVS": true,
     "**/.DS_Store": true,
+    "**/Thumbs.db": true,
     "bin/": true,
     "**/.classpath": true,
     "**/.project": true,
     "**/.settings": true,
     "**/.factorypath": true,
-    "**/*~": true
+    "**/*~": true,
+    ".gitignore": true,
+    ".gitmodules": true,
+    "vendordeps": true,
+    "build.gradle": true,
+    "gradlew": true,
+    "gradlew.bat": true,
+    "networktables.json": true,
+    "simgui-ds.json": true,
+    "settings.gradle": true,
+    "simgui-window.json": true,
+    "simgui.json": true,
+    "WPILib-License.md": true,
+    ".gradle": true,
+    "build": true,
+    "gradle": true,
+    ".wpilib": true,
+    ".vscode": true,
+    ".github": true
   },
   "java.test.config": [
     {
@@ -27,5 +46,6 @@
   ],
   "java.test.defaultConfig": "WPIlibUnitTests",
   "java.format.settings.url": "java-formatter.xml",
-  "java.checkstyle.configuration": "${workspaceFolder}\\.github\\workflows\\checkstyle.xml"
+  "java.checkstyle.configuration": "${workspaceFolder}\\.github\\workflows\\checkstyle.xml",
+  "explorerExclude.backup": {}
 }
