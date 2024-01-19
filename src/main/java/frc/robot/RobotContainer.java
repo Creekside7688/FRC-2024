@@ -3,7 +3,7 @@ package frc.robot;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
 import frc.lib.zylve.Controller;
-import frc.robot.Constants.OperatorConstants;
+import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
 import frc.robot.elevator.commands.ElevatorCommand;
 import frc.robot.intake.Intake;
