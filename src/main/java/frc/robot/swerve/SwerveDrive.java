@@ -15,9 +15,9 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.SwerveUtils;
-import frc.robot.Constants.AutonomousConstants;
-import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.OperatorConstants;
+import frc.robot.constants.AutonomousConstants;
+import frc.robot.constants.DriveConstants;
+import frc.robot.constants.OperatorConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SwerveDrive extends SubsystemBase {
