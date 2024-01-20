@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.SwerveUtils;
 import frc.robot.constants.AutonomousConstants;
 import frc.robot.constants.DriveConstants;
-import frc.robot.constants.OperatorConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SwerveDrive extends SubsystemBase {
@@ -134,13 +133,9 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void joystickDrive(double xSpeed, double ySpeed, double rSpeed, boolean fieldRelative, boolean rateLimit) {
-        xSpeed = Math.pow(xSpeed, 5);
-        ySpeed = Math.pow(ySpeed, 5);
-        rSpeed = Math.pow(rSpeed, 5);
-
-        xSpeed += (Math.abs(xSpeed) != 0 ? Math.signum(xSpeed) * OperatorConstants.OFFSET : 0.0);
-        ySpeed += (Math.abs(ySpeed) != 0 ? Math.signum(ySpeed) * OperatorConstants.OFFSET : 0.0);
-        rSpeed += (Math.abs(rSpeed) != 0 ? Math.signum(rSpeed) * OperatorConstants.OFFSET : 0.0);
+        xSpeed = Math.pow(xSpeed, 3);
+        ySpeed = Math.pow(ySpeed, 3);
+        rSpeed = Math.pow(rSpeed, 3);
 
         this.drive(xSpeed, ySpeed, rSpeed, fieldRelative, rateLimit);
     }
@@ -155,6 +150,8 @@ public class SwerveDrive extends SubsystemBase {
      * @param rateLimit     Whether to enable rate limiting for smoother control.
      */
     public void drive(double xSpeed, double ySpeed, double rSpeed, boolean fieldRelative, boolean rateLimit) {
+        SmartDashboard.putNumber("inputx", xSpeed);
+        SmartDashboard.putNumber("inputy", ySpeed);
 
         if(rSpeed == 0 && rotationPIDInput != null) {
             rSpeed = rotationPIDInput;
