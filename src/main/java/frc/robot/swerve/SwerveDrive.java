@@ -128,30 +128,17 @@ public class SwerveDrive extends SubsystemBase {
             pose);
     }
 
+    /**
+     * Sets the rotation PID input to a specified value. Use this to control the rotation of the robot while the driver is still controlling it.
+     */
     public void setPIDInput(Double input) {
         rotationPIDInput = input;
     }
 
-    public void joystickDrive(double xSpeed, double ySpeed, double rSpeed, boolean fieldRelative, boolean rateLimit) {
+    public void drive(double xSpeed, double ySpeed, double rSpeed, boolean fieldRelative, boolean rateLimit) {
         xSpeed = Math.pow(xSpeed, 3);
         ySpeed = Math.pow(ySpeed, 3);
         rSpeed = Math.pow(rSpeed, 3);
-
-        this.drive(xSpeed, ySpeed, rSpeed, fieldRelative, rateLimit);
-    }
-
-    /**
-     * Method to drive the robot using joystick info.
-     *
-     * @param xSpeed        Speed of the robot in the x direction (forward).
-     * @param ySpeed        Speed of the robot in the y direction (sideways).
-     * @param rSpeed        Angular rate of the robot.
-     * @param fieldRelative Whether the provided x and y speeds are relative to the field.
-     * @param rateLimit     Whether to enable rate limiting for smoother control.
-     */
-    public void drive(double xSpeed, double ySpeed, double rSpeed, boolean fieldRelative, boolean rateLimit) {
-        SmartDashboard.putNumber("inputx", xSpeed);
-        SmartDashboard.putNumber("inputy", ySpeed);
 
         if(rSpeed == 0 && rotationPIDInput != null) {
             rSpeed = rotationPIDInput;

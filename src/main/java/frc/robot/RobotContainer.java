@@ -37,7 +37,7 @@ public class RobotContainer {
 
         swerveDrive.setDefaultCommand(
             new RunCommand(
-                () -> swerveDrive.joystickDrive(
+                () -> swerveDrive.drive(
                     -MathUtil.applyDeadband(controller.getLeftY(), OperatorConstants.DEADBAND),
                     -MathUtil.applyDeadband(controller.getLeftX(), OperatorConstants.DEADBAND),
                     -MathUtil.applyDeadband(controller.getRightX(), OperatorConstants.DEADBAND),
