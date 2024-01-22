@@ -46,6 +46,6 @@
   ],
   "java.test.defaultConfig": "WPIlibUnitTests",
   "java.format.settings.url": "java-formatter.xml",
-  "java.checkstyle.configuration": "${workspaceFolder}\\.github\\workflows\\checkstyle.xml",
+  "java.checkstyle.configuration": "${workspaceFolder}\\checkstyle.xml",
   "explorerExclude.backup": {}
 }
