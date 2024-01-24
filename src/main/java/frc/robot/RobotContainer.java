@@ -11,6 +11,7 @@ import frc.robot.elevator.Elevator;
 import frc.robot.elevator.commands.ElevatorCommand;
 import frc.robot.intake.Intake;
 import frc.robot.intake.commands.IntakeCommand;
+import frc.robot.limelight.Limelight;
 import frc.robot.shooter.Shooter;
 import frc.robot.shooter.commands.ShooterCommand;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,6 +33,10 @@ public class RobotContainer {
 
     private final Shooter shooter = new Shooter();
     private final ShooterCommand shooterCommand = new ShooterCommand(shooter);
+
+    private final Limelight limelight = new Limelight();
+    // Other Commands to use this subsystem
+
 
     Controller controller = new Controller(OperatorConstants.CONTROLLER_PORT);
 
