@@ -18,7 +18,7 @@ public class Intake extends SubsystemBase {
     
 
     public Intake() {
-        rotationController.setP(0.1);
+        rotationController.setP(IntakeConstants.INTAKE_PID_PGAIN);
     }
 
     @Override
