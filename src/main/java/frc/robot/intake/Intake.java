@@ -10,9 +10,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
-    
-    private final CANSparkMax motor = new CANSparkMax(6969, MotorType.kBrushless);
-    private final DigitalInput sensor = new DigitalInput(420);
+    //ids have not been set yet
+    private final CANSparkMax motor = new CANSparkMax(IntakeConstants.INTAKE_MOTOR_ID, MotorType.kBrushless);
+    private final DigitalInput sensor = new DigitalInput(IntakeConstants.INTAKE_SENSOR_CHANNEL);
     private final SparkPIDController rotationController = motor.getPIDController();
     private final RelativeEncoder encoder = motor.getEncoder(); 
     
