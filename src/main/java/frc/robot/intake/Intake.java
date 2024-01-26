@@ -1,52 +1,45 @@
 package frc.robot.intake;
 
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
     
-    private final CANSparkMax IntakeMotor = new CANSparkMax(6969, MotorType.kBrushless);
-
-    private final DigitalInput IntakeSensor = new DigitalInput(420);
-
-    private final RelativeEncoder IntakeRE = IntakeMotor.getEncoder(); 
-
-    private final SparkPIDController RPMController = IntakeMotor.getPIDController();
+    private final CANSparkMax motor = new CANSparkMax(6969, MotorType.kBrushless);
+    private final DigitalInput sensor = new DigitalInput(420);
+    private final SparkPIDController rotationController = motor.getPIDController();
+    private final RelativeEncoder encoder = motor.getEncoder(); 
     
 
     public Intake() {
-        RPMController.setP(0.1);
-
+        rotationController.setP(0.1);
     }
 
     @Override
     public void periodic() {
     }
 
-    public void useIntake(double x) {
-        IntakeMotor.set(x);
-    }
-
-
-    public boolean getIntakeSensor() {
-        return IntakeSensor.get();
+    public boolean getSensor() {
+        return sensor.get();
 
     }
 
     public double getRPM() {
-        double RPMVar = IntakeRE.getVelocity();
-        return RPMVar / 4;
+        double velocity = encoder.getVelocity();
+        return velocity / IntakeConstants.INTAKE_GEAR_RATIO;
     }
 
     public void setRPM(double rpm) {
-        RPMController.setReference(rpm, CANSparkMax.ControlType.kVelocity);
+        rotationController.setReference(rpm, ControlType.kVelocity);
     }
-    
+
+    public void setSpeed(double speed) {
+        motor.set(speed);
+    }
 }

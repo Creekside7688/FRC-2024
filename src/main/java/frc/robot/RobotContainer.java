@@ -7,7 +7,7 @@ import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
 import frc.robot.elevator.commands.ElevatorCommand;
 import frc.robot.intake.Intake;
-import frc.robot.intake.commands.IntakeCommand;
+import frc.robot.intake.commands.IntakePickup;
 import frc.robot.shooter.Shooter;
 import frc.robot.shooter.commands.ShooterCommand;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,7 +25,7 @@ public class RobotContainer {
     private final ElevatorCommand elevatorCommand = new ElevatorCommand(elevator);
 
     private final Intake intake = new Intake();
-    private final IntakeCommand intakeCommand = new IntakeCommand(intake);
+    private final IntakePickup intakeCommand = new IntakePickup(intake);
 
     private final Shooter shooter = new Shooter();
     private final ShooterCommand shooterCommand = new ShooterCommand(shooter);
