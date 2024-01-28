@@ -7,6 +7,7 @@ import frc.robot.intake.Intake;
 
 public class IntakeShooterFeed extends Command {
     private final Intake intake;
+    private double startTime;
 
     public IntakeShooterFeed(Intake intake) {
         this.intake = intake;
@@ -15,7 +16,8 @@ public class IntakeShooterFeed extends Command {
 
     @Override
     public void initialize() {
-        intake.setSpeed(-0.5);
+        startTime = Timer.getFPGATimestamp();
+        intake.run(IntakeConstants.SHOOTER_SPEED);
     }
 
     @Override
@@ -23,12 +25,11 @@ public class IntakeShooterFeed extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        intake.setSpeed(IntakeConstants.INTAKE_MOTORS_OFF);
+        intake.run(0);
     }
 
     @Override
     public boolean isFinished() {
-        Timer.delay(IntakeConstants.SHOOTERFEED_DELAY);
-        return true;
+        return Timer.getFPGATimestamp() - startTime > IntakeConstants.SHOOTER_FEED_DURATION;
     }
 }

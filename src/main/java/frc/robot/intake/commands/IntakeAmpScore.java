@@ -8,6 +8,7 @@ import frc.robot.intake.Intake;
 
 public class IntakeAmpScore extends Command {
     private final Intake intake;
+    private double startTime;
 
     public IntakeAmpScore(Intake intake) {
         this.intake = intake;
@@ -16,8 +17,8 @@ public class IntakeAmpScore extends Command {
 
     @Override
     public void initialize() {
-
-        intake.setSpeed(IntakeConstants.AMPSCORE_SPEED);
+        startTime = Timer.getFPGATimestamp();
+        intake.run(IntakeConstants.AMP_SPEED);
     }
 
     @Override
@@ -26,12 +27,11 @@ public class IntakeAmpScore extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        intake.setSpeed(IntakeConstants.INTAKE_MOTORS_OFF);
+        intake.run(0);
     }
 
     @Override
     public boolean isFinished() {
-        Timer.delay(IntakeConstants.APMSCORE_DELAY);
-        return true;
+        return Timer.getFPGATimestamp() - startTime > IntakeConstants.AMP_DURATION;
     }
 }

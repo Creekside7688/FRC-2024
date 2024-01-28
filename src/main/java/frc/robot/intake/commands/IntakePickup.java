@@ -15,7 +15,7 @@ public class IntakePickup extends Command {
 
     @Override
     public void initialize() {
-        intake.setSpeed(IntakeConstants.PICKUP_MOTOR_SPEED);
+        intake.run(IntakeConstants.PICKUP_SPEED);
     }
 
     @Override
@@ -24,14 +24,12 @@ public class IntakePickup extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        intake.setSpeed(IntakeConstants.INTAKE_MOTORS_OFF);
+        intake.run(0);
     }
 
     @Override
     public boolean isFinished() {
-        boolean sensorBool = intake.getSensor();
-
-        return sensorBool;
+        return intake.getSensor();
     }
 }
 

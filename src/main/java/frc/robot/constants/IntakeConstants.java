@@ -1,26 +1,19 @@
 package frc.robot.constants;
 
 public class IntakeConstants {
-    public static final double INTAKE_GEAR_RATIO = 4;
-    public static final int INTAKE_MOTORS_OFF = 0;
-    public static final double INTAKE_PID_PGAIN = 0.1;
-    //these values have not been set properly yet
     public static final int INTAKE_MOTOR_ID = 10;
     public static final int INTAKE_SENSOR_CHANNEL = 10;
+
+    public static final double INTAKE_GEAR_RATIO = 10;
+
+    public static final double AMP_SPEED = -1;
+    public static final double AMP_DURATION = 0.25;
     
+    public static final double PICKUP_SPEED = 1;
 
-    public static final double AMPSCORE_SPEED = -0.25;
-    public static final int APMSCORE_DELAY = 1;
-
+    public static final double SHOOTER_SPEED = 1;
+    public static final double SHOOTER_FEED_DURATION = 0.25;
     
-    public static final int PICKUP_MOTOR_SPEED = 1;
-
-    public static final int SHOOTERFEED_DELAY = 1;
-
-    
-
-
-    
-    
+    public static final double P = 0.1;
 }
 
