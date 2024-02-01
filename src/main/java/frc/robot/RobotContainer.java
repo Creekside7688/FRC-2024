@@ -43,8 +43,10 @@ public class RobotContainer {
         NamedCommands.registerCommand("PickupNote", intakeCommand);
         NamedCommands.registerCommand("FireNote", shooterCommand);
 
-        autoSelector.setDefaultOption("pp auto", new PathPlannerAuto("New Auto"));
-        autoSelector.addOption("Straight auto", new PathPlannerAuto("StraightForwardAuto"));
+        autoSelector.setDefaultOption("Left Auto", new PathPlannerAuto("TestLeftAuto"));
+        autoSelector.setDefaultOption("Right Auto", new PathPlannerAuto("TestRightAuto"));
+        autoSelector.setDefaultOption("Straight Auto", new PathPlannerAuto("TestStraightAuto"));
+        autoSelector.addOption("Inapropriate Auto", new PathPlannerAuto("Inapropriate Auto"));
 
         Shuffleboard.getTab("auto").add(autoSelector);
         swerveDrive.setDefaultCommand(
