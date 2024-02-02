@@ -40,8 +40,8 @@ public class RobotContainer {
         // NamedCommands.registerCommand("PickupNote", intakeCommand);
         // NamedCommands.registerCommand("FireNote", shooterCommand);
 
-        autoSelector.setDefaultOption("Left Auto", new PathPlannerAuto("TestLeftAuto"));
-        autoSelector.setDefaultOption("Right Auto", new PathPlannerAuto("TestRightAuto"));
+        autoSelector.addOption("Left Auto", new PathPlannerAuto("TestLeftAuto"));
+        autoSelector.addOption("Right Auto", new PathPlannerAuto("TestRightAuto"));
         autoSelector.setDefaultOption("Straight Auto", new PathPlannerAuto("TestStraightAuto"));
         autoSelector.addOption("Inapropriate Auto", new PathPlannerAuto("Inapropriate Auto"));
 
