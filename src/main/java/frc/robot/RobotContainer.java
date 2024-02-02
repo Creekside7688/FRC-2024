@@ -37,8 +37,8 @@ public class RobotContainer {
     public RobotContainer() {
         configureButtonBindings();
 
-        NamedCommands.registerCommand("PickupNote", intakeCommand);
-        NamedCommands.registerCommand("FireNote", shooterCommand);
+        // NamedCommands.registerCommand("PickupNote", intakeCommand);
+        // NamedCommands.registerCommand("FireNote", shooterCommand);
 
         autoSelector.setDefaultOption("Left Auto", new PathPlannerAuto("TestLeftAuto"));
         autoSelector.setDefaultOption("Right Auto", new PathPlannerAuto("TestRightAuto"));
