@@ -1,6 +1,5 @@
 package frc.robot;
 
-import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -43,7 +42,6 @@ public class RobotContainer {
         autoSelector.addOption("Left Auto", new PathPlannerAuto("TestLeftAuto"));
         autoSelector.addOption("Right Auto", new PathPlannerAuto("TestRightAuto"));
         autoSelector.setDefaultOption("Straight Auto", new PathPlannerAuto("TestStraightAuto"));
-        autoSelector.addOption("Inapropriate Auto", new PathPlannerAuto("Inapropriate Auto"));
 
         Shuffleboard.getTab("auto").add(autoSelector);
         swerveDrive.setDefaultCommand(
