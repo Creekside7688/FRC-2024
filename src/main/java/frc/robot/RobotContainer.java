@@ -5,7 +5,8 @@ import edu.wpi.first.math.MathUtil;
 import frc.lib.zylve.Controller;
 import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
-import frc.robot.elevator.commands.ElevatorCommand;
+import frc.robot.elevator.commands.ElevatorUp;
+import frc.robot.elevator.commands.ElevatorDown;
 import frc.robot.intake.Intake;
 import frc.robot.intake.commands.IntakeCommand;
 import frc.robot.shooter.Shooter;
@@ -22,7 +23,8 @@ public class RobotContainer {
     private final FlipRotation flip180 = new FlipRotation(swerveDrive);
 
     private final Elevator elevator = new Elevator();
-    private final ElevatorCommand elevatorCommand = new ElevatorCommand(elevator);
+    private final ElevatorUp elevatorUp = new ElevatorUp(elevator);
+    private final ElevatorDown elevatorDown = new ElevatorDown(elevator);
 
     private final Intake intake = new Intake();
     private final IntakeCommand intakeCommand = new IntakeCommand(intake);
@@ -59,7 +61,7 @@ public class RobotContainer {
         controller.getLeftTrigger().onTrue(snap90);
         controller.getRightTrigger().whileTrue(flip180);
 
-        controller.getA().onTrue(elevatorCommand);
+        controller.getA().onTrue(elevatorUp.andThen(shooterCommand).andThen(elevatorDown));
         controller.getB().onTrue(intakeCommand);
         controller.getX().onTrue(shooterCommand);
     }
