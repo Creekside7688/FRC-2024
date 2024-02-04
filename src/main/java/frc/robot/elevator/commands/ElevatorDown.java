@@ -5,17 +5,16 @@ import frc.robot.elevator.Elevator;
 
 public class ElevatorDown extends Command {
     
-    private final Elevator elevatorSubsystem;
+    private final Elevator elevator;
 
     public ElevatorDown(Elevator elevator) {
-        elevatorSubsystem = elevator;
-        addRequirements(elevatorSubsystem);
+        this.elevator = elevator;
+        addRequirements(elevator);
     }
 
     @Override
     public void initialize() {
-        //shoot command
-        elevatorSubsystem.setHeight(0);
+        elevator.setHeight(0);
     }
 
     @Override
@@ -29,6 +28,6 @@ public class ElevatorDown extends Command {
 
     @Override
     public boolean isFinished() {
-        return elevatorSubsystem.atGoal();
+        return elevator.atGoal();
     }
 }

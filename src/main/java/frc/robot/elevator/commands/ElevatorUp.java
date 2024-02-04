@@ -6,16 +6,16 @@ import frc.robot.constants.ElevatorConstants;
 
 public class ElevatorUp extends Command {
     
-    private final Elevator elevatorSubsystem;
+    private final Elevator elevator;
 
     public ElevatorUp(Elevator elevator) {
-        elevatorSubsystem = elevator;
-        addRequirements(elevatorSubsystem);
+        this.elevator = elevator;
+        addRequirements(elevator);
     }
 
     @Override
     public void initialize() {
-        elevatorSubsystem.setHeight(ElevatorConstants.TARGET_HEIGHT);
+        elevator.setHeight(ElevatorConstants.TARGET_HEIGHT);
     }
 
     @Override
@@ -28,6 +28,6 @@ public class ElevatorUp extends Command {
 
     @Override
     public boolean isFinished() {
-        return elevatorSubsystem.atGoal();
+        return elevator.atGoal();
     }
 }

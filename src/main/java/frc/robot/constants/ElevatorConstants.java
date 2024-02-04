@@ -27,6 +27,6 @@ public class ElevatorConstants {
     public static final double MAX_ACCELERATION = 1.0;
 
     public static final double MAX_HEIGHT = 28.0;
-    public static final double TARGET_HEIGHT = 1;
+    public static final double TARGET_HEIGHT = 28.0;
     public static final double TOLERANCE = 0.1;
 }
