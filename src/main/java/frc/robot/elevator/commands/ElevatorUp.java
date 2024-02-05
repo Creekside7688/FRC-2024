@@ -15,7 +15,7 @@ public class ElevatorUp extends Command {
 
     @Override
     public void initialize() {
-        elevator.setHeight(ElevatorConstants.TARGET_HEIGHT);
+        elevator.setHeight(ElevatorConstants.AMP_HEIGHT);
     }
 
     @Override

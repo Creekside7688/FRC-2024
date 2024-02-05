@@ -1,6 +1,7 @@
 package frc.robot.elevator.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.constants.ElevatorConstants;
 import frc.robot.elevator.Elevator;
 
 public class ElevatorDown extends Command {
@@ -14,7 +15,7 @@ public class ElevatorDown extends Command {
 
     @Override
     public void initialize() {
-        elevator.setHeight(0);
+        elevator.setHeight(ElevatorConstants.SHOOTER_HEIGHT);
     }
 
     @Override
