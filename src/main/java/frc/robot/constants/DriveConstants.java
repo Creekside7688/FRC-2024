@@ -6,14 +6,14 @@ import edu.wpi.first.math.util.Units;
 
 public class DriveConstants {
     // Maximum allowed speeds.
-    public static final double MAXIMUM_SPEED_METRES_PER_SECOND = 4.8;
+    public static final double MAXIMUM_SPEED_METRES_PER_SECOND = 4;
     public static final double MAXIMUM_ANGULAR_SPEED_RADIANS_PER_SECOND = 2 * Math.PI;
 
     public static final double DIRECTION_SLEW_RATE = 1.2; // radians per second
     public static final double MAGNITUDE_SLEW_RATE = 1.8; // percent per second (1 = 100%)
     public static final double ROTATION_SLEW_RATE = 2.0; // percent per second (1 = 100%)
 
-    public static final double TRACK_WIDTH = Units.inchesToMeters(19.5); // Distance between left and right wheels on robot
+    public static final double TRACK_WIDTH = Units.inchesToMeters(22.5); // Distance between left and right wheels on robot
     public static final double WHEEL_BASE = TRACK_WIDTH; // Distance between front and back wheels on robot
 
     public static final double CHASSIS_RADIUS = Units.inchesToMeters(
