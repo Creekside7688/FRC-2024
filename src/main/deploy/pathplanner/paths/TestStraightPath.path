@@ -1,0 +1,162 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.5615587820536734,
+        "y": 5.49637755411854
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.5615587820536734,
+        "y": 4.996377554118536
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.5615587820536734,
+        "y": 5.49637755411854
+      },
+      "prevControl": {
+        "x": 2.6412207485531343,
+        "y": 5.383201113349303
+      },
+      "nextControl": {
+        "x": 0.9672525763266323,
+        "y": 5.558676183854786
+      },
+      "isLocked": false,
+      "linkedName": "Fire in Speaker"
+    },
+    {
+      "anchor": {
+        "x": 2.5014161828251766,
+        "y": 5.49637755411854
+      },
+      "prevControl": {
+        "x": 2.4669850265895126,
+        "y": 6.37171809277687
+      },
+      "nextControl": {
+        "x": 2.5348166719407046,
+        "y": 4.64723958344667
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.5615587820536734,
+        "y": 5.49637755411854
+      },
+      "prevControl": {
+        "x": 1.5785573011381873,
+        "y": 5.959521086784062
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Fire in Speaker"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1,
+      "rotationDegrees": 180.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 2,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 1.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "FireNote"
+              }
+            },
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 10.0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 2.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "PickupNote"
+              }
+            },
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 5.0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 3.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "FireNote"
+              }
+            },
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 10.0
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 179.6171760944023,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": null,
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}

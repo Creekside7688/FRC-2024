@@ -2,6 +2,8 @@ package frc.robot;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.lib.zylve.Controller;
 import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
@@ -29,9 +31,19 @@ public class RobotContainer {
 
     Controller controller = new Controller(OperatorConstants.CONTROLLER_PORT);
 
+    SendableChooser<Command> autoSelector = new SendableChooser<>();
+
     public RobotContainer() {
         configureButtonBindings();
 
+        // NamedCommands.registerCommand("PickupNote", intakeCommand);
+        // NamedCommands.registerCommand("FireNote", shooterCommand);
+
+        autoSelector.addOption("Left Auto", new PathPlannerAuto("TestLeftAuto"));
+        autoSelector.addOption("Right Auto", new PathPlannerAuto("TestRightAuto"));
+        autoSelector.setDefaultOption("Straight Auto", new PathPlannerAuto("TestStraightAuto"));
+
+        Shuffleboard.getTab("auto").add(autoSelector);
         swerveDrive.setDefaultCommand(
             new RunCommand(
                 () -> swerveDrive.drive(
@@ -58,6 +70,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new PathPlannerAuto("New Auto");
+        return autoSelector.getSelected();
     }
 }
