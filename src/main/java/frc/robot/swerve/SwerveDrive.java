@@ -196,6 +196,8 @@ public class SwerveDrive extends SubsystemBase {
         double ySpeedDelivered = ySpeedCommand * DriveConstants.MAXIMUM_SPEED_METRES_PER_SECOND;
         double rotDelivered = currentRotation * DriveConstants.MAXIMUM_ANGULAR_SPEED_RADIANS_PER_SECOND;
 
+        xSpeedDelivered = Math.abs(xSpeedDelivered) > DriveConstants.DRIVE_THRESHOLD ? xSpeedDelivered : 0.0;
+
         SwerveModuleState[] swerveModuleStates = DriveConstants.SWERVE_KINEMATICS.toSwerveModuleStates(
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, this.getRotation2d())

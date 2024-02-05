@@ -8,6 +8,7 @@ public class DriveConstants {
     // Maximum allowed speeds.
     public static final double MAXIMUM_SPEED_METRES_PER_SECOND = 4;
     public static final double MAXIMUM_ANGULAR_SPEED_RADIANS_PER_SECOND = 2 * Math.PI;
+    public static final double DRIVE_THRESHOLD = 0.001;
 
     public static final double DIRECTION_SLEW_RATE = 1.2; // radians per second
     public static final double MAGNITUDE_SLEW_RATE = 1.8; // percent per second (1 = 100%)
