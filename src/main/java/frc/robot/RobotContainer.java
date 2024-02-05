@@ -5,31 +5,19 @@ import edu.wpi.first.math.MathUtil;
 import frc.lib.zylve.Controller;
 import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
-import frc.robot.intake.Intake;
-import frc.robot.shooter.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.swerve.SwerveDrive;
-import frc.robot.swerve.commands.FlipRotation;
-import frc.robot.swerve.commands.SnapRotation;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public class RobotContainer {
     private final SwerveDrive swerveDrive = new SwerveDrive();
-    private final SnapRotation snap90 = new SnapRotation(90, swerveDrive);
-    private final FlipRotation flip180 = new FlipRotation(swerveDrive);
-
-    @SuppressWarnings("unused")
     private final Elevator elevator = new Elevator();
 
-    @SuppressWarnings("unused")
-    private final Intake intake = new Intake();
-
-    @SuppressWarnings("unused")
-    private final Shooter shooter = new Shooter();
-
-    Controller controller = new Controller(OperatorConstants.CONTROLLER_PORT);
+    private final Controller controller = new Controller(OperatorConstants.CONTROLLER_PORT);
 
     public RobotContainer() {
+
         configureButtonBindings();
 
         swerveDrive.setDefaultCommand(
@@ -43,18 +31,10 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        controller.getLeftStick()
-            .whileTrue(new RunCommand(
-                () -> swerveDrive.lockPosition(),
-                swerveDrive));
-
-        controller.getRightStick()
-            .whileTrue(new RunCommand(
-                () -> swerveDrive.zeroHeading(),
-                swerveDrive));
-
-        controller.getLeftTrigger().onTrue(snap90);
-        controller.getRightTrigger().whileTrue(flip180);
+        controller.getA().whileTrue(elevator.getSysIdQuasistatic(SysIdRoutine.Direction.kForward));
+        controller.getB().whileTrue(elevator.getSysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+        controller.getX().whileTrue(elevator.getSysIdDynamic(SysIdRoutine.Direction.kForward));
+        controller.getY().whileTrue(elevator.getSysIdDynamic(SysIdRoutine.Direction.kReverse));
     }
 
     public Command getAutonomousCommand() {

@@ -1,17 +1,28 @@
 package frc.robot.elevator;
 
+import static edu.wpi.first.units.MutableMeasure.mutable;
+import static edu.wpi.first.units.Units.*;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
+import edu.wpi.first.units.Distance;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.MutableMeasure;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.Velocity;
+import edu.wpi.first.units.Voltage;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.constants.ElevatorConstants;
 
 public class Elevator extends SubsystemBase {
@@ -27,6 +38,12 @@ public class Elevator extends SubsystemBase {
 
     private final Timer timer = new Timer();
     private double lastVelocity;
+
+    private final MutableMeasure<Voltage> appliedVoltage = mutable(Volts.of(0));
+    private final MutableMeasure<Distance> distance = mutable(Inches.of(0));
+    private final MutableMeasure<Velocity<Distance>> velocity = mutable(InchesPerSecond.of(0));
+
+    private final SysIdRoutine sysIdRoutine;
 
     /**
      * Creates an elevator subsystem. To change settings, use the ElevatorConstants class.
@@ -62,6 +79,25 @@ public class Elevator extends SubsystemBase {
         setpoint = new TrapezoidProfile.State(0, 0);
         goal = new TrapezoidProfile.State(0, 0);
         lastVelocity = 0;
+
+        sysIdRoutine = new SysIdRoutine(
+            new SysIdRoutine.Config(), // Default of 1 volt/second ramp rate and 7 volt step voltage.
+            new SysIdRoutine.Mechanism(
+                (Measure<Voltage> motorVoltage) -> {
+                    motor.setVoltage(motorVoltage.in(Units.Volts));
+                },
+
+                log -> {
+                    log.motor("Elevator Motor")
+                        .voltage(
+                            appliedVoltage.mut_replace(
+                                motor.get() * RobotController.getBatteryVoltage(), Volts))
+                        .linearPosition(distance.mut_replace(encoder.getPosition(), Inches))
+                        .linearVelocity(
+                            velocity.mut_replace(encoder.getVelocity(), InchesPerSecond));
+                },
+
+                this));
     }
 
     @Override
@@ -128,5 +164,13 @@ public class Elevator extends SubsystemBase {
      */
     public boolean atGoal(double tolerance) {
         return Math.abs(goal.position - encoder.getPosition()) < tolerance;
+    }
+
+    public Command getSysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return sysIdRoutine.quasistatic(direction);
+    }
+
+    public Command getSysIdDynamic(SysIdRoutine.Direction direction) {
+        return sysIdRoutine.dynamic(direction);
     }
 }
