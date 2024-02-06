@@ -41,6 +41,9 @@ public class RobotContainer {
         autoSelector.addOption("Right Auto", new PathPlannerAuto("Right Auto"));
         autoSelector.setDefaultOption("Middle Auto", new PathPlannerAuto("Middle Auto"));
 
+        NamedCommands.registerCommand("Amp Score", FeedAmpScore);
+        NamedCommands.registerCommand("Shoot Note", ShootNoteFeed)
+
         Shuffleboard.getTab("auto").add(autoSelector);
 
         swerveDrive.setDefaultCommand(
