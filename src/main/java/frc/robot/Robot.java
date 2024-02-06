@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -8,14 +10,17 @@ public class Robot extends TimedRobot {
     private Command autonomousCommand;
 
     private RobotContainer robotContainer;
+    private Alliance alliance = Alliance.Red;
 
     @Override
     public void robotInit() {
         robotContainer = new RobotContainer();
+        checkDriverStationUpdate();
     }
 
     @Override
     public void robotPeriodic() {
+        checkDriverStationUpdate();
         CommandScheduler.getInstance().run();
     }
 
@@ -29,6 +34,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        checkDriverStationUpdate();
         autonomousCommand = robotContainer.getAutonomousCommand();
 
         if(autonomousCommand != null) {
@@ -42,6 +48,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        checkDriverStationUpdate();
         if(autonomousCommand != null) {
             autonomousCommand.cancel();
         }
@@ -58,5 +65,15 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testPeriodic() {
+    }
+
+    private void checkDriverStationUpdate() {
+        Alliance currentAlliance = DriverStation.getAlliance().get();
+
+        // If we have data, and have a new alliance from last time
+        if(DriverStation.isDSAttached() && currentAlliance != alliance) {
+            robotContainer.onAllianceChanged(currentAlliance);
+            alliance = currentAlliance;
+        }
     }
 }

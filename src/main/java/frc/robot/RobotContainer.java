@@ -2,9 +2,11 @@ package frc.robot;
 
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.lib.zylve.Controller;
+import frc.robot.auto.PoseEstimator;
 import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
 import frc.robot.intake.Intake;
@@ -15,6 +17,7 @@ import frc.robot.swerve.SwerveDrive;
 
 public class RobotContainer {
     private final SwerveDrive swerveDrive = new SwerveDrive();
+    private final PoseEstimator poseEstimator = new PoseEstimator(swerveDrive::getRotation2d, swerveDrive::getModulePositions);
 
     @SuppressWarnings("unused")
     private final Elevator elevator = new Elevator();
@@ -31,7 +34,6 @@ public class RobotContainer {
 
     public RobotContainer() {
         configureButtonBindings();
-
 
         autoSelector.addOption("Left Auto", new PathPlannerAuto("Left Auto"));
         autoSelector.addOption("Right Auto", new PathPlannerAuto("Right Auto"));
@@ -63,5 +65,9 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         return autoSelector.getSelected();
+    }
+
+    public void onAllianceChanged(Alliance alliance) {
+        poseEstimator.setAlliance(alliance);
     }
 }
