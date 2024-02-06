@@ -1,10 +1,13 @@
 package frc.robot;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.lib.zylve.Controller;
+import frc.robot.autocommands.FeedAmpScore;
+import frc.robot.autocommands.ShootNoteFeed;
 import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
 import frc.robot.intake.Intake;
@@ -16,6 +19,9 @@ import frc.robot.swerve.commands.FlipRotation;
 import frc.robot.swerve.commands.SnapRotation;
 
 public class RobotContainer {
+    
+    
+    
     private final SwerveDrive swerveDrive = new SwerveDrive();
     private final SnapRotation snap90 = new SnapRotation(90, swerveDrive);
     private final FlipRotation flip180 = new FlipRotation(swerveDrive);
@@ -23,11 +29,16 @@ public class RobotContainer {
     @SuppressWarnings("unused")
     private final Elevator elevator = new Elevator();
 
+
     @SuppressWarnings("unused")
     private final Intake intake = new Intake();
 
     @SuppressWarnings("unused")
     private final Shooter shooter = new Shooter();
+
+    private final FeedAmpScore AmpScore = new FeedAmpScore(elevator, intake);
+    private final ShootNoteFeed shootnotefeed = new ShootNoteFeed(shooter, intake);
+
 
     Controller controller = new Controller(OperatorConstants.CONTROLLER_PORT);
 
@@ -41,8 +52,8 @@ public class RobotContainer {
         autoSelector.addOption("Right Auto", new PathPlannerAuto("Right Auto"));
         autoSelector.setDefaultOption("Middle Auto", new PathPlannerAuto("Middle Auto"));
 
-        NamedCommands.registerCommand("Amp Score", FeedAmpScore);
-        NamedCommands.registerCommand("Shoot Note", ShootNoteFeed)
+        NamedCommands.registerCommand("Amp Score", AmpScore);
+        NamedCommands.registerCommand("Shoot Note", shootnotefeed);
 
         Shuffleboard.getTab("auto").add(autoSelector);
 
