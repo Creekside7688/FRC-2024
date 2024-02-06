@@ -54,6 +54,7 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("Amp Score", AmpScore);
         NamedCommands.registerCommand("Shoot Note", shootnotefeed);
+        
 
         Shuffleboard.getTab("auto").add(autoSelector);
 
