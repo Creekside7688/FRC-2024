@@ -12,13 +12,9 @@ import frc.robot.shooter.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.swerve.SwerveDrive;
-import frc.robot.swerve.commands.FlipRotation;
-import frc.robot.swerve.commands.SnapRotation;
 
 public class RobotContainer {
     private final SwerveDrive swerveDrive = new SwerveDrive();
-    private final SnapRotation snap90 = new SnapRotation(90, swerveDrive);
-    private final FlipRotation flip180 = new FlipRotation(swerveDrive);
 
     @SuppressWarnings("unused")
     private final Elevator elevator = new Elevator();
@@ -63,9 +59,6 @@ public class RobotContainer {
             .whileTrue(new RunCommand(
                 () -> swerveDrive.zeroHeading(),
                 swerveDrive));
-
-        controller.getLeftTrigger().onTrue(snap90);
-        controller.getRightTrigger().whileTrue(flip180);
     }
 
     public Command getAutonomousCommand() {
