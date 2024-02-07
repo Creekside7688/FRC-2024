@@ -13,7 +13,7 @@ public class IntakeConstants {
 
     public static final double SHOOTER_SPEED = 1;
     public static final double SHOOTER_FEED_DURATION = 0.25;
+    public static final double SHOOTER_FEED_DELAY = 2;
     
     public static final double P = 0.1;
 }
-
