@@ -260,4 +260,12 @@ public class SwerveDrive extends SubsystemBase {
         return gyro.getRate() * (DriveConstants.GYRO_INVERTED ? -1.0 : 1.0);
     }
 
+    public SwerveModulePosition[] getModulePositions() {
+        return new SwerveModulePosition[] {
+            frontLeft.getPosition(),
+            frontRight.getPosition(),
+            backLeft.getPosition(),
+            backRight.getPosition()
+        };
+    }
 }
