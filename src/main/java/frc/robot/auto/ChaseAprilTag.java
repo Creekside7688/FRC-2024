@@ -19,7 +19,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.swerve.SwerveDrive;
 
-public class ChaseTagCommand extends Command {
+public class ChaseAprilTag extends Command {
 
     private static final TrapezoidProfile.Constraints X_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
     private static final TrapezoidProfile.Constraints Y_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
@@ -40,7 +40,7 @@ public class ChaseTagCommand extends Command {
 
     private PhotonTrackedTarget lastTarget;
 
-    public ChaseTagCommand(PhotonCamera photonCamera, SwerveDrive swerveDrive, Supplier<Pose2d> poseProvider) {
+    public ChaseAprilTag(PhotonCamera photonCamera, SwerveDrive swerveDrive, Supplier<Pose2d> poseProvider) {
         this.photonCamera = photonCamera;
         this.swerveDrive = swerveDrive;
         this.poseProvider = poseProvider;
