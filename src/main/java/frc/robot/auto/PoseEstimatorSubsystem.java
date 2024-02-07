@@ -38,19 +38,20 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
      * Standard deviations of model states. Increase these numbers to trust your model's state estimates less. This matrix is in the form [x, y, theta]ᵀ, with units in meters and
      * radians, then meters.
      */
-    private static final Vector<N3> stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.1);
+    private static final Vector<N3> stateDevs = VecBuilder.fill(0.1, 0.1, 0.1);
 
     /**
      * Standard deviations of the vision measurements. Increase these numbers to trust global measurements from vision less. This matrix is in the form [x, y, theta]ᵀ, with units
      * in meters and radians.
      */
-    private static final Vector<N3> visionMeasurementStdDevs = VecBuilder.fill(1.5, 1.5, 1.5);
+    private static final Vector<N3> visionMeasurementDevs = VecBuilder.fill(1.5, 1.5, 1.5);
 
     private final Supplier<Rotation2d> rotationSupplier;
     private final Supplier<SwerveModulePosition[]> modulePositionSupplier;
     private final SwerveDrivePoseEstimator poseEstimator;
-    private final Field2d field2d = new Field2d();
     private final PhotonRunnable photonEstimator;
+
+    private final Field2d field2d = new Field2d();
     private final Notifier photonNotifier;
 
     private OriginPosition originPosition = kBlueAllianceWallRightSide;
@@ -60,6 +61,7 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
         this.photonEstimator = photonEstimator;
         this.rotationSupplier = rotationSupplier;
         this.modulePositionSupplier = modulePositionSupplier;
+
         photonNotifier = new Notifier(photonEstimator);
 
         poseEstimator = new SwerveDrivePoseEstimator(
@@ -67,8 +69,8 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
             rotationSupplier.get(),
             modulePositionSupplier.get(),
             new Pose2d(),
-            stateStdDevs,
-            visionMeasurementStdDevs);
+            stateDevs,
+            visionMeasurementDevs);
 
         // Start PhotonVision thread
         photonNotifier.setName("PhotonRunnable");
@@ -129,15 +131,18 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
 
         // Set the pose on the dashboard
         Pose2d dashboardPose = poseEstimator.getEstimatedPosition();
+
         if(originPosition == kRedAllianceWallRightSide) {
             // Flip the pose when red, since the dashboard field photo cannot be rotated
             dashboardPose = flipAlliance(dashboardPose);
         }
+
         field2d.setRobotPose(dashboardPose);
     }
 
     private String getFomattedPose() {
         Pose2d pose = getCurrentPose();
+
         return String.format("(%.3f, %.3f) %.2f degrees",
             pose.getX(),
             pose.getY(),
@@ -151,10 +156,10 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
     /**
      * Resets the current pose to the specified pose. This should ONLY be called when the robot's position on the field is known, like at the beginning of a match.
      * 
-     * @param newPose new pose
+     * @param pose new pose
      */
-    public void setCurrentPose(Pose2d newPose) {
-        poseEstimator.resetPosition(rotationSupplier.get(), modulePositionSupplier.get(), newPose);
+    public void setCurrentPose(Pose2d pose) {
+        poseEstimator.resetPosition(rotationSupplier.get(), modulePositionSupplier.get(), pose);
     }
 
     /**
@@ -168,11 +173,11 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
      * Transforms a pose to the opposite alliance's coordinate system. (0,0) is always on the right corner of your alliance wall, so for 2023, the field elements are at different
      * coordinates for each alliance.
      * 
-     * @param poseToFlip pose to transform to the other alliance
+     * @param pose pose to transform to the other alliance
      * @return pose relative to the other alliance's coordinate system
      */
-    private Pose2d flipAlliance(Pose2d poseToFlip) {
-        return poseToFlip.relativeTo(VisionConstants.FLIPPING_POSE);
+    private Pose2d flipAlliance(Pose2d pose) {
+        return pose.relativeTo(VisionConstants.FLIPPING_POSE);
     }
 
 }
