@@ -14,9 +14,9 @@ import frc.robot.shooter.commands.ActivateShooter;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ShootNoteFeed extends ParallelCommandGroup {
+public class ShootNote extends ParallelCommandGroup {
   /** Creates a new ShootNoteFeed. */
-  public ShootNoteFeed(Shooter shooter, Intake intake) {
+  public ShootNote(Shooter shooter, Intake intake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(

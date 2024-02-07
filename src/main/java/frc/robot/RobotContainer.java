@@ -6,8 +6,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.lib.zylve.Controller;
-import frc.robot.autocommands.FeedAmpScore;
-import frc.robot.autocommands.ShootNoteFeed;
+import frc.robot.autocommands.AmpScore;
+import frc.robot.autocommands.ShootNote;
 import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
 import frc.robot.intake.Intake;
@@ -36,8 +36,8 @@ public class RobotContainer {
     @SuppressWarnings("unused")
     private final Shooter shooter = new Shooter();
 
-    private final FeedAmpScore AmpScore = new FeedAmpScore(elevator, intake);
-    private final ShootNoteFeed shootnotefeed = new ShootNoteFeed(shooter, intake);
+    private final AmpScore AmpScore = new AmpScore(elevator, intake);
+    private final ShootNote shootnotefeed = new ShootNote(shooter, intake);
 
 
     Controller controller = new Controller(OperatorConstants.CONTROLLER_PORT);

@@ -14,9 +14,9 @@ import frc.robot.intake.commands.IntakeAmpScore;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class FeedAmpScore extends SequentialCommandGroup {
+public class AmpScore extends SequentialCommandGroup {
   /** Creates a new FeedAmpScore. */
-    public FeedAmpScore(Elevator elevator, Intake intake) {
+    public AmpScore(Elevator elevator, Intake intake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
         addCommands(

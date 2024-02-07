@@ -16,6 +16,7 @@ public class IntakeShooterFeed extends Command {
 
     @Override
     public void initialize() {
+        Timer.delay(IntakeConstants.SHOOTER_FEED_DELAY);
         startTime = Timer.getFPGATimestamp();
         intake.run(IntakeConstants.SHOOTER_SPEED);
     }
