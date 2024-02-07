@@ -1,34 +1,39 @@
 package frc.robot;
 
+import org.photonvision.PhotonCamera;
+
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.lib.zylve.Controller;
-import frc.robot.auto.PoseEstimator;
+import frc.robot.auto.FollowAprilTag;
+import frc.robot.auto.PhotonRunnable;
+import frc.robot.auto.PoseEstimatorSubsystem;
 import frc.robot.constants.OperatorConstants;
-import frc.robot.elevator.Elevator;
-import frc.robot.intake.Intake;
-import frc.robot.shooter.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.swerve.SwerveDrive;
 
 public class RobotContainer {
-    private final SwerveDrive swerveDrive = new SwerveDrive();
-    private final PoseEstimator poseEstimator = new PoseEstimator(swerveDrive::getRotation2d, swerveDrive::getModulePositions);
-
-    @SuppressWarnings("unused")
-    private final Elevator elevator = new Elevator();
-
-    @SuppressWarnings("unused")
-    private final Intake intake = new Intake();
-
-    @SuppressWarnings("unused")
-    private final Shooter shooter = new Shooter();
-
     Controller controller = new Controller(OperatorConstants.CONTROLLER_PORT);
+
+    private final SwerveDrive swerveDrive = new SwerveDrive();
+
+    private final PhotonCamera photonCamera  = new PhotonCamera("Limelight");
+    private final PhotonRunnable photonRunnable = new PhotonRunnable(photonCamera);
+    private final PoseEstimatorSubsystem poseEstimator = new PoseEstimatorSubsystem(swerveDrive::getRotation2d, swerveDrive::getModulePositions, photonRunnable);
+    private final FollowAprilTag followAprilTag = new FollowAprilTag(swerveDrive, photonCamera, poseEstimator::getCurrentPose);
+
+    // @SuppressWarnings("unused")
+    // private final Elevator elevator = new Elevator();
+
+    // @SuppressWarnings("unused")
+    // private final Intake intake = new Intake();
+
+    // @SuppressWarnings("unused")
+    // private final Shooter shooter = new Shooter();
 
     SendableChooser<Command> autoSelector = new SendableChooser<>();
 
@@ -61,6 +66,9 @@ public class RobotContainer {
             .whileTrue(new RunCommand(
                 () -> swerveDrive.zeroHeading(),
                 swerveDrive));
+
+
+        controller.getA().whileTrue(followAprilTag);
     }
 
     public Command getAutonomousCommand() {
@@ -68,6 +76,6 @@ public class RobotContainer {
     }
 
     public void onAllianceChanged(Alliance alliance) {
-        poseEstimator.setAlliance(alliance);
+        // poseEstimator.setAlliance(alliance);
     }
 }

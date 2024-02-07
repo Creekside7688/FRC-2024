@@ -32,7 +32,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Pickup"
+            "pathName": "Left Pickup 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Shoot Pos"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Pickup 2"
           }
         },
         {

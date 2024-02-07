@@ -41,7 +41,6 @@ public class Elevator extends SubsystemBase {
         encoder = motor.getEncoder();
         encoder.setPositionConversionFactor(ElevatorConstants.ENCODER_POSITION_FACTOR);
         encoder.setVelocityConversionFactor(ElevatorConstants.ENCODER_VELOCITY_FACTOR);
-        encoder.setInverted(ElevatorConstants.ENCODER_INVERTED);
         encoder.setPosition(0);
 
         feedbackController = motor.getPIDController();

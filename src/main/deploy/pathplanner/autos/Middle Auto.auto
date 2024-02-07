@@ -26,7 +26,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle Pickup"
+            "pathName": "Middle Pickup 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle Shoot Pos"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle Pickup 2"
           }
         },
         {

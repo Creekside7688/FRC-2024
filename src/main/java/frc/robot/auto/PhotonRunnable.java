@@ -1,10 +1,10 @@
 package frc.robot.auto;
 
-import static frc.robot.constants.VisionConstants.*;
-
-import java.io.UncheckedIOException;
+import static frc.robot.constants.VisionConstants.APRILTAG_AMBIGUITY_THRESHOLD;
+import static frc.robot.constants.VisionConstants.APRILTAG_CAMERA_TO_ROBOT;
+import static frc.robot.constants.VisionConstants.FIELD_LENGTH_METERS;
+import static frc.robot.constants.VisionConstants.FIELD_WIDTH_METERS;
 import java.util.concurrent.atomic.AtomicReference;
-
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -25,23 +25,26 @@ public class PhotonRunnable implements Runnable {
 
     private final PhotonPoseEstimator photonPoseEstimator;
     private final PhotonCamera photonCamera;
+    
+
     private final AtomicReference<EstimatedRobotPose> atomicEstimatedRobotPose = new AtomicReference<EstimatedRobotPose>();
 
-    public PhotonRunnable() {
-        this.photonCamera = new PhotonCamera("limelight");
+
+    public PhotonRunnable(PhotonCamera camera) {
+        this.photonCamera = camera;
+
         PhotonPoseEstimator photonPoseEstimator = null;
 
         try {
-            AprilTagFieldLayout layout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+            AprilTagFieldLayout layout = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
 
             // PV estimates will always be blue, they'll get flipped by robot thread
             layout.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
             if(photonCamera != null) {
                 photonPoseEstimator = new PhotonPoseEstimator(
-                    layout, PoseStrategy.MULTI_TAG_PNP_ON_RIO, photonCamera, APRILTAG_CAMERA_TO_ROBOT.inverse());
+                    layout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, photonCamera, APRILTAG_CAMERA_TO_ROBOT.inverse());
             }
-
-        } catch(UncheckedIOException e) {
+        } catch(Exception e) {
             DriverStation.reportError("Failed to load AprilTagFieldLayout", e.getStackTrace());
             photonPoseEstimator = null;
         }
@@ -53,13 +56,13 @@ public class PhotonRunnable implements Runnable {
     public void run() {
         // Get AprilTag data
         if(photonPoseEstimator != null && photonCamera != null && !RobotState.isAutonomous()) {
-
             PhotonPipelineResult photonResults = photonCamera.getLatestResult();
 
             if(photonResults.hasTargets() && (photonResults.targets.size() > 1
                 || photonResults.targets.get(0).getPoseAmbiguity() < APRILTAG_AMBIGUITY_THRESHOLD)) {
 
                 photonPoseEstimator.update(photonResults).ifPresent(estimatedRobotPose -> {
+
                     Pose3d estimatedPose = estimatedRobotPose.estimatedPose;
 
                     // Make sure the measurement is on the field
@@ -80,6 +83,11 @@ public class PhotonRunnable implements Runnable {
      */
     public EstimatedRobotPose grabLatestEstimatedPose() {
         return atomicEstimatedRobotPose.getAndSet(null);
+    }
+
+
+    public PhotonPipelineResult getLatestResult() {
+        return photonCamera.getLatestResult();
     }
 
 }

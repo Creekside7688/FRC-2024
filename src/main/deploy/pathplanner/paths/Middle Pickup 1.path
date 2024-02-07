@@ -3,47 +3,65 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.308995050419984,
+        "x": 1.835943131345722,
         "y": 5.565311310802802
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8725596999760916,
-        "y": 5.5524894743802236
+        "x": 2.110807917214904,
+        "y": 5.565311310802802
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Middle Shoot"
     },
     {
       "anchor": {
-        "x": 1.835943131345722,
+        "x": 2.501561759880276,
         "y": 5.565311310802802
       },
       "prevControl": {
-        "x": 1.57315929296167,
+        "x": 2.1682392466739775,
         "y": 5.565311310802802
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Middle Shoot"
+      "linkedName": "Middle Pickup"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Start Intake",
+      "waypointRelativePos": 0.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "PickupNote"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 3.5,
+    "maxVelocity": 4.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
   "previewStartingState": null,
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

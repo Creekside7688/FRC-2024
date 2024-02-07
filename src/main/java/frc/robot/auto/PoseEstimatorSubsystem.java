@@ -1,7 +1,12 @@
 package frc.robot.auto;
 
-import frc.robot.constants.DriveConstants;
-import frc.robot.constants.VisionConstants;
+import static edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition.kBlueAllianceWallRightSide;
+import static edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition.kRedAllianceWallRightSide;
+
+import java.util.function.Supplier;
+
+import org.photonvision.EstimatedRobotPose;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
@@ -15,11 +20,13 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import java.util.function.Supplier;
+import frc.robot.constants.DriveConstants;
+import frc.robot.constants.VisionConstants;
 
-import org.photonvision.EstimatedRobotPose;
-
-public class PoseEstimator extends SubsystemBase {
+/**
+ * Pose estimator that uses odometry and AprilTags with PhotonVision.
+ */
+public class PoseEstimatorSubsystem extends SubsystemBase {
 
     // Kalman Filter Configuration. These can be "tuned-to-taste" based on how much
     // you trust your various sensors. Smaller numbers will cause the filter to
@@ -43,16 +50,17 @@ public class PoseEstimator extends SubsystemBase {
     private final Supplier<SwerveModulePosition[]> modulePositionSupplier;
     private final SwerveDrivePoseEstimator poseEstimator;
     private final Field2d field2d = new Field2d();
-    private final PhotonRunnable photonEstimator = new PhotonRunnable();
-    private final Notifier photonNotifier = new Notifier(photonEstimator);
+    private final PhotonRunnable photonEstimator;
+    private final Notifier photonNotifier;
 
-    private OriginPosition originPosition = OriginPosition.kBlueAllianceWallRightSide;
+    private OriginPosition originPosition = kBlueAllianceWallRightSide;
     private boolean sawTag = false;
 
-    public PoseEstimator(Supplier<Rotation2d> rotationSupplier, Supplier<SwerveModulePosition[]> modulePositionSupplier) {
-
+    public PoseEstimatorSubsystem(Supplier<Rotation2d> rotationSupplier, Supplier<SwerveModulePosition[]> modulePositionSupplier, PhotonRunnable photonEstimator) {
+        this.photonEstimator = photonEstimator;
         this.rotationSupplier = rotationSupplier;
         this.modulePositionSupplier = modulePositionSupplier;
+        photonNotifier = new Notifier(photonEstimator);
 
         poseEstimator = new SwerveDrivePoseEstimator(
             DriveConstants.SWERVE_KINEMATICS,
@@ -81,12 +89,12 @@ public class PoseEstimator extends SubsystemBase {
         boolean allianceChanged = false;
         switch(alliance) {
             case Blue:
-                allianceChanged = (originPosition == OriginPosition.kRedAllianceWallRightSide);
-                originPosition = OriginPosition.kBlueAllianceWallRightSide;
+                allianceChanged = (originPosition == kRedAllianceWallRightSide);
+                originPosition = kBlueAllianceWallRightSide;
                 break;
             case Red:
-                allianceChanged = (originPosition == OriginPosition.kBlueAllianceWallRightSide);
-                originPosition = OriginPosition.kRedAllianceWallRightSide;
+                allianceChanged = (originPosition == kBlueAllianceWallRightSide);
+                originPosition = kRedAllianceWallRightSide;
                 break;
             default:
                 // No valid alliance data. Nothing we can do about it
@@ -111,15 +119,17 @@ public class PoseEstimator extends SubsystemBase {
             // New pose from vision
             sawTag = true;
             Pose2d pose2d = visionPose.estimatedPose.toPose2d();
-            if(originPosition != OriginPosition.kBlueAllianceWallRightSide) {
+
+            if(originPosition != kBlueAllianceWallRightSide) {
                 pose2d = flipAlliance(pose2d);
             }
+
             poseEstimator.addVisionMeasurement(pose2d, visionPose.timestampSeconds);
         }
 
         // Set the pose on the dashboard
         Pose2d dashboardPose = poseEstimator.getEstimatedPosition();
-        if(originPosition == OriginPosition.kRedAllianceWallRightSide) {
+        if(originPosition == kRedAllianceWallRightSide) {
             // Flip the pose when red, since the dashboard field photo cannot be rotated
             dashboardPose = flipAlliance(dashboardPose);
         }
@@ -164,4 +174,5 @@ public class PoseEstimator extends SubsystemBase {
     private Pose2d flipAlliance(Pose2d poseToFlip) {
         return poseToFlip.relativeTo(VisionConstants.FLIPPING_POSE);
     }
+
 }
