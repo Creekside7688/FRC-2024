@@ -5,11 +5,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.ShooterConstants;
 import frc.robot.shooter.Shooter;
 
-public class ShooterCommand extends Command { //similar to making your own scratch block
+public class ActivateShooter extends Command { //similar to making your own scratch block
 
     private final Shooter shooterSubsystem; //declares and makes the "shooterSubsystem" variable with the class (items) of "Shooter"
 
-    public ShooterCommand(Shooter shooter) { //makes it so we can shoot multiple motors
+    public ActivateShooter(Shooter shooter) { //makes it so we can shoot multiple motors
         shooterSubsystem = shooter; //sets id for this certain command 
         addRequirements(shooterSubsystem); //makes it so that you cant have two commands using the same shooters
     } 
