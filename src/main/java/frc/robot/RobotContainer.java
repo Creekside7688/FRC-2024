@@ -5,7 +5,9 @@ import org.photonvision.PhotonCamera;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.lib.zylve.Controller;
@@ -25,6 +27,7 @@ import frc.robot.swerve.SwerveDrive;
 public class RobotContainer {
     Controller controller = new Controller(OperatorConstants.CONTROLLER_PORT);
 
+    private final PowerDistribution PDH = new PowerDistribution(1,ModuleType.kRev);
     private final SwerveDrive swerveDrive = new SwerveDrive();
 
     private final Elevator elevator = new Elevator();
@@ -54,6 +57,7 @@ public class RobotContainer {
     public RobotContainer() {
         configureButtonBindings();
 
+        PDH.setSwitchableChannel(true);
         autoSelector.addOption("Left Auto", new PathPlannerAuto("Left Auto"));
         autoSelector.addOption("Right Auto", new PathPlannerAuto("Right Auto"));
         autoSelector.setDefaultOption("Middle Auto", new PathPlannerAuto("Middle Auto"));
