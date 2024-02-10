@@ -4,7 +4,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 
 public class ElevatorConstants {
 
-    public static final int MOTOR_ID = 9;
+    public static final int MOTOR_ID = 11;
     public static final IdleMode IDLE_MODE = IdleMode.kBrake;
     public static final int CURRENT_LIMIT = 50;
 
