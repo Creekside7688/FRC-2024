@@ -23,7 +23,6 @@ public class ElevatorDown extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        
     }
 
     @Override

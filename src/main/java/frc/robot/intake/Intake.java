@@ -19,6 +19,7 @@ public class Intake extends SubsystemBase {
 
     public Intake() {
         motor.setSmartCurrentLimit(IntakeConstants.CURRENT_LIMIT);
+        motor.setIdleMode(IntakeConstants.IDLE_MODE);
 
         rotationController.setP(IntakeConstants.P);
     }

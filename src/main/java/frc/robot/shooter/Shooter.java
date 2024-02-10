@@ -11,6 +11,7 @@ public class Shooter extends SubsystemBase {
 
     public Shooter() {
         motor.setSmartCurrentLimit(ShooterConstants.CURRENT_LIMIT);
+        motor.setIdleMode(ShooterConstants.IDLE_MODE);
     }
 
     @Override

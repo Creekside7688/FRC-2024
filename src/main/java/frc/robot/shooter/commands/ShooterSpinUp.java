@@ -5,11 +5,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.ShooterConstants;
 import frc.robot.shooter.Shooter;
 
-public class ActivateShooter extends Command {
+public class ShooterSpinUp extends Command {
     private final Shooter shooter;
     private double startTime;
 
-    public ActivateShooter(Shooter shooter) {
+    public ShooterSpinUp(Shooter shooter) {
         this.shooter = shooter;
         addRequirements(shooter);
     } 
@@ -17,7 +17,7 @@ public class ActivateShooter extends Command {
     @Override
     public void initialize() {
         startTime = Timer.getFPGATimestamp();
-        shooter.run(0);
+        shooter.run(1);
     }
 
     @Override
@@ -26,11 +26,10 @@ public class ActivateShooter extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        shooter.run(0);
     }
 
     @Override
     public boolean isFinished() {
-        return Timer.getFPGATimestamp() - startTime > ShooterConstants.DELAY;
+        return Timer.getFPGATimestamp() - startTime > ShooterConstants.SHOOTER_SPINUP_DELAY;
     }
 }

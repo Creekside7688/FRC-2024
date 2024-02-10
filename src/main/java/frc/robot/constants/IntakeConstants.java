@@ -1,8 +1,11 @@
 package frc.robot.constants;
 
+import com.revrobotics.CANSparkBase.IdleMode;
+
 public class IntakeConstants {
     public static final int MOTOR_ID = 9;
     public static final int CURRENT_LIMIT = 20;
+    public static final IdleMode IDLE_MODE = IdleMode.kBrake;
 
     public static final int SENSOR_CHANNEL = 1;
 
