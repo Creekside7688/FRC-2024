@@ -1,4 +1,4 @@
-package frc.robot.auto;
+package frc.robot.auto.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.intake.Intake;
