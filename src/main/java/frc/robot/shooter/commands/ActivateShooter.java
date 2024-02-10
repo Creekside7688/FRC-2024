@@ -17,7 +17,7 @@ public class ActivateShooter extends Command {
     @Override
     public void initialize() {
         startTime = Timer.getFPGATimestamp();
-        shooter.shooterRun();
+        shooter.run(0);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class ActivateShooter extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        shooter.shooterOff();
+        shooter.run(0);
     }
 
     @Override

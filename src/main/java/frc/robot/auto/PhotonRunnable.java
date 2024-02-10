@@ -18,9 +18,6 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotState;
 
-/**
- * Runnable that gets AprilTag data from PhotonVision.
- */
 public class PhotonRunnable implements Runnable {
 
     private final PhotonPoseEstimator photonPoseEstimator;

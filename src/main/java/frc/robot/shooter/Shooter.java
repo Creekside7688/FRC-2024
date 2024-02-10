@@ -7,25 +7,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.ShooterConstants;
 
 public class Shooter extends SubsystemBase {
-    private final CANSparkMax motor;
+    private final CANSparkMax motor = new CANSparkMax(ShooterConstants.MOTOR_ID, MotorType.kBrushless);
 
     public Shooter() {
-        motor = new CANSparkMax(ShooterConstants.SHOOTER_ID, MotorType.kBrushless);
+        motor.setSmartCurrentLimit(ShooterConstants.CURRENT_LIMIT);
     }
 
     @Override
     public void periodic() {
     }
 
-    public void shooterRun() {
-        motor.set(ShooterConstants.SHOOTER_ON);
-    }
-    
-    public void shooterOff() {
-        motor.set(ShooterConstants.SHOOTER_OFF);
-    }
-
-    public void inputShooterMotor(double inputShooterMotorValue) {
-        motor.set(inputShooterMotorValue);
+    public void run(double speed) {
+        motor.set(speed);
     }
 }

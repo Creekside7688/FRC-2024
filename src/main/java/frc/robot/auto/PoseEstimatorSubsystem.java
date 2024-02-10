@@ -23,9 +23,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.DriveConstants;
 import frc.robot.constants.VisionConstants;
 
-/**
- * Pose estimator that uses odometry and AprilTags with PhotonVision.
- */
 public class PoseEstimatorSubsystem extends SubsystemBase {
 
     // Kalman Filter Configuration. These can be "tuned-to-taste" based on how much
