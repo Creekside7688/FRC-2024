@@ -55,7 +55,8 @@ public class Elevator extends SubsystemBase {
             ElevatorConstants.S,
             ElevatorConstants.G,
             ElevatorConstants.V,
-            ElevatorConstants.A);
+            ElevatorConstants.A
+        );
 
         constraints = new Constraints(ElevatorConstants.MAX_VELOCITY, ElevatorConstants.MAX_ACCELERATION);
         setpoint = new TrapezoidProfile.State(0, 0);
@@ -77,7 +78,8 @@ public class Elevator extends SubsystemBase {
             setpoint.position,
             CANSparkBase.ControlType.kPosition,
             0,
-            feedforward);
+            feedforward
+        );
 
         lastVelocity = setpoint.velocity;
     }

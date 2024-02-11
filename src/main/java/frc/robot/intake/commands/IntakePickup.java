@@ -31,4 +31,3 @@ public class IntakePickup extends Command {
         return intake.getSensor();
     }
 }
-

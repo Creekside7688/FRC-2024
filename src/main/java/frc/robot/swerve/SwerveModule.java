@@ -96,8 +96,9 @@ public class SwerveModule {
      */
     public SwerveModuleState getState() {
         return new SwerveModuleState(
-                driveEncoder.getVelocity(),
-                new Rotation2d(turnEncoder.getPosition() - angularOffset));
+            driveEncoder.getVelocity(),
+            new Rotation2d(turnEncoder.getPosition() - angularOffset)
+        );
     }
 
     /**
@@ -105,8 +106,9 @@ public class SwerveModule {
      */
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
-                driveEncoder.getPosition(),
-                new Rotation2d(turnEncoder.getPosition() - angularOffset));
+            driveEncoder.getPosition(),
+            new Rotation2d(turnEncoder.getPosition() - angularOffset)
+        );
     }
 
     /**
@@ -121,17 +123,20 @@ public class SwerveModule {
 
         // Optimize to prevent having to turn more than 90 degrees.
         SwerveModuleState optimizedState = SwerveModuleState.optimize(
-                correctedState,
-                new Rotation2d(turnEncoder.getPosition()));
+            correctedState,
+            new Rotation2d(turnEncoder.getPosition())
+        );
 
         // Drive towards setpoints.
         drivePIDController.setReference(
-                optimizedState.speedMetersPerSecond,
-                CANSparkMax.ControlType.kVelocity);
+            optimizedState.speedMetersPerSecond,
+            CANSparkMax.ControlType.kVelocity
+        );
 
         turnPIDController.setReference(
-                optimizedState.angle.getRadians(),
-                CANSparkMax.ControlType.kPosition);
+            optimizedState.angle.getRadians(),
+            CANSparkMax.ControlType.kPosition
+        );
 
         this.desiredState = desiredState;
     }

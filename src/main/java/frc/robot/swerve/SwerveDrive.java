@@ -23,22 +23,26 @@ public class SwerveDrive extends SubsystemBase {
     private final SwerveModule frontLeft = new SwerveModule(
         DriveConstants.FL_DRIVE_MOTOR,
         DriveConstants.FL_TURN_MOTOR,
-        DriveConstants.FL_OFFSET);
+        DriveConstants.FL_OFFSET
+    );
 
     private final SwerveModule frontRight = new SwerveModule(
         DriveConstants.FR_DRIVE_MOTOR,
         DriveConstants.FR_TURN_MOTOR,
-        DriveConstants.FR_OFFSET);
+        DriveConstants.FR_OFFSET
+    );
 
     private final SwerveModule backLeft = new SwerveModule(
         DriveConstants.BL_DRIVE_MOTOR,
         DriveConstants.BL_TURN_MOTOR,
-        DriveConstants.BL_OFFSET);
+        DriveConstants.BL_OFFSET
+    );
 
     private final SwerveModule backRight = new SwerveModule(
         DriveConstants.BR_DRIVE_MOTOR,
         DriveConstants.BR_TURN_MOTOR,
-        DriveConstants.BR_OFFSET);
+        DriveConstants.BR_OFFSET
+    );
 
     // Gyro.
     private final AHRS gyro = new AHRS(SerialPort.Port.kUSB);
@@ -63,7 +67,8 @@ public class SwerveDrive extends SubsystemBase {
             frontRight.getPosition(),
             backLeft.getPosition(),
             backRight.getPosition()
-        });
+        }
+    );
 
     private final Field2d field = new Field2d();
 
@@ -78,7 +83,8 @@ public class SwerveDrive extends SubsystemBase {
             this::driveRelative,
             AutonomousConstants.pathFollowConfig,
             () -> false,
-            this);
+            this
+        );
     }
 
     @Override
@@ -91,7 +97,8 @@ public class SwerveDrive extends SubsystemBase {
                 frontRight.getPosition(),
                 backLeft.getPosition(),
                 backRight.getPosition()
-            });
+            }
+        );
 
         field.setRobotPose(this.getPose());
     }
@@ -110,7 +117,8 @@ public class SwerveDrive extends SubsystemBase {
                 frontRight.getState(),
                 backLeft.getState(),
                 backRight.getState()
-            });
+            }
+        );
     }
 
     /**
@@ -125,7 +133,8 @@ public class SwerveDrive extends SubsystemBase {
                 backLeft.getPosition(),
                 backRight.getPosition()
             },
-            pose);
+            pose
+        );
     }
 
     /**
@@ -199,7 +208,8 @@ public class SwerveDrive extends SubsystemBase {
         SwerveModuleState[] swerveModuleStates = DriveConstants.SWERVE_KINEMATICS.toSwerveModuleStates(
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, this.getRotation2d())
-                : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
+                : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered)
+        );
 
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.MAXIMUM_SPEED_METRES_PER_SECOND);
 

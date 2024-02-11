@@ -22,10 +22,8 @@ public class PhotonRunnable implements Runnable {
 
     private final PhotonPoseEstimator photonPoseEstimator;
     private final PhotonCamera photonCamera;
-    
 
     private final AtomicReference<EstimatedRobotPose> atomicEstimatedRobotPose = new AtomicReference<EstimatedRobotPose>();
-
 
     public PhotonRunnable(PhotonCamera camera) {
         this.photonCamera = camera;
@@ -40,7 +38,8 @@ public class PhotonRunnable implements Runnable {
 
             if(photonCamera != null) {
                 photonPoseEstimator = new PhotonPoseEstimator(
-                    layout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, photonCamera, APRILTAG_CAMERA_TO_ROBOT.inverse());
+                    layout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, photonCamera, APRILTAG_CAMERA_TO_ROBOT.inverse()
+                );
             }
         } catch(Exception e) {
             DriverStation.reportError("Failed to load AprilTagFieldLayout", e.getStackTrace());
@@ -82,7 +81,6 @@ public class PhotonRunnable implements Runnable {
     public EstimatedRobotPose grabLatestEstimatedPose() {
         return atomicEstimatedRobotPose.getAndSet(null);
     }
-
 
     public PhotonPipelineResult getLatestResult() {
         return photonCamera.getLatestResult();

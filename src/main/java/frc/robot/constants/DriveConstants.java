@@ -17,13 +17,15 @@ public class DriveConstants {
     public static final double WHEEL_BASE = TRACK_WIDTH; // Distance between front and back wheels on robot
 
     public static final double CHASSIS_RADIUS = Units.inchesToMeters(
-        (TRACK_WIDTH / 2) / Math.sin(45 * (Math.PI / 180)));
+        (TRACK_WIDTH / 2) / Math.sin(45 * (Math.PI / 180))
+    );
 
     public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
         new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2),
         new Translation2d(WHEEL_BASE / 2, -TRACK_WIDTH / 2),
         new Translation2d(-WHEEL_BASE / 2, TRACK_WIDTH / 2),
-        new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2));
+        new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2)
+    );
 
     // Angular offset relative to chassis in radians.
     public static final double FL_OFFSET = -Math.PI / 2;

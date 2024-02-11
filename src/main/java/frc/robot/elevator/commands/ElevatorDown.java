@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.elevator.Elevator;
 
 public class ElevatorDown extends Command {
-    
+
     private final Elevator elevator;
 
     public ElevatorDown(Elevator elevator) {

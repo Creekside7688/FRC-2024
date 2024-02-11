@@ -67,7 +67,8 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
             modulePositionSupplier.get(),
             new Pose2d(),
             stateDevs,
-            visionMeasurementDevs);
+            visionMeasurementDevs
+        );
 
         // Start PhotonVision thread
         photonNotifier.setName("PhotonRunnable");
@@ -140,10 +141,12 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
     private String getFomattedPose() {
         Pose2d pose = getCurrentPose();
 
-        return String.format("(%.3f, %.3f) %.2f degrees",
+        return String.format(
+            "(%.3f, %.3f) %.2f degrees",
             pose.getX(),
             pose.getY(),
-            pose.getRotation().getDegrees());
+            pose.getRotation().getDegrees()
+        );
     }
 
     public Pose2d getCurrentPose() {
