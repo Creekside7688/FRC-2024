@@ -6,26 +6,19 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.ShooterConstants;
 
-public class Shooter extends SubsystemBase { //similar to making a scratch sprite
-    private final CANSparkMax shooterMotor;
+public class Shooter extends SubsystemBase {
+    private final CANSparkMax motor = new CANSparkMax(ShooterConstants.MOTOR_ID, MotorType.kBrushless);
 
     public Shooter() {
-        shooterMotor = new CANSparkMax(ShooterConstants.SHOOTER_ID, MotorType.kBrushless);
+        motor.setSmartCurrentLimit(ShooterConstants.CURRENT_LIMIT);
+        motor.setIdleMode(ShooterConstants.IDLE_MODE);
     }
 
     @Override
     public void periodic() {
     }
 
-    public void shooterMotorOn() {
-        shooterMotor.set(ShooterConstants.SHOOTER_ON);
-    }
-    
-    public void shooterMotorOff() {
-        shooterMotor.set(ShooterConstants.SHOOTER_OFF);
-    }
-
-    public void inputShooterMotor(double inputShooterMotorValue) {
-        shooterMotor.set(inputShooterMotorValue);
+    public void run(double speed) {
+        motor.set(speed);
     }
 }

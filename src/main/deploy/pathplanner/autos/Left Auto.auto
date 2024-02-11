@@ -1,0 +1,73 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.412258842535703,
+      "y": 7.053708521831459
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Shoot Pos"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootNote"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PickupNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Pickup 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Shoot Pos"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootNote"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Pickup 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Shoot Pos"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootNote"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

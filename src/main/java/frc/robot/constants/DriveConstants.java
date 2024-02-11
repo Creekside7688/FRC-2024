@@ -32,15 +32,15 @@ public class DriveConstants {
     public static final double BL_OFFSET = Math.PI;
     public static final double BR_OFFSET = Math.PI / 2;
 
-    public static final int FL_DRIVE_MOTOR = 3;
-    public static final int FR_DRIVE_MOTOR = 5;
-    public static final int BL_DRIVE_MOTOR = 1;
-    public static final int BR_DRIVE_MOTOR = 7;
+    public static final int FL_DRIVE_MOTOR = 1;
+    public static final int FR_DRIVE_MOTOR = 3;
+    public static final int BL_DRIVE_MOTOR = 7;
+    public static final int BR_DRIVE_MOTOR = 5;
 
-    public static final int FL_TURN_MOTOR = 4;
-    public static final int FR_TURN_MOTOR = 6;
-    public static final int BL_TURN_MOTOR = 2;
-    public static final int BR_TURN_MOTOR = 8;
+    public static final int FL_TURN_MOTOR = 2;
+    public static final int FR_TURN_MOTOR = 4;
+    public static final int BL_TURN_MOTOR = 8;
+    public static final int BR_TURN_MOTOR = 6;
 
     public static final boolean GYRO_INVERTED = true;
 
