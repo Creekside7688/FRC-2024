@@ -8,6 +8,8 @@ public class ElevatorConstants {
     public static final IdleMode IDLE_MODE = IdleMode.kBrake;
     public static final int CURRENT_LIMIT = 50;
 
+    public static final double GEAR_RATIO = 1.0;
+
     public static final boolean ENCODER_INVERTED = false;
     public static final double ENCODER_POSITION_FACTOR = 1.0;
     public static final double ENCODER_VELOCITY_FACTOR = 1.0 / 60.0;
