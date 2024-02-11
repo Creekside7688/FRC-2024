@@ -81,7 +81,11 @@ public class Elevator extends SubsystemBase {
         lastVelocity = 0;
 
         sysIdRoutine = new SysIdRoutine(
-            new SysIdRoutine.Config(), // Default of 1 volt/second ramp rate and 7 volt step voltage.
+            new SysIdRoutine.Config(
+                Volts.of(0.5).per(Second),
+                Volts.of(2),
+                Seconds.of(10)
+            ),
             new SysIdRoutine.Mechanism(
                 (Measure<Voltage> motorVoltage) -> {
                     motor.setVoltage(motorVoltage.in(Units.Volts));
