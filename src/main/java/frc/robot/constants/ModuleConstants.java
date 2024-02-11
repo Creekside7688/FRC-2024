@@ -21,7 +21,7 @@ public class ModuleConstants {
     public static final double DRIVE_WHEEL_FREE_SPEED_RPS = (DRIVE_MOTOR_FREE_SPEED_RPS * WHEEL_CIRCUMFERENCE_METRES) / DRIVE_MOTOR_REDUCTION;
 
     public static final double DRIVE_ENCODER_POSITION_FACTOR = (WHEEL_DIAMETER_METRES * Math.PI) / DRIVE_MOTOR_REDUCTION; // Metres
-    public static final double DRIVE_ENCODER_VELOCITY_FACTOR = ((WHEEL_DIAMETER_METRES * Math.PI) / DRIVE_MOTOR_REDUCTION) / 60.0; // Metres per second
+    public static final double DRIVE_ENCODER_VELOCITY_FACTOR = DRIVE_ENCODER_POSITION_FACTOR / 60.0; // Metres per second
 
     public static final double TURN_ENCODER_POSITION_FACTOR = (2 * Math.PI); // Radians
     public static final double TURN_ENCODER_VELOCITY_FACTOR = (2 * Math.PI) / 60.0; // Radians per second
