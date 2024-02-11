@@ -1,22 +1,34 @@
 package frc.robot.swerve;
 
+import static edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition.kBlueAllianceWallRightSide;
+import static edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition.kRedAllianceWallRightSide;
+
+import org.photonvision.EstimatedRobotPose;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
+import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.util.WPIUtilJNI;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.SwerveUtils;
+import frc.robot.auto.PhotonRunnable;
 import frc.robot.constants.AutonomousConstants;
 import frc.robot.constants.DriveConstants;
+import frc.robot.constants.VisionConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SwerveDrive extends SubsystemBase {
@@ -44,41 +56,67 @@ public class SwerveDrive extends SubsystemBase {
         DriveConstants.BR_OFFSET
     );
 
+    // Kalman Filter Configuration. These can be "tuned-to-taste" based on how much
+    // you trust your various sensors. Smaller numbers will cause the filter to
+    // "trust" the estimate from that particular component more than the others.
+    // This in turn means the particualr component will have a stronger influence
+    // on the final pose estimate.
+
+    /**
+     * Standard deviations of model states. Increase these numbers to trust your model's state estimates less. This matrix is in the form [x, y, theta]ᵀ, with units in meters and
+     * radians, then meters.
+     */
+    private static final Vector<N3> stateDevs = VecBuilder.fill(0.1, 0.1, 0.1);
+
+    /**
+     * Standard deviations of the vision measurements. Increase these numbers to trust global measurements from vision less. This matrix is in the form [x, y, theta]ᵀ, with units
+     * in meters and radians.
+     */
+    private static final Vector<N3> visionMeasurementDevs = VecBuilder.fill(1.5, 1.5, 1.5);
+
+    private final SwerveDrivePoseEstimator poseEstimator;
+    private final PhotonRunnable photonEstimator;
+
+    private final Field2d field2d = new Field2d();
+    private final Notifier photonNotifier;
+
+    private OriginPosition originPosition = kBlueAllianceWallRightSide;
+    private boolean sawTag = false;
+
     // Gyro.
     private final AHRS gyro = new AHRS(SerialPort.Port.kUSB);
 
-    // Slew Rate filters to control acceleration.
     private double currentRotation = 0.0;
     private double currentTranslationDirection = 0.0;
     private double currentTranslationMagnitude = 0.0;
 
+    // Slew Rate filters to control acceleration.
     private SlewRateLimiter magnitudeLimiter = new SlewRateLimiter(DriveConstants.MAGNITUDE_SLEW_RATE);
     private SlewRateLimiter rotationLimiter = new SlewRateLimiter(DriveConstants.ROTATION_SLEW_RATE);
+
     private double previousTime = WPIUtilJNI.now() * 1e-6;
 
-    private Double rotationPIDInput = null;
-
-    // Track robot position with odometry
-    private final SwerveDriveOdometry odometry = new SwerveDriveOdometry(
-        DriveConstants.SWERVE_KINEMATICS,
-        this.getRotation2d(),
-        new SwerveModulePosition[] {
-            frontLeft.getPosition(),
-            frontRight.getPosition(),
-            backLeft.getPosition(),
-            backRight.getPosition()
-        }
-    );
-
-    private final Field2d field = new Field2d();
-
-    public SwerveDrive() {
-        SmartDashboard.putData(field);
+    public SwerveDrive(PhotonRunnable photonEstimator) {
         this.zeroHeading();
+
+        this.photonEstimator = photonEstimator;
+        this.photonNotifier = new Notifier(this.photonEstimator);
+
+        this.poseEstimator = new SwerveDrivePoseEstimator(
+            DriveConstants.SWERVE_KINEMATICS,
+            this.getRotation2d(),
+            this.getModulePositions(),
+            new Pose2d(),
+            stateDevs,
+            visionMeasurementDevs
+        );
+
+        photonNotifier.setName("PhotonRunnable");
+        photonNotifier.startPeriodic(0.02);
 
         AutoBuilder.configureHolonomic(
             this::getPose,
-            this::resetOdometry,
+            this::setPose,
             this::getChassisSpeeds,
             this::driveRelative,
             AutonomousConstants.pathFollowConfig,
@@ -89,25 +127,38 @@ public class SwerveDrive extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Radius", DriveConstants.CHASSIS_RADIUS);
-        odometry.update(
-            this.getRotation2d(),
-            new SwerveModulePosition[] {
-                frontLeft.getPosition(),
-                frontRight.getPosition(),
-                backLeft.getPosition(),
-                backRight.getPosition()
-            }
-        );
+        // Update pose estimator with drivetrain sensors
+        poseEstimator.update(this.getRotation2d(), this.getModulePositions());
 
-        field.setRobotPose(this.getPose());
+        EstimatedRobotPose visionPose = photonEstimator.grabLatestEstimatedPose();
+        if(visionPose != null) {
+            // New pose from vision
+            sawTag = true;
+            Pose2d pose2d = visionPose.estimatedPose.toPose2d();
+
+            if(originPosition != kBlueAllianceWallRightSide) {
+                pose2d = flipAlliance(pose2d);
+            }
+
+            poseEstimator.addVisionMeasurement(pose2d, visionPose.timestampSeconds);
+        }
+
+        // Set the pose on the dashboard
+        Pose2d dashboardPose = poseEstimator.getEstimatedPosition();
+
+        if(originPosition == kRedAllianceWallRightSide) {
+            // Flip the pose when red, since the dashboard field photo cannot be rotated
+            dashboardPose = flipAlliance(dashboardPose);
+        }
+
+        field2d.setRobotPose(dashboardPose);
     }
 
     /**
      * Returns the estimated position.
      */
     public Pose2d getPose() {
-        return odometry.getPoseMeters();
+        return poseEstimator.getEstimatedPosition();
     }
 
     public ChassisSpeeds getChassisSpeeds() {
@@ -124,34 +175,21 @@ public class SwerveDrive extends SubsystemBase {
     /**
      * Resets odometry to a specified pose.
      */
-    public void resetOdometry(Pose2d pose) {
-        odometry.resetPosition(
-            this.getRotation2d(),
-            new SwerveModulePosition[] {
-                frontLeft.getPosition(),
-                frontRight.getPosition(),
-                backLeft.getPosition(),
-                backRight.getPosition()
-            },
-            pose
-        );
+    public void setPose(Pose2d pose) {
+        poseEstimator.resetPosition(this.getRotation2d(), this.getModulePositions(), pose);
     }
 
     /**
-     * Sets the rotation PID input to a specified value. Use this to control the rotation of the robot while the driver is still controlling it.
+     * Resets the position on the field to 0,0 0-degrees, with forward being downfield. This resets what "forward" is for field oriented driving.
      */
-    public void setPIDInput(Double input) {
-        rotationPIDInput = input;
+    public void resetPose() {
+        this.setPose(new Pose2d());
     }
 
     public void drive(double xSpeed, double ySpeed, double rSpeed, boolean fieldRelative, boolean rateLimit) {
         xSpeed = Math.pow(xSpeed, 3);
         ySpeed = Math.pow(ySpeed, 3);
         rSpeed = Math.pow(rSpeed, 3);
-
-        if(rSpeed == 0 && rotationPIDInput != null) {
-            rSpeed = rotationPIDInput;
-        }
 
         double xSpeedCommand;
         double ySpeedCommand;
@@ -277,5 +315,61 @@ public class SwerveDrive extends SubsystemBase {
             backLeft.getPosition(),
             backRight.getPosition()
         };
+    }
+
+    private String getFomattedPose() {
+        Pose2d pose = this.getPose();
+
+        return String.format(
+            "(%.3f, %.3f) %.2f degrees",
+            pose.getX(),
+            pose.getY(),
+            pose.getRotation().getDegrees()
+        );
+    }
+
+    public void addDashboardWidgets(ShuffleboardTab tab) {
+        tab.add("Field", field2d).withPosition(0, 0).withSize(6, 4);
+        tab.addString("Pose", this::getFomattedPose).withPosition(6, 2).withSize(2, 1);
+    }
+
+    /**
+     * Transforms a pose to the opposite alliance's coordinate system. (0,0) is always on the right corner of your alliance wall, so for 2023, the field elements are at different
+     * coordinates for each alliance.
+     * 
+     * @param pose pose to transform to the other alliance
+     * @return pose relative to the other alliance's coordinate system
+     */
+    private Pose2d flipAlliance(Pose2d pose) {
+        return pose.relativeTo(VisionConstants.FLIPPING_POSE);
+    }
+
+    /**
+     * Sets the alliance. This is used to configure the origin of the AprilTag map
+     * 
+     * @param alliance alliance
+     */
+    public void setAlliance(Alliance alliance) {
+        boolean allianceChanged = false;
+        switch(alliance) {
+            case Blue:
+                allianceChanged = (originPosition == kRedAllianceWallRightSide);
+                originPosition = kBlueAllianceWallRightSide;
+                break;
+            case Red:
+                allianceChanged = (originPosition == kBlueAllianceWallRightSide);
+                originPosition = kRedAllianceWallRightSide;
+                break;
+            default:
+                // No valid alliance data. Nothing we can do about it
+        }
+
+        if(allianceChanged && sawTag) {
+            // The alliance changed, which changes the coordinate system.
+            // Since a tag was seen, and the tags are all relative to the coordinate system, the estimated pose
+            // needs to be transformed to the new coordinate system.
+            Pose2d newPose = flipAlliance(this.getPose());
+            poseEstimator.resetPosition(this.getRotation2d(), this.getModulePositions(), newPose);
+        }
     }
 }

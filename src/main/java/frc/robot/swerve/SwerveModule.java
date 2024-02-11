@@ -25,10 +25,6 @@ public class SwerveModule {
     private double angularOffset = 0;
     private SwerveModuleState desiredState = new SwerveModuleState(0.0, new Rotation2d());
 
-    /**
-     * Constructs a MAXSwerveModule and configures the driving and turning motor, encoder, and PID controller. This configuration is specific to the REV MAXSwerve Module built with
-     * NEOs, SPARKS MAX, and a Through Bore Encoder.
-     */
     public SwerveModule(int driveMotor, int turnMotor, double angularOffset) {
         this.driveMotor = new CANSparkMax(driveMotor, MotorType.kBrushless);
         this.turnMotor = new CANSparkMax(turnMotor, MotorType.kBrushless);
@@ -38,6 +34,7 @@ public class SwerveModule {
 
         this.driveEncoder = this.driveMotor.getEncoder();
         this.turnEncoder = this.turnMotor.getAbsoluteEncoder(Type.kDutyCycle);
+
         this.drivePIDController = this.driveMotor.getPIDController();
         this.turnPIDController = this.turnMotor.getPIDController();
         this.drivePIDController.setFeedbackDevice(driveEncoder);
@@ -60,16 +57,12 @@ public class SwerveModule {
         this.turnPIDController.setPositionPIDWrappingMinInput(ModuleConstants.TURN_PID_MINIMUM_INPUT);
         this.turnPIDController.setPositionPIDWrappingMaxInput(ModuleConstants.TURN_PID_MAXIMUM_INPUT);
 
-        // Set the PID gains for the driving motor. Note these are example gains, and you
-        // may need to tune them for your own robot!
         this.drivePIDController.setP(ModuleConstants.DRIVE_P);
         this.drivePIDController.setI(ModuleConstants.DRIVE_I);
         this.drivePIDController.setD(ModuleConstants.DRIVE_D);
         this.drivePIDController.setFF(ModuleConstants.DRIVE_FF);
         this.drivePIDController.setOutputRange(ModuleConstants.DRIVE_MINIMUM_OUTPUT, ModuleConstants.DRIVE_MAXIMUM_OUTPUT);
 
-        // Set the PID gains for the turning motor. Note these are example gains, and you
-        // may need to tune them for your own robot!
         this.turnPIDController.setP(ModuleConstants.TURN_P);
         this.turnPIDController.setI(ModuleConstants.TURN_I);
         this.turnPIDController.setD(ModuleConstants.TURN_D);
@@ -86,6 +79,7 @@ public class SwerveModule {
         this.driveMotor.burnFlash();
         this.turnMotor.burnFlash();
 
+        // Set the angular offset of the module.
         this.angularOffset = angularOffset;
         this.desiredState.angle = new Rotation2d(turnEncoder.getPosition());
         this.driveEncoder.setPosition(0);
@@ -117,9 +111,10 @@ public class SwerveModule {
      * @param desiredState Desired state with speed and angle.
      */
     public void setDesiredState(SwerveModuleState desiredState) {
-        SwerveModuleState correctedState = new SwerveModuleState();
-        correctedState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
-        correctedState.angle = desiredState.angle.plus(Rotation2d.fromRadians(angularOffset));
+        SwerveModuleState correctedState = new SwerveModuleState(
+            desiredState.speedMetersPerSecond,
+            desiredState.angle.plus(Rotation2d.fromRadians(angularOffset))
+        );
 
         // Optimize to prevent having to turn more than 90 degrees.
         SwerveModuleState optimizedState = SwerveModuleState.optimize(

@@ -18,7 +18,7 @@ public class ModuleConstants {
 
     // Bevel 45T, First Stage 22T, Bevel Pinion 15T
     public static final double DRIVE_MOTOR_REDUCTION = (45.0 * 22) / (DRIVE_PINION_TEETH * 15);
-    public static final double DRIVE_WHEEL_FREE_SPEED_RPS = (DRIVE_MOTOR_FREE_SPEED_RPS * WHEEL_CIRCUMFERENCE_METRES) / DRIVE_MOTOR_REDUCTION;
+    public static final double DRIVE_WHEEL_FREE_SPEED = (DRIVE_MOTOR_FREE_SPEED_RPS * WHEEL_CIRCUMFERENCE_METRES) / DRIVE_MOTOR_REDUCTION;
 
     public static final double DRIVE_ENCODER_POSITION_FACTOR = (WHEEL_DIAMETER_METRES * Math.PI) / DRIVE_MOTOR_REDUCTION; // Metres
     public static final double DRIVE_ENCODER_VELOCITY_FACTOR = DRIVE_ENCODER_POSITION_FACTOR / 60.0; // Metres per second
@@ -32,12 +32,12 @@ public class ModuleConstants {
     public static final double DRIVE_P = 0.04;
     public static final double DRIVE_I = 0;
     public static final double DRIVE_D = 0;
-    public static final double DRIVE_FF = 1 / DRIVE_WHEEL_FREE_SPEED_RPS;
+    public static final double DRIVE_FF = 1 / DRIVE_WHEEL_FREE_SPEED;
 
     public static final double DRIVE_MINIMUM_OUTPUT = -1;
     public static final double DRIVE_MAXIMUM_OUTPUT = 1;
 
-    public static final double TURN_P = 0.75;
+    public static final double TURN_P = 1;
     public static final double TURN_I = 0;
     public static final double TURN_D = 0;
     public static final double TURN_FF = 0;

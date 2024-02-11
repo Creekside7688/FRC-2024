@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.lib.zylve.Controller;
 import frc.robot.auto.PhotonRunnable;
-import frc.robot.auto.PoseEstimatorSubsystem;
 import frc.robot.auto.commands.AmpAlign;
 import frc.robot.auto.commands.FollowAprilTag;
 import frc.robot.auto.commands.SpeakerAlign;
@@ -32,21 +31,22 @@ import frc.robot.swerve.SwerveDrive;
 
 public class RobotContainer {
     Controller controller = new Controller(OperatorConstants.CONTROLLER_PORT);
-    private final PhotonCamera photonCamera = new PhotonCamera("Limelight");
     private final PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
 
-    private final SwerveDrive swerveDrive = new SwerveDrive();
+    private final PhotonCamera photonCamera = new PhotonCamera("Limelight");
+    private final PhotonRunnable photonRunnable = new PhotonRunnable(photonCamera);
+    // private final PoseEstimatorSubsystem poseEstimator = new PoseEstimatorSubsystem(swerveDrive::getRotation2d, swerveDrive::getModulePositions, photonRunnable);
+
+    private final SwerveDrive swerveDrive = new SwerveDrive(photonRunnable);
     private final Elevator elevator = new Elevator();
     private final Intake intake = new Intake();
     private final Shooter shooter = new Shooter();
 
-    private final PhotonRunnable photonRunnable = new PhotonRunnable(photonCamera);
-    private final PoseEstimatorSubsystem poseEstimator = new PoseEstimatorSubsystem(swerveDrive::getRotation2d, swerveDrive::getModulePositions, photonRunnable);
-    private final FollowAprilTag followAprilTag = new FollowAprilTag(swerveDrive, photonCamera, poseEstimator::getCurrentPose);
+    // private final FollowAprilTag followAprilTag = new FollowAprilTag(swerveDrive, photonCamera, poseEstimator::getCurrentPose);
 
     private final SequentialCommandGroup ampSuperCommand = new SequentialCommandGroup(
         new ParallelCommandGroup(
-            new AmpAlign(swerveDrive, poseEstimator::getCurrentPose),
+            // new AmpAlign(swerveDrive, poseEstimator::getCurrentPose),
             new ElevatorUp(elevator)
         ),
 
@@ -56,7 +56,7 @@ public class RobotContainer {
 
     private final SequentialCommandGroup shooterSuperCommand = new SequentialCommandGroup(
         new ParallelCommandGroup(
-            new SpeakerAlign(swerveDrive, poseEstimator::getCurrentPose),
+            // new SpeakerAlign(swerveDrive, poseEstimator::getCurrentPose),
             new ShooterSpinUp(shooter)
         ),
 
@@ -118,7 +118,7 @@ public class RobotContainer {
                 )
             );
 
-        controller.getA().whileTrue(followAprilTag);
+        // controller.getA().whileTrue(followAprilTag);
     }
 
     private void configureSuperCommands() {
@@ -130,6 +130,6 @@ public class RobotContainer {
     }
 
     public void onAllianceChanged(Alliance alliance) {
-        poseEstimator.setAlliance(alliance);
+        // poseEstimator.setAlliance(alliance);
     }
 }
