@@ -106,6 +106,15 @@ public class SwerveModule {
     }
 
     /**
+     * Returns the desired state of the module.
+     * @return The desired state of the module.
+     */
+    public SwerveModuleState getDesiredState() {
+        return desiredState;
+
+    }
+
+    /**
      * Sets the desired state for the module.
      *
      * @param desiredState Desired state with speed and angle.

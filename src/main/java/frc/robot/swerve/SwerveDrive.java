@@ -18,6 +18,10 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.networktables.DoublePublisher;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.Publisher;
+import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
@@ -56,6 +60,19 @@ public class SwerveDrive extends SubsystemBase {
         DriveConstants.BR_TURN_MOTOR,
         DriveConstants.BR_OFFSET
     );
+
+    // Temporary network table publisher to monitor swerve module states
+    StructArrayPublisher<SwerveModuleState> positionPublisher = NetworkTableInstance.getDefault()
+        .getStructArrayTopic("RealWorldStates", SwerveModuleState.struct)
+        .publish();
+
+    // Temporary network table publisher to monitor swerve module setpoints
+    StructArrayPublisher<SwerveModuleState> setpointPublisher = NetworkTableInstance.getDefault()
+        .getStructArrayTopic("DesiredStates", SwerveModuleState.struct)
+        .publish();
+
+    // Temporary network table publisher to monitor gyroscopic data
+    DoublePublisher gyroPublisher = NetworkTableInstance.getDefault().getDoubleTopic("Gyro Angle").publish();
 
     // Gyro
     private final AHRS gyro = new AHRS(SerialPort.Port.kUSB);
@@ -128,6 +145,28 @@ public class SwerveDrive extends SubsystemBase {
 
     @Override
     public void periodic() {
+        // Temporary network table publisher to monitor swerve module states
+        positionPublisher.set(
+            new SwerveModuleState[] {
+                frontLeft.getState(),
+                frontRight.getState(),
+                backLeft.getState(),
+                backRight.getState()
+            }
+        );
+
+        // Temporary network table publisher to monitor swerve module setpoints
+        setpointPublisher.set(
+            new SwerveModuleState[] {
+                frontLeft.getDesiredState(),
+                frontRight.getDesiredState(),
+                backLeft.getDesiredState(),
+                backRight.getDesiredState()
+            }
+        );
+
+        gyroPublisher.set(this.getRotation2d().getDegrees());
+
         // Update pose estimator with encoder data
         poseEstimator.update(this.getRotation2d(), this.getModulePositions());
 
@@ -225,7 +264,7 @@ public class SwerveDrive extends SubsystemBase {
                     currentTranslationMagnitude = magnitudeLimiter.calculate(inputTranslationMagnitude);
                 }
 
-            // Otherwise
+                // Otherwise
             } else {
                 // Step towards the input direction, but remove the magnitude.
                 currentTranslationDirection = SwerveUtils
@@ -290,7 +329,6 @@ public class SwerveDrive extends SubsystemBase {
         backLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
         backRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
     }
-
 
     /**
      * Returns the current state of the swerve drive in the form of a chassis speeds object.
