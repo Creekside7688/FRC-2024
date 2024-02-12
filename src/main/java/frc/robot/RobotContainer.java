@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.zylve.Controller;
 import frc.robot.auto.PhotonRunnable;
 import frc.robot.auto.commands.AmpAlign;
@@ -35,18 +36,17 @@ public class RobotContainer {
 
     private final PhotonCamera photonCamera = new PhotonCamera("Limelight");
     private final PhotonRunnable photonRunnable = new PhotonRunnable(photonCamera);
-    // private final PoseEstimatorSubsystem poseEstimator = new PoseEstimatorSubsystem(swerveDrive::getRotation2d, swerveDrive::getModulePositions, photonRunnable);
 
     private final SwerveDrive swerveDrive = new SwerveDrive(photonRunnable);
     private final Elevator elevator = new Elevator();
     private final Intake intake = new Intake();
     private final Shooter shooter = new Shooter();
 
-    // private final FollowAprilTag followAprilTag = new FollowAprilTag(swerveDrive, photonCamera, poseEstimator::getCurrentPose);
+    private final FollowAprilTag followAprilTag = new FollowAprilTag(swerveDrive, photonCamera, swerveDrive::getPose);
 
     private final SequentialCommandGroup ampSuperCommand = new SequentialCommandGroup(
         new ParallelCommandGroup(
-            // new AmpAlign(swerveDrive, poseEstimator::getCurrentPose),
+            new AmpAlign(swerveDrive, swerveDrive::getPose),
             new ElevatorUp(elevator)
         ),
 
@@ -56,7 +56,7 @@ public class RobotContainer {
 
     private final SequentialCommandGroup shooterSuperCommand = new SequentialCommandGroup(
         new ParallelCommandGroup(
-            // new SpeakerAlign(swerveDrive, poseEstimator::getCurrentPose),
+            new SpeakerAlign(swerveDrive, swerveDrive::getPose),
             new ShooterSpinUp(shooter)
         ),
 
@@ -70,6 +70,7 @@ public class RobotContainer {
         configureSubsystems();
         configureAutonomous();
         configureSwerveDriveCommands();
+        configureSuperCommands();
 
         swerveDrive.setDefaultCommand(
             new RunCommand(
@@ -96,7 +97,7 @@ public class RobotContainer {
         // NamedCommands.registerCommand("Amp Score", AmpScore);
         // NamedCommands.registerCommand("Shoot Note", shootnotefeed);
 
-        Shuffleboard.getTab("auto").add(autoSelector);
+        SmartDashboard.putData("Auto Selector", autoSelector);
     }
 
     private void configureSwerveDriveCommands() {
@@ -118,7 +119,7 @@ public class RobotContainer {
                 )
             );
 
-        // controller.getA().whileTrue(followAprilTag);
+        controller.getA().whileTrue(followAprilTag);
     }
 
     private void configureSuperCommands() {
@@ -130,6 +131,6 @@ public class RobotContainer {
     }
 
     public void onAllianceChanged(Alliance alliance) {
-        // poseEstimator.setAlliance(alliance);
+        swerveDrive.setAlliance(alliance);
     }
 }

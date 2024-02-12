@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.constants.VisionConstants;
 import frc.robot.swerve.SwerveDrive;
 
 public class FollowAprilTag extends Command {
@@ -88,11 +89,11 @@ public class FollowAprilTag extends Command {
         // If we see tags
         if(photonResults.hasTargets()) {
 
-            // Filter targets
+            // Filter tags
             Optional<PhotonTrackedTarget> filteredTag = photonResults.getTargets().stream()
                 .filter(t -> t.getFiducialId() == TAG_ID) // To find the tag ID we want
                 .filter(t -> !t.equals(lastTag)) // That is not in **exactly** the same position as the last one (To prevent recalculations)
-                .filter(t -> t.getPoseAmbiguity() <= .2) // That is not too ambiguous
+                .filter(t -> t.getPoseAmbiguity() <= VisionConstants.APRILTAG_AMBIGUITY_THRESHOLD) // That is not too ambiguous
                 .filter(t -> t.getPoseAmbiguity() != -1) // Where something didn't go wrong
                 .findFirst();
 
@@ -130,7 +131,7 @@ public class FollowAprilTag extends Command {
 
             // Otherwise,
         } else {
-            // Drive the robot towards the goal.
+            // Calculate the needed speeds
             double xSpeed = xController.calculate(robotPose3d.getX());
 
             if(xController.atGoal()) {

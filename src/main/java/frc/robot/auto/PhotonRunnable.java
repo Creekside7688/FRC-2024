@@ -19,10 +19,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotState;
 
 public class PhotonRunnable implements Runnable {
-
-    private final PhotonPoseEstimator photonPoseEstimator;
     private final PhotonCamera photonCamera;
+    private final PhotonPoseEstimator photonPoseEstimator;
 
+    // Use atomic reference to ensure that the robot thread can't read a pose while it's being updated
     private final AtomicReference<EstimatedRobotPose> atomicEstimatedRobotPose = new AtomicReference<EstimatedRobotPose>();
 
     public PhotonRunnable(PhotonCamera camera) {
@@ -30,13 +30,16 @@ public class PhotonRunnable implements Runnable {
 
         PhotonPoseEstimator photonPoseEstimator = null;
 
+        // Try to load the field layout
         try {
             AprilTagFieldLayout layout = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
 
             // PV estimates will always be blue, they'll get flipped by robot thread
             layout.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
 
+            // If there is a camera found
             if(photonCamera != null) {
+                // Create a new pose estimator that computes the pose on the limelight
                 photonPoseEstimator = new PhotonPoseEstimator(
                     layout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, photonCamera, APRILTAG_CAMERA_TO_ROBOT.inverse()
                 );
@@ -51,23 +54,29 @@ public class PhotonRunnable implements Runnable {
 
     @Override
     public void run() {
-        // Get AprilTag data
+        // If the camera and pose estimator exist, and the robot is not in autonomous
         if(photonPoseEstimator != null && photonCamera != null && !RobotState.isAutonomous()) {
+            // Get the latest results
             PhotonPipelineResult photonResults = photonCamera.getLatestResult();
 
+            // If there is more than one tag in view and the tags have low ambiguity
             if(photonResults.hasTargets() && (photonResults.targets.size() > 1
                 || photonResults.targets.get(0).getPoseAmbiguity() < APRILTAG_AMBIGUITY_THRESHOLD)) {
 
-                photonPoseEstimator.update(photonResults).ifPresent(estimatedRobotPose -> {
+                // Update the pose estimator
+                photonPoseEstimator.update(photonResults).ifPresent(
+                    estimatedRobotPose -> {
 
-                    Pose3d estimatedPose = estimatedRobotPose.estimatedPose;
+                        Pose3d pose = estimatedRobotPose.estimatedPose;
 
-                    // Make sure the measurement is on the field
-                    if(estimatedPose.getX() > 0.0 && estimatedPose.getX() <= FIELD_LENGTH_METERS
-                        && estimatedPose.getY() > 0.0 && estimatedPose.getY() <= FIELD_WIDTH_METERS) {
-                        atomicEstimatedRobotPose.set(estimatedRobotPose);
+                        // If the pose is within the field
+                        if(pose.getX() > 0.0 && pose.getX() <= FIELD_LENGTH_METERS
+                            && pose.getY() > 0.0 && pose.getY() <= FIELD_WIDTH_METERS) {
+                            // Set the atomic reference to the new pose
+                            atomicEstimatedRobotPose.set(estimatedRobotPose);
+                        }
                     }
-                });
+                );
             }
         }
     }
@@ -78,7 +87,7 @@ public class PhotonRunnable implements Runnable {
      * 
      * @return latest estimated pose
      */
-    public EstimatedRobotPose grabLatestEstimatedPose() {
+    public EstimatedRobotPose getLatestEstimatedPose() {
         return atomicEstimatedRobotPose.getAndSet(null);
     }
 
