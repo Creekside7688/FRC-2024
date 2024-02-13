@@ -15,6 +15,8 @@ import frc.robot.auto.commands.FollowAprilTag;
 import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
 import frc.robot.intake.Intake;
+import frc.robot.intake.commands.IntakePickup;
+import frc.robot.intake.commands.IntakeAmpScore;
 import frc.robot.shooter.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -36,9 +38,19 @@ public class RobotContainer {
 
     private final FollowAprilTag followAprilTag = new FollowAprilTag(swerveDrive, photonCamera, swerveDrive::getPose);
 
-    private final SequentialCommandGroup shooterSuperCommand = autoCommands.shooterSuperCommand(swerveDrive, shooter, intake);
-    private final SequentialCommandGroup ampSuperCommand = autoCommands.ampSuperCommand(swerveDrive, elevator, intake);
+    
 
+    private final SequentialCommandGroup ampSuperAlign = autoCommands.ampSuperAlign(swerveDrive, elevator);
+    private final SequentialCommandGroup ampSuperShoot = autoCommands.ampSuperShoot(elevator, intake);
+
+
+    private final SequentialCommandGroup shooterSuperAlign = autoCommands.shooterSuperAlign(swerveDrive, shooter);
+    private final SequentialCommandGroup shooterSuperShoot = autoCommands.shooterSuperShoot(shooter, intake);
+
+    private final Command intakePickup = new IntakePickup(intake);
+    private final Command eject = new IntakeAmpScore(intake);
+
+    
     SendableChooser<Command> autoSelector = new SendableChooser<>();
 
     public RobotContainer() {
@@ -94,7 +106,15 @@ public class RobotContainer {
                 )
             );
 
-        controller.getA().whileTrue(followAprilTag);
+        controller.getX().whileTrue(followAprilTag);
+        controller.getA().whileTrue(ampSuperAlign);
+        controller.getRightTrigger().onTrue(ampSuperShoot);
+        controller.getY().whileTrue(ampSuperAlign);
+        controller.getLeftTrigger().onTrue(shooterSuperShoot);
+        controller.getRightBumper().onTrue(intakePickup);
+        controller.getLeftBumper().onTrue(eject);
+        
+        
     }
 
     private void configureSuperCommands() {
