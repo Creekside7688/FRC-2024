@@ -32,6 +32,10 @@ public class Intake extends SubsystemBase {
         return sensor.get();
     }
 
+    public boolean isNotePresent() {
+        return !getSensor();
+    }
+
     public double getRPM() {
         return encoder.getVelocity() / IntakeConstants.INTAKE_GEAR_RATIO;
     }
