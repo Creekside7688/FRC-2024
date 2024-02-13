@@ -9,22 +9,14 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.zylve.Controller;
+import frc.robot.auto.AutoCommands;
 import frc.robot.auto.PhotonRunnable;
-import frc.robot.auto.commands.AmpAlign;
 import frc.robot.auto.commands.FollowAprilTag;
-import frc.robot.auto.commands.SpeakerAlign;
 import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
-import frc.robot.elevator.commands.ElevatorDown;
-import frc.robot.elevator.commands.ElevatorUp;
 import frc.robot.intake.Intake;
-import frc.robot.intake.commands.IntakeAmpScore;
-import frc.robot.intake.commands.IntakeShooterFeed;
 import frc.robot.shooter.Shooter;
-import frc.robot.shooter.commands.ShooterSpinDown;
-import frc.robot.shooter.commands.ShooterSpinUp;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.swerve.SwerveDrive;
@@ -40,28 +32,12 @@ public class RobotContainer {
     private final Elevator elevator = new Elevator();
     private final Intake intake = new Intake();
     private final Shooter shooter = new Shooter();
+    private final AutoCommands autoCommands = new AutoCommands();
 
     private final FollowAprilTag followAprilTag = new FollowAprilTag(swerveDrive, photonCamera, swerveDrive::getPose);
 
-    private final SequentialCommandGroup ampSuperCommand = new SequentialCommandGroup(
-        new ParallelCommandGroup(
-            new AmpAlign(swerveDrive, swerveDrive::getPose),
-            new ElevatorUp(elevator)
-        ),
-
-        new IntakeAmpScore(intake),
-        new ElevatorDown(elevator).withTimeout(0.25)
-    );
-
-    private final SequentialCommandGroup shooterSuperCommand = new SequentialCommandGroup(
-        new ParallelCommandGroup(
-            new SpeakerAlign(swerveDrive, swerveDrive::getPose),
-            new ShooterSpinUp(shooter)
-        ),
-
-        new IntakeShooterFeed(intake),
-        new ShooterSpinDown(shooter)
-    );
+    private final SequentialCommandGroup shooterSuperCommand = autoCommands.shooterSuperCommand(swerveDrive, shooter, intake);
+    private final SequentialCommandGroup ampSuperCommand = autoCommands.ampSuperCommand(swerveDrive, elevator, intake);
 
     SendableChooser<Command> autoSelector = new SendableChooser<>();
 
