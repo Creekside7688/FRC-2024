@@ -3,9 +3,7 @@ package frc.robot;
 import org.photonvision.PhotonCamera;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.zylve.Controller;
@@ -25,9 +23,8 @@ import frc.robot.swerve.SwerveDrive;
 
 public class RobotContainer {
     Controller controller = new Controller(OperatorConstants.CONTROLLER_PORT);
-    private final PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
 
-    private final PhotonCamera photonCamera = new PhotonCamera("Limelight");
+    private final PhotonCamera photonCamera = new PhotonCamera("limelight");
     private final PhotonRunnable photonRunnable = new PhotonRunnable(photonCamera);
 
     private final SwerveDrive swerveDrive = new SwerveDrive(photonRunnable);
@@ -38,19 +35,15 @@ public class RobotContainer {
 
     private final FollowAprilTag followAprilTag = new FollowAprilTag(swerveDrive, photonCamera, swerveDrive::getPose);
 
-    
-
-    private final SequentialCommandGroup ampSuperAlign = autoCommands.ampSuperAlign(swerveDrive, elevator);
+    private final SequentialCommandGroup ampSuperAlign = autoCommands.ampSuperAlign(swerveDrive, elevator, photonCamera);
     private final SequentialCommandGroup ampSuperShoot = autoCommands.ampSuperShoot(elevator, intake);
 
-
-    private final SequentialCommandGroup shooterSuperAlign = autoCommands.shooterSuperAlign(swerveDrive, shooter);
+    private final SequentialCommandGroup shooterSuperAlign = autoCommands.shooterSuperAlign(swerveDrive, shooter, photonCamera);
     private final SequentialCommandGroup shooterSuperShoot = autoCommands.shooterSuperShoot(shooter, intake);
 
     private final Command intakePickup = new IntakePickup(intake);
     private final Command eject = new IntakeAmpScore(intake);
 
-    
     SendableChooser<Command> autoSelector = new SendableChooser<>();
 
     public RobotContainer() {
@@ -73,7 +66,6 @@ public class RobotContainer {
     }
 
     private void configureSubsystems() {
-        PDH.setSwitchableChannel(true);
     }
 
     private void configureAutonomous() {
@@ -113,8 +105,7 @@ public class RobotContainer {
         controller.getLeftTrigger().onTrue(shooterSuperShoot);
         controller.getRightBumper().onTrue(intakePickup);
         controller.getLeftBumper().onTrue(eject);
-        
-        
+
     }
 
     private void configureSuperCommands() {

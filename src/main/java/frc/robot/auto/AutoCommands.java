@@ -4,6 +4,8 @@
 
 package frc.robot.auto;
 
+import org.photonvision.PhotonCamera;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -23,25 +25,26 @@ import frc.robot.swerve.SwerveDrive;
 /** Add your docs here. */
 public class AutoCommands {
 
-    public SequentialCommandGroup ampSuperAlign(SwerveDrive swerveDrive, Elevator elevator) {
+    public SequentialCommandGroup ampSuperAlign(SwerveDrive swerveDrive, Elevator elevator, PhotonCamera camera) {
         return new SequentialCommandGroup(
             new ParallelCommandGroup(
-                new AmpAlign(swerveDrive, swerveDrive::getPose),
+                new AmpAlign(swerveDrive, camera, swerveDrive::getPose),
                 new ElevatorUp(elevator)
             )
         );
     }
+
     public SequentialCommandGroup ampSuperShoot(Elevator elevator, Intake intake) {
         return new SequentialCommandGroup(
             new IntakeAmpScore(intake),
             new ElevatorDown(elevator).withTimeout(0.25)
-    );
+        );
     }
 
-    public SequentialCommandGroup shooterSuperAlign(SwerveDrive swerveDrive, Shooter shooter) {
+    public SequentialCommandGroup shooterSuperAlign(SwerveDrive swerveDrive, Shooter shooter, PhotonCamera camera) {
         return new SequentialCommandGroup(
             new ParallelCommandGroup(
-                new SpeakerAlign(swerveDrive, swerveDrive::getPose),
+                new SpeakerAlign(swerveDrive, camera, swerveDrive::getPose),
                 new ShooterSpinUp(shooter)
             )
         );
@@ -51,25 +54,6 @@ public class AutoCommands {
         return new SequentialCommandGroup(
             new IntakeShooterFeed(intake),
             new ShooterSpinDown(shooter)
-    );
-    }
-    
-
-    /*public SequentialCommandGroup ampSuperCommand(SwerveDrive swerveDrive, Elevator elevator, Intake intake) {
-        return new SequentialCommandGroup(
-    
-                new ampSuperAlign(swerveDrive, elevator),
-                new ampSuperShoot(elevator, intake)
-            
         );
     }
-    public SequentialCommandGroup shooterSuperCommand(SwerveDrive swerveDrive, Elevator elevator, Intake intake, Shooter shooter) {
-        return new SequentialCommandGroup(
-    
-                new shooterSuperAlign(swerveDrive, shooter),
-                new shooterSuperShoot(elevator, intake)
-            
-        );
-    } */
 }
-

@@ -73,7 +73,7 @@ public class SwerveDrive extends SubsystemBase {
     DoublePublisher gyroPublisher = NetworkTableInstance.getDefault().getDoubleTopic("Gyro Angle").publish();
 
     // Gyro
-    private final AHRS gyro = new AHRS(SerialPort.Port.kUSB);
+    private final AHRS gyro = new AHRS(SerialPort.Port.kUSB1);
     private final PhotonRunnable photonEstimator;
 
     /*
