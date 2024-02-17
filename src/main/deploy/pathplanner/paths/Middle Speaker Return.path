@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.918957819897622,
+        "y": 5.787184186980988
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.829654902553048,
+        "y": 7.081442631353734
+      },
+      "isLocked": false,
+      "linkedName": "Middle Pickup 2"
+    },
+    {
+      "anchor": {
+        "x": 1.835943131345722,
+        "y": 5.565311310802802
+      },
+      "prevControl": {
+        "x": 4.174853034390753,
+        "y": 5.898120625070079
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Middle Shoot"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.5,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 1.2590452071752913,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": null,
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}
