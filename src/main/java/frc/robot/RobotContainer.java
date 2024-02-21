@@ -52,6 +52,7 @@ public class RobotContainer {
         configureAutonomous();
         configureSwerveDriveCommands();
         configureSuperCommands();
+        configureSysId();
 
         swerveDrive.setDefaultCommand(
             new RunCommand(
@@ -66,7 +67,7 @@ public class RobotContainer {
         );
     }
 
-    private void configureButtonBindings() {
+    private void configureSysId() {
         controller.getA().whileTrue(elevator.getSysIdQuasistatic(SysIdRoutine.Direction.kForward));
         controller.getB().whileTrue(elevator.getSysIdQuasistatic(SysIdRoutine.Direction.kReverse));
         controller.getX().whileTrue(elevator.getSysIdDynamic(SysIdRoutine.Direction.kForward));
@@ -106,14 +107,13 @@ public class RobotContainer {
                 )
             );
 
-        controller.getX().whileTrue(followAprilTag);
-        controller.getA().whileTrue(ampSuperAlign);
-        controller.getRightTrigger().onTrue(ampSuperShoot);
-        controller.getY().whileTrue(ampSuperAlign);
-        controller.getLeftTrigger().onTrue(shooterSuperShoot);
-        controller.getRightBumper().onTrue(intakePickup);
-        controller.getLeftBumper().onTrue(eject);
-
+        // controller.getX().whileTrue(followAprilTag);
+        // controller.getA().whileTrue(ampSuperAlign);
+        // controller.getRightTrigger().onTrue(ampSuperShoot);
+        // controller.getY().whileTrue(ampSuperAlign);
+        // controller.getLeftTrigger().onTrue(shooterSuperShoot);
+        // controller.getRightBumper().onTrue(intakePickup);
+        // controller.getLeftBumper().onTrue(eject);
     }
 
     private void configureSuperCommands() {
