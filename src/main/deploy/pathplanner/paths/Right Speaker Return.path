@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.8727343040280955,
+        "y": 0.8135338793165466
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.6986570009185336,
+        "y": 0.5177033777456337
+      },
+      "isLocked": false,
+      "linkedName": "Right Pickup 2"
+    },
+    {
+      "anchor": {
+        "x": 0.976185736155256,
+        "y": 4.317276382300513
+      },
+      "prevControl": {
+        "x": 1.7434960996057403,
+        "y": 2.329665199867475
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Right Shoot"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.5,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -49.68589983972237,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": null,
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

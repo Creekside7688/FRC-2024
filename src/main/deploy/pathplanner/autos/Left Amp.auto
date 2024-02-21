@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.5324399837988864,
-      "y": 4.086158802948237
+      "x": 0.47697176475434017,
+      "y": 7.728571853540104
     },
     "rotation": 0
   },
@@ -14,49 +14,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Shoot Pos"
+            "pathName": "Left Amp"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootNote"
+            "name": "AmpNote"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Pickup 1"
+            "pathName": "Left Pickup Amp"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Shoot Pos"
+            "pathName": "Left Amp"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootNote"
+            "name": "AmpNote"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Pickup 2"
+            "pathName": "Left Pickup 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right Shoot Pos"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootNote"
+            "pathName": "Left Amp Return"
           }
         }
       ]

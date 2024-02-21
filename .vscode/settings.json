@@ -48,5 +48,6 @@
   "java.format.settings.url": "java-formatter.xml",
   "java.checkstyle.configuration": "${workspaceFolder}\\checkstyle.xml",
   "explorerExclude.backup": {},
-  "java.checkstyle.version": "10.12.7"
+  "java.checkstyle.version": "10.12.7",
+  "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms100m -Xlog:disable"
 }

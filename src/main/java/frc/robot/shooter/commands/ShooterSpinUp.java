@@ -12,7 +12,7 @@ public class ShooterSpinUp extends Command {
     public ShooterSpinUp(Shooter shooter) {
         this.shooter = shooter;
         addRequirements(shooter);
-    } 
+    }
 
     @Override
     public void initialize() {

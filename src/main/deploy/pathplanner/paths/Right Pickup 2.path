@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 7.928202523071712,
-        "y": 0.9614491301054677
+        "x": 7.8727343040280955,
+        "y": 0.8135338793165466
       },
       "prevControl": {
-        "x": 6.957508689792154,
-        "y": 0.6748633317086463
+        "x": 6.902040470748537,
+        "y": 0.5269480809197252
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Right Pickup 2"
     }
   ],
   "rotationTargets": [],

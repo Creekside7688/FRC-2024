@@ -5,7 +5,7 @@ import frc.robot.elevator.Elevator;
 import frc.robot.constants.ElevatorConstants;
 
 public class ElevatorUp extends Command {
-    
+
     private final Elevator elevator;
 
     public ElevatorUp(Elevator elevator) {

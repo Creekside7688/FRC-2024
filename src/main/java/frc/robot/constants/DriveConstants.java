@@ -18,13 +18,15 @@ public class DriveConstants {
     public static final double WHEEL_BASE = TRACK_WIDTH; // Distance between front and back wheels on robot
 
     public static final double CHASSIS_RADIUS = Units.inchesToMeters(
-        (TRACK_WIDTH / 2) / Math.sin(45 * (Math.PI / 180)));
+        (TRACK_WIDTH / 2) / Math.sin(45 * (Math.PI / 180))
+    );
 
     public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
         new Translation2d(WHEEL_BASE / 2, TRACK_WIDTH / 2),
         new Translation2d(WHEEL_BASE / 2, -TRACK_WIDTH / 2),
         new Translation2d(-WHEEL_BASE / 2, TRACK_WIDTH / 2),
-        new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2));
+        new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2)
+    );
 
     // Angular offset relative to chassis in radians.
     public static final double FL_OFFSET = -Math.PI / 2;
@@ -34,13 +36,13 @@ public class DriveConstants {
 
     public static final int FL_DRIVE_MOTOR = 1;
     public static final int FR_DRIVE_MOTOR = 3;
-    public static final int BL_DRIVE_MOTOR = 7;
-    public static final int BR_DRIVE_MOTOR = 5;
+    public static final int BL_DRIVE_MOTOR = 5;
+    public static final int BR_DRIVE_MOTOR = 7;
 
     public static final int FL_TURN_MOTOR = 2;
     public static final int FR_TURN_MOTOR = 4;
-    public static final int BL_TURN_MOTOR = 8;
-    public static final int BR_TURN_MOTOR = 6;
+    public static final int BL_TURN_MOTOR = 6;
+    public static final int BR_TURN_MOTOR = 8;
 
     public static final boolean GYRO_INVERTED = true;
 

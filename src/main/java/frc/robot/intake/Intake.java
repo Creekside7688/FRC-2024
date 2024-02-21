@@ -13,7 +13,7 @@ public class Intake extends SubsystemBase {
     private final CANSparkMax motor = new CANSparkMax(IntakeConstants.MOTOR_ID, MotorType.kBrushless);
 
     private final DigitalInput sensor = new DigitalInput(IntakeConstants.SENSOR_CHANNEL);
-    private final RelativeEncoder encoder = motor.getEncoder(); 
+    private final RelativeEncoder encoder = motor.getEncoder();
 
     private final SparkPIDController rotationController = motor.getPIDController();
 
@@ -30,6 +30,10 @@ public class Intake extends SubsystemBase {
 
     public boolean getSensor() {
         return sensor.get();
+    }
+
+    public boolean isNotePresent() {
+        return !getSensor();
     }
 
     public double getRPM() {
