@@ -40,8 +40,6 @@ public class Elevator extends SubsystemBase {
         motor.burnFlash();
 
         encoder = motor.getEncoder();
-        encoder.setPositionConversionFactor(ElevatorConstants.ENCODER_POSITION_FACTOR);
-        encoder.setVelocityConversionFactor(ElevatorConstants.ENCODER_VELOCITY_FACTOR);
         encoder.setPosition(0);
 
         feedbackController = motor.getPIDController();

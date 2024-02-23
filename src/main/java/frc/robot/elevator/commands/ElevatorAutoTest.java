@@ -17,7 +17,9 @@ public class ElevatorAutoTest extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    elevator.elevatorMotorSpeed(ElevatorConstants.MOTOR_SLOWRAISE_SPEED);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
