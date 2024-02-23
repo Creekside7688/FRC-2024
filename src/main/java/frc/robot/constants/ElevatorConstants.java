@@ -24,10 +24,10 @@ public class ElevatorConstants {
 
     // Gains taken from Recalc, we will use SysID later to find more accurate ones.
 
-    public static final double S = 0.5; // Volts
-    public static final double G = 0.89; // Volts
-    public static final double V = 0.14; // Volts times seconds per inch
-    public static final double A = 0.004; // Volts times seconds squared per inch
+    public static final double S = 0.3503; // Volts
+    public static final double G = 0.62348; // Volts
+    public static final double V = 0.068701; // Volts times seconds per inch
+    public static final double A = 0.016277; // Volts times seconds squared per inch
 
     public static final double MAX_VELOCITY = 55.0; // Inches per second
     public static final double MAX_ACCELERATION = 550.0; // Inches per second squared. Assuming we can accelerate to max velocity in 0.1 seconds.

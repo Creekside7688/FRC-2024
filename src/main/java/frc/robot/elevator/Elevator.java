@@ -82,8 +82,8 @@ public class Elevator extends SubsystemBase {
 
         sysIdRoutine = new SysIdRoutine(
             new SysIdRoutine.Config(
-                Volts.of(0.5).per(Second),
-                Volts.of(2),
+                Volts.of(1).per(Second),
+                Volts.of(4),
                 Seconds.of(10)
             ),
             new SysIdRoutine.Mechanism(
@@ -95,7 +95,7 @@ public class Elevator extends SubsystemBase {
                     log.motor("Elevator Motor")
                         .voltage(
                             appliedVoltage.mut_replace(
-                                motor.get() * RobotController.getBatteryVoltage(), Volts))
+                                motor.getAppliedOutput() * motor.getBusVoltage(), Volts))
                         .linearPosition(distance.mut_replace(encoder.getPosition(), Inches))
                         .linearVelocity(
                             velocity.mut_replace(encoder.getVelocity(), InchesPerSecond));
