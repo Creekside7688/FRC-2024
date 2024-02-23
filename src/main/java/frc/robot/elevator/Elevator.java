@@ -137,5 +137,8 @@ public class Elevator extends SubsystemBase {
     public boolean atGoal(double tolerance) {
         return Math.abs(goal.position - encoder.getPosition()) < tolerance;
     }
+    public double encoderGearPos() {
+        return encoder.getPosition()/210;
+    }
     
 }
