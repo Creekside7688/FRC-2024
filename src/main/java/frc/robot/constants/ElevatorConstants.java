@@ -34,4 +34,6 @@ public class ElevatorConstants {
     public static final double MAX_HEIGHT = 28.0;
     public static final double TARGET_HEIGHT = 28.0;
     public static final double TOLERANCE = 0.1;
+
+    public static final double TEMP_MAX_HEIGHT = 5.0;
 }

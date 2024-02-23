@@ -13,6 +13,7 @@ import frc.robot.auto.commands.FollowAprilTag;
 import frc.robot.auto.commands.SpeakerAlign;
 import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
+import frc.robot.elevator.commands.ElevatorTempUp;
 import frc.robot.intake.Intake;
 import frc.robot.intake.commands.IntakePickup;
 import frc.robot.intake.commands.IntakeShooterFeed;
@@ -47,6 +48,8 @@ public class RobotContainer {
     private final Command intakeShooterFeed = new IntakeShooterFeed(intake);
     private final Command intakePickup = new IntakePickup(intake);
     private final Command eject = new IntakeAmpScore(intake);
+    private final Command elevatorTempUp = new ElevatorTempUp(elevator);
+
 
     SendableChooser<Command> autoSelector = new SendableChooser<>();
 
@@ -107,8 +110,9 @@ public class RobotContainer {
         controller.getRightTrigger().onTrue(ampSuperShoot);
         controller.getY().whileTrue(shooterSuperAlign);
         controller.getLeftTrigger().onTrue(shooterSuperShoot);
-        controller.getRightBumper().whileTrue(intakePickup);
+        controller.getRightBumper().onTrue(intakePickup);
         controller.getA().whileTrue(ampSuperAlign);
+        controller.getB().whileTrue(elevatorTempUp);
         
 
     }
