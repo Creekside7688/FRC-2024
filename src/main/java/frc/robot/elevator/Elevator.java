@@ -13,11 +13,12 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.ElevatorConstants;
+import frc.robot.constants.IntakeConstants;
 
 public class Elevator extends SubsystemBase {
     private final CANSparkMax motor;
     private final RelativeEncoder encoder;
-
+    
     private final Constraints constraints;
     private TrapezoidProfile.State setpoint;
     private TrapezoidProfile.State goal;
@@ -64,6 +65,7 @@ public class Elevator extends SubsystemBase {
         lastVelocity = 0;
     }
 
+
     @Override
     public void periodic() {
         double deltaTime = timer.get();
@@ -93,6 +95,11 @@ public class Elevator extends SubsystemBase {
         return this.goal;
     }
 
+
+
+    public void elevatorMotorSpeed(double motorspeed) {
+        motor.set(motorspeed);
+    }
     /**
      * Sets the <STRONG>goal</STRONG> of the elevator.
      * 
@@ -130,4 +137,5 @@ public class Elevator extends SubsystemBase {
     public boolean atGoal(double tolerance) {
         return Math.abs(goal.position - encoder.getPosition()) < tolerance;
     }
+    
 }

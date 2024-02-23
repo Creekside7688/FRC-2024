@@ -36,4 +36,7 @@ public class ElevatorConstants {
     public static final double TOLERANCE = 0.1;
 
     public static final double TEMP_MAX_HEIGHT = 5.0;
+
+    public static final double MOTOR_SLOWRAISE_SPEED = 0.2;
+    public static final double MOTOR_SLOWRAISE_STALLSPEED = 0.06;
 }
