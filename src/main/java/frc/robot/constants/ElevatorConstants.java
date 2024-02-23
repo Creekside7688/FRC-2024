@@ -39,4 +39,6 @@ public class ElevatorConstants {
 
     public static final double MOTOR_SLOWRAISE_SPEED = 0.2;
     public static final double MOTOR_SLOWRAISE_STALLSPEED = 0.06;
+
+    public static final double MOTOR_SLOWFALL_SPEED = -0.15;
 }
