@@ -10,12 +10,15 @@ import frc.lib.zylve.Controller;
 import frc.robot.auto.AutoCommands;
 import frc.robot.auto.PhotonRunnable;
 import frc.robot.auto.commands.FollowAprilTag;
+import frc.robot.auto.commands.SpeakerAlign;
 import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
 import frc.robot.intake.Intake;
 import frc.robot.intake.commands.IntakePickup;
+import frc.robot.intake.commands.IntakeShooterFeed;
 import frc.robot.intake.commands.IntakeAmpScore;
 import frc.robot.shooter.Shooter;
+import frc.robot.shooter.commands.ShooterSpinUp;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -32,7 +35,7 @@ public class RobotContainer {
     private final Intake intake = new Intake();
     private final Shooter shooter = new Shooter();
     private final AutoCommands autoCommands = new AutoCommands();
-
+    private final Command shooterSpinUp = new ShooterSpinUp(shooter);
     private final FollowAprilTag followAprilTag = new FollowAprilTag(swerveDrive, photonCamera, swerveDrive::getPose);
 
     private final SequentialCommandGroup ampSuperAlign = autoCommands.ampSuperAlign(swerveDrive, elevator, photonCamera);
@@ -41,6 +44,7 @@ public class RobotContainer {
     private final SequentialCommandGroup shooterSuperAlign = autoCommands.shooterSuperAlign(swerveDrive, shooter, photonCamera);
     private final SequentialCommandGroup shooterSuperShoot = autoCommands.shooterSuperShoot(shooter, intake);
 
+    private final Command intakeShooterFeed = new IntakeShooterFeed(intake);
     private final Command intakePickup = new IntakePickup(intake);
     private final Command eject = new IntakeAmpScore(intake);
 
@@ -99,12 +103,13 @@ public class RobotContainer {
             );
 
         controller.getX().whileTrue(followAprilTag);
-        controller.getA().whileTrue(ampSuperAlign);
-        controller.getRightTrigger().onTrue(ampSuperShoot);
-        controller.getY().whileTrue(ampSuperAlign);
-        controller.getLeftTrigger().onTrue(shooterSuperShoot);
-        controller.getRightBumper().onTrue(intakePickup);
         controller.getLeftBumper().onTrue(eject);
+        controller.getRightTrigger().onTrue(ampSuperShoot);
+        controller.getY().whileTrue(shooterSuperAlign);
+        controller.getLeftTrigger().onTrue(shooterSuperShoot);
+        controller.getRightBumper().whileTrue(intakePickup);
+        controller.getA().whileTrue(ampSuperAlign);
+        
 
     }
 

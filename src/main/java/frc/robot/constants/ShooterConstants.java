@@ -7,5 +7,5 @@ public class ShooterConstants {
     public static final int CURRENT_LIMIT = 50;
     public static final IdleMode IDLE_MODE = IdleMode.kCoast;
 
-    public static final double SHOOTER_SPINUP_DELAY = 0.1;
+    public static final double SHOOTER_SPINUP_DELAY = 10;
 }
