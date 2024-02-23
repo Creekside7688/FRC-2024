@@ -11,6 +11,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.ElevatorConstants;
 
@@ -70,7 +71,7 @@ public class Elevator extends SubsystemBase {
         timer.reset();
 
         TrapezoidProfile profile = new TrapezoidProfile(constraints);
-        setpoint = profile.calculate(deltaTime, setpoint, goal);
+        setpoint = profile.calculate(0.02, setpoint, goal);
 
         double feedforward = feedforwardController.calculate(setpoint.velocity, (setpoint.velocity - lastVelocity) / deltaTime);
 

@@ -15,25 +15,25 @@ public class ElevatorConstants {
     public static final double ENCODER_POSITION_FACTOR = (SPOOL_DIAMETER * Math.PI) / GEAR_RATIO;
     public static final double ENCODER_VELOCITY_FACTOR = ENCODER_POSITION_FACTOR / 60.0;
 
-    public static final double P = 0.04;
+    public static final double P = 0.0;
     public static final double I = 0.0;
     public static final double D = 0.0;
     public static final double PID_MINIMUM_OUTPUT = -1.0;
     public static final double PID_MAXIMUM_OUTPUT = 1.0;
 
-    public static final double S = 0.0;
-    public static final double G = 0.0;
-    public static final double V = 0.0;
-    public static final double A = 0.0;
+    public static final double S = 0.15944; // Volts
+    public static final double G = 0.68283; // Volts
+    public static final double V = 0.076034; // Volts times seconds per inch
+    public static final double A = 0.022109; // Volts times seconds squared per inch
 
-    public static final double MAX_VELOCITY = 55.0; // Inches per second
-    public static final double MAX_ACCELERATION = 550.0; // Inches per second squared. Assuming we can accelerate to max velocity in 0.1 seconds.
+    public static final double MAX_VELOCITY = 10; // Inches per second
+    public static final double MAX_ACCELERATION = 5; // Inches per second squared. Assuming we can accelerate to max velocity in 0.1 seconds.
 
     // Inches
 
-    public static final double MAX_HEIGHT = 28.0;
-    public static final double TARGET_HEIGHT = 28.0;
-    public static final double TOLERANCE = 0.1;
+    public static final double MAX_HEIGHT = 12.0;
+    public static final double TARGET_HEIGHT = 12.0;
+    public static final double TOLERANCE = 1;
 
     public static final double TEMP_MAX_HEIGHT = 5.0;
 }

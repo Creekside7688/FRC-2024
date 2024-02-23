@@ -13,7 +13,9 @@ import frc.robot.auto.commands.FollowAprilTag;
 import frc.robot.auto.commands.SpeakerAlign;
 import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
+import frc.robot.elevator.commands.ElevatorDown;
 import frc.robot.elevator.commands.ElevatorTempUp;
+import frc.robot.elevator.commands.ElevatorUp;
 import frc.robot.intake.Intake;
 import frc.robot.intake.commands.IntakePickup;
 import frc.robot.intake.commands.IntakeShooterFeed;
@@ -50,6 +52,9 @@ public class RobotContainer {
     private final Command eject = new IntakeAmpScore(intake);
     private final Command elevatorTempUp = new ElevatorTempUp(elevator);
 
+    private final ElevatorUp elevatorUp = new ElevatorUp(elevator);
+    private final ElevatorDown elevatorDown = new ElevatorDown(elevator);
+
 
     SendableChooser<Command> autoSelector = new SendableChooser<>();
 
@@ -59,17 +64,17 @@ public class RobotContainer {
         configureSwerveDriveCommands();
         configureSuperCommands();
 
-        swerveDrive.setDefaultCommand(
-            new RunCommand(
-                () -> swerveDrive.drive(
-                    -MathUtil.applyDeadband(controller.getLeftY(), OperatorConstants.DEADBAND),
-                    -MathUtil.applyDeadband(controller.getLeftX(), OperatorConstants.DEADBAND),
-                    -MathUtil.applyDeadband(controller.getRightX(), OperatorConstants.DEADBAND),
-                    true, true
-                ),
-                swerveDrive
-            )
-        );
+        // swerveDrive.setDefaultCommand(
+        //     new RunCommand(
+        //         () -> swerveDrive.drive(
+        //             -MathUtil.applyDeadband(controller.getLeftY(), OperatorConstants.DEADBAND),
+        //             -MathUtil.applyDeadband(controller.getLeftX(), OperatorConstants.DEADBAND),
+        //             -MathUtil.applyDeadband(controller.getRightX(), OperatorConstants.DEADBAND),
+        //             true, true
+        //         ),
+        //         swerveDrive
+        //     )
+        // );
     }
 
     private void configureSubsystems() {
@@ -105,16 +110,17 @@ public class RobotContainer {
                 )
             );
 
-        controller.getX().whileTrue(followAprilTag);
-        controller.getLeftBumper().onTrue(eject);
-        controller.getRightTrigger().onTrue(ampSuperShoot);
-        controller.getY().whileTrue(shooterSuperAlign);
-        controller.getLeftTrigger().onTrue(shooterSuperShoot);
-        controller.getRightBumper().onTrue(intakePickup);
-        controller.getA().whileTrue(ampSuperAlign);
-        controller.getB().whileTrue(elevatorTempUp);
-        
+        // controller.getX().whileTrue(followAprilTag);
+        // controller.getLeftBumper().onTrue(eject);
+        // controller.getRightTrigger().onTrue(ampSuperShoot);
+        // controller.getY().whileTrue(shooterSuperAlign);
+        // controller.getLeftTrigger().onTrue(shooterSuperShoot);
+        // controller.getRightBumper().onTrue(intakePickup);
+        // controller.getA().whileTrue(ampSuperAlign);
+        // controller.getB().whileTrue(elevatorTempUp);
 
+        controller.getA().whileTrue(elevatorUp);
+        controller.getB().whileTrue(elevatorDown);
     }
 
     private void configureSuperCommands() {
