@@ -9,32 +9,33 @@ import frc.robot.constants.ElevatorConstants;
 import frc.robot.elevator.Elevator;
 
 public class ElevatorTempUp extends Command {
-  private final Elevator elevator;
-  public ElevatorTempUp(Elevator elevator) {
-    this.elevator = elevator;
-    addRequirements(elevator);
+    private final Elevator elevator;
+
+    public ElevatorTempUp(Elevator elevator) {
+        this.elevator = elevator;
+        addRequirements(elevator);
     
-  }
+    }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    elevator.setHeight(ElevatorConstants.TEMP_MAX_HEIGHT);
-  }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {}
+    @Override
+    public void initialize() {
+        elevator.setHeight(ElevatorConstants.TEMP_MAX_HEIGHT);
+    }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    elevator.setHeight(0);
-  }
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+    @Override
+    public void execute() {}
+
+
+    @Override
+    public void end(boolean interrupted) {
+        elevator.setHeight(0);
+    }
+
+
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }
