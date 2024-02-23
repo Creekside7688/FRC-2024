@@ -65,24 +65,7 @@ public class Elevator extends SubsystemBase {
 
 
     @Override
-    public void periodic() {
-        double deltaTime = timer.get();
-        timer.reset();
-
-        TrapezoidProfile profile = new TrapezoidProfile(constraints);
-        setpoint = profile.calculate(deltaTime, setpoint, goal);
-
-        double feedforward = feedforwardController.calculate(setpoint.velocity, (setpoint.velocity - lastVelocity) / deltaTime);
-
-        feedbackController.setReference(
-            setpoint.position,
-            CANSparkBase.ControlType.kPosition,
-            0,
-            feedforward
-        );
-
-        lastVelocity = setpoint.velocity;
-    }
+    
 
     /**
      * Gets the current <STRONG>goal</STRONG> of the elevator.
