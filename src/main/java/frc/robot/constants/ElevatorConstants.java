@@ -37,12 +37,17 @@ public class ElevatorConstants {
 
     public static final double TEMP_MAX_HEIGHT = 5.0;
 
-    public static final double MOTOR_SLOWRAISE_SPEED = 0.2;
+    public static final double MOTOR_SLOWRAISE_SPEED = 0.25;
     public static final double MOTOR_SLOWRAISE_STALLSPEED = 0.06;
 
-    public static final double MOTOR_SLOWFALL_SPEED = -0.10;
+    public static final double MOTOR_SLOWFALL_SPEED = -0.13;
 
-    public static final double MOTOR_MAX_STEPS = 6.55;
+    public static final double MOTOR_MAX_STEPS = 0.1575;
+    public static final double MOTOR_MIN_STEPS = -0.025;
+
+    public static final double MOTOR_TEMP_STEPS = 0.001;
+    public static final double MOTOR_TEMPDROP_SPEED = -0.1;
+    public static final double MOTOR_TEMPDROP_DELAY = 0.5;
     //Max Gearbox Rotations to get to top
 }
 

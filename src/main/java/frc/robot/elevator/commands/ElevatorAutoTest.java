@@ -4,6 +4,8 @@
 
 package frc.robot.elevator.commands;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.ElevatorConstants;
 import frc.robot.elevator.Elevator;
@@ -20,11 +22,14 @@ public class ElevatorAutoTest extends Command {
     @Override
     public void initialize() {
         elevator.elevatorMotorSpeed(ElevatorConstants.MOTOR_SLOWRAISE_SPEED);
+        SmartDashboard.putBoolean("Ele. Up finished", false);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        double maxSteps = elevator.encoderGearPos();
+        SmartDashboard.putNumber("EncoderSteps" ,maxSteps);
 
     }
 
@@ -32,6 +37,7 @@ public class ElevatorAutoTest extends Command {
     @Override
     public void end(boolean interrupted) {
         elevator.elevatorMotorSpeed(ElevatorConstants.MOTOR_SLOWRAISE_STALLSPEED);
+        SmartDashboard.putBoolean("Ele. Up finished", true);
     }
 
     // Returns true when the command should end.
@@ -39,6 +45,7 @@ public class ElevatorAutoTest extends Command {
     public boolean isFinished() {
         double maxSteps = elevator.encoderGearPos();
         if(maxSteps >   ElevatorConstants.MOTOR_MAX_STEPS) {
+            
             return true;    
         } else {
             return false;

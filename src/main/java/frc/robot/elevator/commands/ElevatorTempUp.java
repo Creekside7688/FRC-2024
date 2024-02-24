@@ -4,6 +4,8 @@
 
 package frc.robot.elevator.commands;
 
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.ElevatorConstants;
 import frc.robot.elevator.Elevator;
@@ -18,24 +20,39 @@ public class ElevatorTempUp extends Command {
     }
 
 
-    @Override
+     @Override
     public void initialize() {
-        elevator.setHeight(ElevatorConstants.TEMP_MAX_HEIGHT);
+        elevator.elevatorMotorSpeed(ElevatorConstants.MOTOR_SLOWRAISE_SPEED);
+        SmartDashboard.putBoolean("Ele. Temp finished", false);
     }
 
-
+    // Called every time the scheduler runs while the command is scheduled.
     @Override
-    public void execute() {}
+    public void execute() {
+        double maxSteps = elevator.encoderGearPos();
+        SmartDashboard.putNumber("EncoderSteps" ,maxSteps);
 
+    }
 
+    // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        elevator.setHeight(0);
+        elevator.elevatorMotorSpeed(ElevatorConstants.MOTOR_TEMPDROP_SPEED);
+        SmartDashboard.putBoolean("Ele. Temp finished", true);
+        Timer.delay(ElevatorConstants.MOTOR_TEMPDROP_DELAY);
+        elevator.elevatorMotorSpeed(0);
     }
 
-
+    // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        double maxSteps = elevator.encoderGearPos();
+        if(maxSteps >   ElevatorConstants.MOTOR_TEMP_STEPS) {
+            
+            return true;    
+        } else {
+            return false;
+        }
+
     }
 }

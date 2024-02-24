@@ -11,7 +11,7 @@ public class IntakeConstants {
 
     public static final double INTAKE_GEAR_RATIO = 10;
 
-    public static final double AMP_SPEED = -1;
+    public static final double AMP_SPEED = -1.0;
     public static final double AMP_DURATION = 1;
 
     public static final double PICKUP_SPEED = 1;

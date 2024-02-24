@@ -6,8 +6,12 @@ import edu.wpi.first.math.util.Units;
 
 public class DriveConstants {
     // Maximum allowed speeds.
-    public static final double MAXIMUM_SPEED_METRES_PER_SECOND = 4.8;
+    public static final double MAXIMUM_SPEED_METRES_PER_SECOND = 4;
     public static final double MAXIMUM_ANGULAR_SPEED_RADIANS_PER_SECOND = 2 * Math.PI;
+
+    public static final double MAXIMUM_ELEVATOR_DRIVE_SPEED = 2;
+    public static final double MAXIMUM_ELEVATOR_ROTATION_SPEED = 1.5 * Math.PI;
+
 
     public static final double DIRECTION_SLEW_RATE = 1.2; // radians per second
     public static final double MAGNITUDE_SLEW_RATE = 1.8; // percent per second (1 = 100%)

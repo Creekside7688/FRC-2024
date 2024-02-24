@@ -18,8 +18,10 @@ import frc.robot.elevator.commands.ElevatorSlowRaise;
 import frc.robot.elevator.commands.ElevatorTempUp;
 import frc.robot.intake.Intake;
 import frc.robot.intake.commands.IntakePickup;
+import frc.robot.intake.commands.IntakeShooterFeed;
 import frc.robot.intake.commands.IntakeAmpScore;
 import frc.robot.shooter.Shooter;
+import frc.robot.shooter.commands.ShooterSpinUp;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -48,9 +50,11 @@ public class RobotContainer {
     private final Command elevatorAutoTest = new ElevatorAutoTest(elevator);
     private final Command elevatorAutoDown = new ElevatorAutoDown(elevator);
     private final Command intakePickup = new IntakePickup(intake);
+    private final Command intakeShooterFeed = new IntakeShooterFeed(intake);
+    private final Command shooterShoot = new ShooterSpinUp(shooter);
     private final Command eject = new IntakeAmpScore(intake);
     private final Command elevatorTempUp = new ElevatorTempUp(elevator);
-
+    private final Command shooterSpinUp = new ShooterSpinUp(shooter);
 
     SendableChooser<Command> autoSelector = new SendableChooser<>();
 
@@ -109,15 +113,15 @@ public class RobotContainer {
         controller.getX().whileTrue(followAprilTag);
 
         controller.getLeftBumper().onTrue(eject);
-        controller.getRightTrigger().onTrue(ampSuperShoot);
-        controller.getY().whileTrue(shooterSuperAlign);
+        controller.getRightTrigger().onTrue(shooterSpinUp);
+        controller.getY().onTrue(elevatorTempUp);
         //controller.getY().whileTrue(elevatorSlowRaise);
-        controller.getLeftTrigger().onTrue(shooterSuperShoot);
-        controller.getRightBumper().onTrue(intakePickup);
-        controller.getA().whileTrue(ampSuperAlign);
-        //controller.getA().onTrue(elevatorAutoTest);
-        controller.getB().whileTrue(elevatorTempUp);
-        //controller.getB().onTrue(elevatorAutoDown);
+        controller.getLeftTrigger().onTrue(intakeShooterFeed);
+        controller.getRightBumper().whileTrue(intakePickup);
+        //controller.getA().whileTrue(ampSuperAlign);
+        controller.getA().onTrue(elevatorAutoTest);
+        //controller.getB().whileTrue(elevatorTempUp);
+        controller.getB().onTrue(elevatorAutoDown);
         
 
     }

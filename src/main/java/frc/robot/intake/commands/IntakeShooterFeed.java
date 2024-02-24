@@ -33,6 +33,6 @@ public class IntakeShooterFeed extends Command {
     @Override
     public boolean isFinished() {
         return Timer.getFPGATimestamp() - startTime > IntakeConstants.SHOOTER_FEED_DURATION;
-
+    
     }
 }

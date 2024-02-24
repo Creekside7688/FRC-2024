@@ -17,7 +17,7 @@ public class ShooterSpinUp extends Command {
     @Override
     public void initialize() {
         startTime = Timer.getFPGATimestamp();
-        shooter.run(1);
+        shooter.run(-1);
     }
 
     @Override
@@ -31,5 +31,6 @@ public class ShooterSpinUp extends Command {
     @Override
     public boolean isFinished() {
         return Timer.getFPGATimestamp() - startTime > ShooterConstants.SHOOTER_SPINUP_DELAY;
+        
     }
 }

@@ -4,6 +4,7 @@
 
 package frc.robot.elevator.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.ElevatorConstants;
 import frc.robot.elevator.Elevator;
@@ -20,23 +21,29 @@ public class ElevatorAutoDown extends Command {
     @Override
     public void initialize() {
         elevator.elevatorMotorSpeed(ElevatorConstants.MOTOR_SLOWFALL_SPEED);
+        SmartDashboard.putBoolean("Ele. Down finished", false);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
-    public void execute() {}
+    public void execute() {
+      double maxSteps = elevator.encoderGearPos();
+        SmartDashboard.putNumber("EncoderSteps" ,maxSteps);
+    }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
         elevator.elevatorMotorSpeed(0);
+        SmartDashboard.putBoolean("Ele. Down finished", true);
+
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
         double steps = elevator.encoderGearPos();
-        if (steps == 0) {
+        if (steps < ElevatorConstants.MOTOR_MIN_STEPS) {
             return true;
         }   else {
             return false;

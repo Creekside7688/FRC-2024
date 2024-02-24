@@ -81,7 +81,7 @@ public class Elevator extends SubsystemBase {
      * 
      * @param goal The goal position and velocity of the elevator in metres and metres per second.
      */
-    
+
     public void setGoal(TrapezoidProfile.State goal) {
         this.goal = goal;
     }
@@ -117,6 +117,10 @@ public class Elevator extends SubsystemBase {
 
     public double encoderGearPos() {
         return encoder.getPosition() / 210;
+    }
+
+    public void encoderReset() {
+        encoder.setPosition(0);
     }
     
 }
