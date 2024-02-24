@@ -12,6 +12,9 @@ import frc.robot.auto.PhotonRunnable;
 import frc.robot.auto.commands.FollowAprilTag;
 import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
+import frc.robot.elevator.commands.ElevatorAutoDown;
+import frc.robot.elevator.commands.ElevatorAutoTest;
+import frc.robot.elevator.commands.ElevatorSlowRaise;
 import frc.robot.elevator.commands.ElevatorTempUp;
 import frc.robot.intake.Intake;
 import frc.robot.intake.commands.IntakePickup;
@@ -41,6 +44,9 @@ public class RobotContainer {
     private final SequentialCommandGroup shooterSuperAlign = autoCommands.shooterSuperAlign(swerveDrive, shooter, photonCamera);
     private final SequentialCommandGroup shooterSuperShoot = autoCommands.shooterSuperShoot(shooter, intake);
 
+    private final Command elevatorSlowRaise = new ElevatorSlowRaise(elevator);
+    private final Command elevatorAutoTest = new ElevatorAutoTest(elevator);
+    private final Command elevatorAutoDown = new ElevatorAutoDown(elevator);
     private final Command intakePickup = new IntakePickup(intake);
     private final Command eject = new IntakeAmpScore(intake);
     private final Command elevatorTempUp = new ElevatorTempUp(elevator);
@@ -101,13 +107,17 @@ public class RobotContainer {
             );
 
         controller.getX().whileTrue(followAprilTag);
+
         controller.getLeftBumper().onTrue(eject);
         controller.getRightTrigger().onTrue(ampSuperShoot);
         controller.getY().whileTrue(shooterSuperAlign);
+        //controller.getY().whileTrue(elevatorSlowRaise);
         controller.getLeftTrigger().onTrue(shooterSuperShoot);
         controller.getRightBumper().onTrue(intakePickup);
         controller.getA().whileTrue(ampSuperAlign);
+        //controller.getA().onTrue(elevatorAutoTest);
         controller.getB().whileTrue(elevatorTempUp);
+        //controller.getB().onTrue(elevatorAutoDown);
         
 
     }

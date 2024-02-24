@@ -9,39 +9,40 @@ import frc.robot.constants.ElevatorConstants;
 import frc.robot.elevator.Elevator;
 
 public class ElevatorAutoTest extends Command {
-  private final Elevator elevator;
-  public ElevatorAutoTest(Elevator elevator) {
-    this.elevator = elevator;
-    addRequirements(elevator);
-  }
+    private final Elevator elevator;
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    elevator.elevatorMotorSpeed(ElevatorConstants.MOTOR_SLOWRAISE_SPEED);
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    elevator.elevatorMotorSpeed(ElevatorConstants.MOTOR_SLOWRAISE_STALLSPEED);
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    double maxSteps = elevator.encoderGearPos();
-    if (maxSteps > 6.55) {
-      return true;
-    } else {
-      return false;
+    public ElevatorAutoTest(Elevator elevator) {
+        this.elevator = elevator;
+        addRequirements(elevator);
     }
-    
-  }
+
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+        elevator.elevatorMotorSpeed(ElevatorConstants.MOTOR_SLOWRAISE_SPEED);
+    }
+
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
+
+    }
+
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+        elevator.elevatorMotorSpeed(ElevatorConstants.MOTOR_SLOWRAISE_STALLSPEED);
+    }
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        double maxSteps = elevator.encoderGearPos();
+        if(maxSteps >   ElevatorConstants.MOTOR_MAX_STEPS) {
+            return true;    
+        } else {
+            return false;
+        }
+
+    }
 }

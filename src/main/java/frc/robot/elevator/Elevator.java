@@ -64,9 +64,6 @@ public class Elevator extends SubsystemBase {
     }
 
 
-    @Override
-    
-
     /**
      * Gets the current <STRONG>goal</STRONG> of the elevator.
      * 
@@ -76,8 +73,6 @@ public class Elevator extends SubsystemBase {
         return this.goal;
     }
 
-
-
     public void elevatorMotorSpeed(double motorspeed) {
         motor.set(motorspeed);
     }
@@ -86,6 +81,7 @@ public class Elevator extends SubsystemBase {
      * 
      * @param goal The goal position and velocity of the elevator in metres and metres per second.
      */
+    
     public void setGoal(TrapezoidProfile.State goal) {
         this.goal = goal;
     }
@@ -118,8 +114,9 @@ public class Elevator extends SubsystemBase {
     public boolean atGoal(double tolerance) {
         return Math.abs(goal.position - encoder.getPosition()) < tolerance;
     }
+
     public double encoderGearPos() {
-        return encoder.getPosition()/210;
+        return encoder.getPosition() / 210;
     }
     
 }
