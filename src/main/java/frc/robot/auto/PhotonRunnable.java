@@ -95,4 +95,8 @@ public class PhotonRunnable implements Runnable {
         return photonCamera.getLatestResult();
     }
 
+    public PhotonCamera getCamera() {
+        return photonCamera;
+    }
+
 }

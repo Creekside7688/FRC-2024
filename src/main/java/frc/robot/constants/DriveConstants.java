@@ -5,6 +5,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
 public class DriveConstants {
+    public static final String SHUFFLEBOARD_TABLE = "Info";
+
     // Maximum allowed speeds.
     public static final double MAXIMUM_SPEED_METRES_PER_SECOND = 4;
     public static final double MAXIMUM_ANGULAR_SPEED_RADIANS_PER_SECOND = 2 * Math.PI;

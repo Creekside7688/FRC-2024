@@ -20,7 +20,7 @@ public class IntakePickup extends Command {
 
     @Override
     public void execute() {
-        SmartDashboard.putBoolean("sensorSub", intake.getSensor());
+        SmartDashboard.putBoolean("sensorSub", intake.hasNote());
         
     }
 
@@ -31,6 +31,6 @@ public class IntakePickup extends Command {
 
     @Override
     public boolean isFinished() {
-        return !intake.getSensor();
+        return intake.hasNote();
     }
 }

@@ -21,7 +21,7 @@ public class ElevatorUp extends Command {
 
     @Override
     public void execute() {
-        double maxSteps = elevator.encoderPosition();
+        double maxSteps = elevator.getEncoderPosition();
         SmartDashboard.putNumber("EncoderSteps", maxSteps);
 
     }
@@ -34,6 +34,6 @@ public class ElevatorUp extends Command {
 
     @Override
     public boolean isFinished() {
-        return elevator.encoderPosition() > ElevatorConstants.MOTOR_MAX_STEPS;
+        return elevator.getEncoderPosition() > ElevatorConstants.MOTOR_MAX_STEPS;
     }
 }
