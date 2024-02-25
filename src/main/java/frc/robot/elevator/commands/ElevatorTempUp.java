@@ -12,7 +12,6 @@ public class ElevatorTempUp extends Command {
     public ElevatorTempUp(Elevator elevator) {
         this.elevator = elevator;
         addRequirements(elevator);
-
     }
 
     @Override

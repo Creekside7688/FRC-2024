@@ -7,14 +7,12 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.zylve.Controller;
-import frc.robot.auto.AutoCommands;
 import frc.robot.auto.PhotonRunnable;
 import frc.robot.auto.commands.FollowAprilTag;
 import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
-import frc.robot.elevator.commands.ElevatorAutoDown;
-import frc.robot.elevator.commands.ElevatorAutoTest;
-import frc.robot.elevator.commands.ElevatorSlowRaise;
+import frc.robot.elevator.commands.ElevatorDown;
+import frc.robot.elevator.commands.ElevatorUp;
 import frc.robot.elevator.commands.ElevatorTempUp;
 import frc.robot.intake.Intake;
 import frc.robot.intake.commands.IntakePickup;
@@ -24,7 +22,6 @@ import frc.robot.shooter.Shooter;
 import frc.robot.shooter.commands.ShooterSpinUp;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.swerve.SwerveDrive;
 
 public class RobotContainer {
@@ -37,32 +34,24 @@ public class RobotContainer {
     private final Elevator elevator = new Elevator();
     private final Intake intake = new Intake();
     private final Shooter shooter = new Shooter();
-    private final AutoCommands autoCommands = new AutoCommands();
     private final FollowAprilTag followAprilTag = new FollowAprilTag(swerveDrive, photonCamera, swerveDrive::getPose);
 
-    private final SequentialCommandGroup ampSuperAlign = autoCommands.ampSuperAlign(swerveDrive, elevator, photonCamera);
-    private final SequentialCommandGroup ampSuperShoot = autoCommands.ampSuperShoot(elevator, intake);
+    private final Command elevatorAutoTest = new ElevatorUp(elevator);
+    private final Command elevatorAutoDown = new ElevatorDown(elevator);
+    private final Command elevatorTempUp = new ElevatorTempUp(elevator);
 
-    private final SequentialCommandGroup shooterSuperAlign = autoCommands.shooterSuperAlign(swerveDrive, shooter, photonCamera);
-    private final SequentialCommandGroup shooterSuperShoot = autoCommands.shooterSuperShoot(shooter, intake);
-
-    private final Command elevatorSlowRaise = new ElevatorSlowRaise(elevator);
-    private final Command elevatorAutoTest = new ElevatorAutoTest(elevator);
-    private final Command elevatorAutoDown = new ElevatorAutoDown(elevator);
     private final Command intakePickup = new IntakePickup(intake);
     private final Command intakeShooterFeed = new IntakeShooterFeed(intake);
-    private final Command shooterShoot = new ShooterSpinUp(shooter);
-    private final Command eject = new IntakeAmpScore(intake);
-    private final Command elevatorTempUp = new ElevatorTempUp(elevator);
+    private final Command intakeEject = new IntakeAmpScore(intake);
+
     private final Command shooterSpinUp = new ShooterSpinUp(shooter);
 
     SendableChooser<Command> autoSelector = new SendableChooser<>();
 
     public RobotContainer() {
-        configureSubsystems();
         configureAutonomous();
+        configureSubsystemCommands();
         configureSwerveDriveCommands();
-        configureSuperCommands();
 
         swerveDrive.setDefaultCommand(
             new RunCommand(
@@ -77,13 +66,10 @@ public class RobotContainer {
         );
     }
 
-    private void configureSubsystems() {
-    }
-
     private void configureAutonomous() {
-        autoSelector.addOption("Left Auto", new PathPlannerAuto("Left Auto"));
-        autoSelector.addOption("Right Auto", new PathPlannerAuto("Right Auto"));
-        autoSelector.setDefaultOption("Middle Auto", new PathPlannerAuto("Middle Auto"));
+        autoSelector.addOption("Leave", new PathPlannerAuto("Leave"));
+        autoSelector.addOption("Left Amp", new PathPlannerAuto("Left Amp"));
+        autoSelector.setDefaultOption("Right Roundhouse Amp", new PathPlannerAuto("Right Roundhouse Amp"));
 
         // NamedCommands.registerCommand("Amp Score", AmpScore);
         // NamedCommands.registerCommand("Shoot Note", shootnotefeed);
@@ -91,12 +77,28 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Selector", autoSelector);
     }
 
+    private void configureSubsystemCommands() {
+        controller.getX().whileTrue(followAprilTag);
+
+        controller.getRightBumper().whileTrue(intakePickup);
+        controller.getLeftTrigger().onTrue(intakeShooterFeed);
+        controller.getLeftBumper().onTrue(intakeEject);
+
+        controller.getY().onTrue(elevatorTempUp);
+        controller.getA().onTrue(elevatorAutoTest);
+        controller.getB().onTrue(elevatorAutoDown);
+
+        controller.getRightTrigger().onTrue(shooterSpinUp);
+
+        // controller.getY().whileTrue(elevatorSlowRaise);
+        // controller.getA().whileTrue(ampSuperAlign);
+    }
+
     private void configureSwerveDriveCommands() {
         controller.getLeftStick()
             .whileTrue(
                 new RunCommand(
                     () -> swerveDrive.lockPosition(),
-
                     swerveDrive
                 )
             );
@@ -105,29 +107,9 @@ public class RobotContainer {
             .whileTrue(
                 new RunCommand(
                     () -> swerveDrive.zeroHeading(),
-
                     swerveDrive
                 )
             );
-
-        controller.getX().whileTrue(followAprilTag);
-
-        controller.getLeftBumper().onTrue(eject);
-        controller.getRightTrigger().onTrue(shooterSpinUp);
-        controller.getY().onTrue(elevatorTempUp);
-        //controller.getY().whileTrue(elevatorSlowRaise);
-        controller.getLeftTrigger().onTrue(intakeShooterFeed);
-        controller.getRightBumper().whileTrue(intakePickup);
-        //controller.getA().whileTrue(ampSuperAlign);
-        controller.getA().onTrue(elevatorAutoTest);
-        //controller.getB().whileTrue(elevatorTempUp);
-        controller.getB().onTrue(elevatorAutoDown);
-        
-
-    }
-
-    private void configureSuperCommands() {
-
     }
 
     public Command getAutonomousCommand() {

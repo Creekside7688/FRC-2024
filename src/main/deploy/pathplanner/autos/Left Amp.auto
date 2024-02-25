@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.47697176475434017,
-      "y": 7.728571853540104
+      "x": 0.4677270615802492,
+      "y": 7.33104961705419
     },
     "rotation": 0
   },
@@ -51,6 +51,12 @@
           "type": "path",
           "data": {
             "pathName": "Left Amp Return"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AmpNote"
           }
         }
       ]

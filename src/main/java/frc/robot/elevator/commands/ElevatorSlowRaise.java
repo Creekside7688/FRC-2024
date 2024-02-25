@@ -5,7 +5,6 @@ import frc.robot.constants.ElevatorConstants;
 import frc.robot.elevator.Elevator;
 
 public class ElevatorSlowRaise extends Command {
-    /** Creates a new ElevatorSlowRaise. */
     private final Elevator elevator;
 
     public ElevatorSlowRaise(Elevator elevator) {
