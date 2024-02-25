@@ -203,7 +203,7 @@ public class SwerveDrive extends SubsystemBase {
     /**
      * Drives the robot using controller input.
      */
-    public void drive(double xSpeed, double ySpeed, double rSpeed, boolean fieldRelative, boolean rateLimit) {
+    public void drive(double xSpeed, double ySpeed, double rSpeed, boolean limitSpeed, boolean fieldRelative, boolean rateLimit) {
 
         // Cube the inputs for fine control at low speeds.
         xSpeed = Math.pow(xSpeed, 3);
@@ -284,9 +284,14 @@ public class SwerveDrive extends SubsystemBase {
         }
 
         // Convert the speeds into percentages of the maximum speed.
-        double xSpeedDelivered = xSpeedCommand * DriveConstants.MAXIMUM_SPEED_METRES_PER_SECOND;
-        double ySpeedDelivered = ySpeedCommand * DriveConstants.MAXIMUM_SPEED_METRES_PER_SECOND;
-        double rotDelivered = currentRotation * DriveConstants.MAXIMUM_ANGULAR_SPEED_RADIANS_PER_SECOND;
+        double xSpeedDelivered = xSpeedCommand
+            * (limitSpeed ? DriveConstants.MAXIMUM_LIMITED_SPEED_METRES_PER_SECOND : DriveConstants.MAXIMUM_SPEED_METRES_PER_SECOND);
+
+        double ySpeedDelivered = ySpeedCommand
+            * (limitSpeed ? DriveConstants.MAXIMUM_LIMITED_SPEED_METRES_PER_SECOND : DriveConstants.MAXIMUM_SPEED_METRES_PER_SECOND);
+
+        double rotDelivered = currentRotation * (limitSpeed ? DriveConstants.MAXIMUM_LIMITED_ANGULAR_SPEED_RADIANS_PER_SECOND
+            : DriveConstants.MAXIMUM_ANGULAR_SPEED_RADIANS_PER_SECOND);
 
         // Calculate the desired module states based on if we are driving field relative or not.
         SwerveModuleState[] swerveModuleStates = DriveConstants.SWERVE_KINEMATICS.toSwerveModuleStates(

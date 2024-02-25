@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.ElevatorConstants;
 import frc.robot.elevator.Elevator;
 
-public class ElevatorTempUp extends Command {
+public class ElevatorSmallUp extends Command {
     private final Elevator elevator;
 
-    public ElevatorTempUp(Elevator elevator) {
+    public ElevatorSmallUp(Elevator elevator) {
         this.elevator = elevator;
         addRequirements(elevator);
     }
