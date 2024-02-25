@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.elevator.commands;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -16,43 +12,32 @@ public class ElevatorTempUp extends Command {
     public ElevatorTempUp(Elevator elevator) {
         this.elevator = elevator;
         addRequirements(elevator);
-    
+
     }
 
-
-     @Override
+    @Override
     public void initialize() {
-        elevator.elevatorMotorSpeed(ElevatorConstants.MOTOR_SLOWRAISE_SPEED);
+        elevator.run(ElevatorConstants.MOTOR_SLOWRAISE_SPEED);
         SmartDashboard.putBoolean("Ele. Temp finished", false);
     }
 
-    // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        double maxSteps = elevator.encoderGearPos();
-        SmartDashboard.putNumber("EncoderSteps" ,maxSteps);
+        double maxSteps = elevator.encoderPosition();
+        SmartDashboard.putNumber("EncoderSteps", maxSteps);
 
     }
 
-    // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        elevator.elevatorMotorSpeed(ElevatorConstants.MOTOR_TEMPDROP_SPEED);
+        elevator.run(ElevatorConstants.MOTOR_TEMPDROP_SPEED);
         SmartDashboard.putBoolean("Ele. Temp finished", true);
         Timer.delay(ElevatorConstants.MOTOR_TEMPDROP_DELAY);
-        elevator.elevatorMotorSpeed(0);
+        elevator.run(0);
     }
 
-    // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        double maxSteps = elevator.encoderGearPos();
-        if(maxSteps >   ElevatorConstants.MOTOR_TEMP_STEPS) {
-            
-            return true;    
-        } else {
-            return false;
-        }
-
+        return elevator.encoderPosition() > ElevatorConstants.MOTOR_TEMP_STEPS;
     }
 }

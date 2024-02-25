@@ -30,7 +30,6 @@ public class ElevatorConstants {
     public static final double MAX_ACCELERATION = 550.0; // Inches per second squared. Assuming we can accelerate to max velocity in 0.1 seconds.
 
     // Inches
-
     public static final double MAX_HEIGHT = 28.0;
     public static final double TARGET_HEIGHT = 28.0;
     public static final double TOLERANCE = 0.1;
