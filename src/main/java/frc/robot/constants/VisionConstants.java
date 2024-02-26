@@ -12,8 +12,8 @@ public class VisionConstants {
 
     /** Physical location of the apriltag camera on the robot, relative to the center of the robot. */
     public static final Transform3d APRILTAG_CAMERA_TO_ROBOT = new Transform3d(
-        new Translation3d(0, 0.3048, -0.3302),
-        new Rotation3d(0.0, 15.0 * Math.PI / 180, 0)
+        new Translation3d(0, 0, 0),
+        new Rotation3d(0, 0, 0)
     );
 
     public static final String LIMELIGHT_NAME = "limelight";
