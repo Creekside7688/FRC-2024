@@ -72,7 +72,7 @@ public class RobotContainer {
                     -MathUtil.applyDeadband(controller.getLeftY(), OperatorConstants.DEADBAND),
                     -MathUtil.applyDeadband(controller.getLeftX(), OperatorConstants.DEADBAND),
                     -MathUtil.applyDeadband(controller.getRightX(), OperatorConstants.DEADBAND),
-                    controller.getLeftBumper().getAsBoolean(),
+                    controller.getLeftTrigger().getAsBoolean(),
                     true, true
                 ),
                 swerveDrive
@@ -81,24 +81,16 @@ public class RobotContainer {
     }
 
     private void configureSubsystemCommands() {
+        controller.getLeftBumper().onTrue(intakeEject);
         controller.getRightBumper().whileTrue(intakePickup);
-        controller.getLeftTrigger().onTrue(intakeShooterFeed);
 
         controller.getA().onTrue(ampScore);
         controller.getB().onTrue(speakerScore);
 
-        controller.getX().onTrue(ElevatorSmallUp);
+        controller.getRightTrigger().onTrue(ElevatorSmallUp);
     }
 
     private void configureSwerveDriveCommands() {
-        controller.getLeftStick()
-            .whileTrue(
-                new RunCommand(
-                    () -> swerveDrive.lockPosition(),
-                    swerveDrive
-                )
-            );
-
         controller.getRightStick()
             .whileTrue(
                 new RunCommand(
