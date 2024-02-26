@@ -11,6 +11,7 @@ import frc.lib.zylve.Controller;
 import frc.robot.auto.PhotonRunnable;
 import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
+import frc.robot.elevator.commands.AmpScoreKill;
 import frc.robot.elevator.commands.ElevatorDown;
 import frc.robot.elevator.commands.ElevatorUp;
 import frc.robot.elevator.commands.ElevatorSmallUp;
@@ -45,7 +46,7 @@ public class RobotContainer {
     private final Command intakePickup = new IntakePickup(intake);
     private final Command intakeShooterFeed = new IntakeShooterFeed(intake);
     private final Command intakeEject = new IntakeAmpScore(intake);
-
+    private final Command ampScoreKill = new AmpScoreKill(elevator);
     private final Command shooterSpinUp = new ShooterSpinUp(shooter);
 
     private final SequentialCommandGroup ampScore = new SequentialCommandGroup(
@@ -88,6 +89,7 @@ public class RobotContainer {
         controller.getB().onTrue(speakerScore);
 
         controller.getRightTrigger().onTrue(ElevatorSmallUp);
+        controller.getY().onTrue(ampScoreKill);
     }
 
     private void configureSwerveDriveCommands() {
