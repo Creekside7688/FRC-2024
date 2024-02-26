@@ -4,10 +4,7 @@ import static edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition.kBlueAll
 import static edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition.kRedAllianceWallRightSide;
 
 import org.photonvision.EstimatedRobotPose;
-import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
-import org.photonvision.simulation.VisionSystemSim;
-
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
@@ -104,9 +101,6 @@ public class SwerveDrive extends SubsystemBase {
 
     private double previousTime = WPIUtilJNI.now() * 1e-6;
 
-    private final VisionSystemSim visionSystemSim;
-    private final PhotonCameraSim simCamera;
-
     public SwerveDrive(PhotonRunnable photonEstimator) {
         this.zeroHeading();
 
@@ -144,9 +138,6 @@ public class SwerveDrive extends SubsystemBase {
 
         SimCameraProperties cameraProperties = new SimCameraProperties();
         cameraProperties.setCalibration(640, 480, Rotation2d.fromDegrees(75.76079874010732));
-        simCamera = new PhotonCameraSim(photonEstimator.getCamera(), cameraProperties);
-
-        visionSystemSim = new VisionSystemSim("Limelight");
 
         SmartDashboard.putData("Swerve", new Sendable() {
             @Override
