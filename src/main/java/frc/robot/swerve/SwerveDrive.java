@@ -4,6 +4,7 @@ import static edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition.kBlueAll
 import static edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition.kRedAllianceWallRightSide;
 
 import org.photonvision.EstimatedRobotPose;
+import org.photonvision.simulation.SimCameraProperties;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
@@ -18,15 +19,16 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.networktables.DoublePublisher;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.util.WPIUtilJNI;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.SwerveUtils;
 import frc.robot.auto.PhotonRunnable;
 import frc.robot.constants.AutonomousConstants;
@@ -58,19 +60,6 @@ public class SwerveDrive extends SubsystemBase {
         DriveConstants.BR_TURN_MOTOR,
         DriveConstants.BR_OFFSET
     );
-
-    // Temporary network table publisher to monitor swerve module states
-    StructArrayPublisher<SwerveModuleState> positionPublisher = NetworkTableInstance.getDefault()
-        .getStructArrayTopic("RealWorldStates", SwerveModuleState.struct)
-        .publish();
-
-    // Temporary network table publisher to monitor swerve module setpoints
-    StructArrayPublisher<SwerveModuleState> setpointPublisher = NetworkTableInstance.getDefault()
-        .getStructArrayTopic("DesiredStates", SwerveModuleState.struct)
-        .publish();
-
-    // Temporary network table publisher to monitor gyroscopic data
-    DoublePublisher gyroPublisher = NetworkTableInstance.getDefault().getDoubleTopic("Gyro Angle").publish();
 
     // Gyro
     private final AHRS gyro = new AHRS(SerialPort.Port.kUSB1);
@@ -136,34 +125,44 @@ public class SwerveDrive extends SubsystemBase {
             this::getChassisSpeeds,
             this::driveRelative,
             AutonomousConstants.pathFollowConfig,
-            () -> false,
+            () -> {
+                var alliance = DriverStation.getAlliance();
+                if(alliance.isPresent()) {
+                    return alliance.get() == DriverStation.Alliance.Red;
+                }
+
+                return false;
+            },
             this
         );
+
+        SimCameraProperties cameraProperties = new SimCameraProperties();
+        cameraProperties.setCalibration(640, 480, Rotation2d.fromDegrees(75.76079874010732));
+
+        SmartDashboard.putData("Swerve", new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.setSmartDashboardType("SwerveDrive");
+
+                builder.addDoubleProperty("Front Left Angle", () -> frontLeft.getPosition().angle.getRadians(), null);
+                builder.addDoubleProperty("Front Left Velocity", () -> frontLeft.getState().speedMetersPerSecond, null);
+
+                builder.addDoubleProperty("Front Right Angle", () -> frontRight.getPosition().angle.getRadians(), null);
+                builder.addDoubleProperty("Front Right Velocity", () -> frontRight.getState().speedMetersPerSecond, null);
+
+                builder.addDoubleProperty("Back Left Angle", () -> backLeft.getPosition().angle.getRadians(), null);
+                builder.addDoubleProperty("Back Left Velocity", () -> backLeft.getState().speedMetersPerSecond, null);
+
+                builder.addDoubleProperty("Back Right Angle", () -> backRight.getPosition().angle.getRadians(), null);
+                builder.addDoubleProperty("Back Right Velocity", () -> backRight.getState().speedMetersPerSecond, null);
+
+                builder.addDoubleProperty("Robot Angle", () -> getRotation2d().getRadians(), null);
+            }
+        });
     }
 
     @Override
     public void periodic() {
-        // Temporary network table publisher to monitor swerve module states
-        positionPublisher.set(
-            new SwerveModuleState[] {
-                frontLeft.getState(),
-                frontRight.getState(),
-                backLeft.getState(),
-                backRight.getState()
-            }
-        );
-
-        // Temporary network table publisher to monitor swerve module setpoints
-        setpointPublisher.set(
-            new SwerveModuleState[] {
-                frontLeft.getDesiredState(),
-                frontRight.getDesiredState(),
-                backLeft.getDesiredState(),
-                backRight.getDesiredState()
-            }
-        );
-
-        gyroPublisher.set(this.getRotation2d().getDegrees());
 
         // Update pose estimator with encoder data
         poseEstimator.update(this.getRotation2d(), this.getModulePositions());
@@ -198,6 +197,9 @@ public class SwerveDrive extends SubsystemBase {
 
         // Update the pose on the field.
         field.setRobotPose(dashboardPose);
+
+        SmartDashboard.putData("Field", field);
+        SmartDashboard.putNumber("Heading", this.getRotation2d().getDegrees());
     }
 
     /**

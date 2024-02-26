@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.zylve.Controller;
 import frc.robot.auto.PhotonRunnable;
-import frc.robot.auto.commands.FollowAprilTag;
 import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
 import frc.robot.elevator.commands.ElevatorDown;
@@ -29,7 +28,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.swerve.SwerveDrive;
 
 public class RobotContainer {
-    Controller controller = new Controller(OperatorConstants.CONTROLLER_PORT);
+    private final Controller controller = new Controller(OperatorConstants.CONTROLLER_PORT);
 
     private final PhotonCamera photonCamera = new PhotonCamera("limelight");
     private final PhotonRunnable photonRunnable = new PhotonRunnable(photonCamera);
@@ -38,8 +37,6 @@ public class RobotContainer {
     private final Elevator elevator = new Elevator();
     private final Intake intake = new Intake();
     private final Shooter shooter = new Shooter();
-
-    private final FollowAprilTag followAprilTag = new FollowAprilTag(swerveDrive, photonCamera, swerveDrive::getPose);
 
     private final Command elevatorUp = new ElevatorUp(elevator);
     private final Command elevatorDown = new ElevatorDown(elevator);
@@ -75,7 +72,7 @@ public class RobotContainer {
                     -MathUtil.applyDeadband(controller.getLeftY(), OperatorConstants.DEADBAND),
                     -MathUtil.applyDeadband(controller.getLeftX(), OperatorConstants.DEADBAND),
                     -MathUtil.applyDeadband(controller.getRightX(), OperatorConstants.DEADBAND),
-                    controller.getLeftBumper().getAsBoolean(),
+                    controller.getLeftTrigger().getAsBoolean(),
                     true, true
                 ),
                 swerveDrive
@@ -84,25 +81,16 @@ public class RobotContainer {
     }
 
     private void configureSubsystemCommands() {
+        controller.getLeftBumper().onTrue(intakeEject);
         controller.getRightBumper().whileTrue(intakePickup);
-        controller.getLeftTrigger().onTrue(intakeShooterFeed);
 
-        
         controller.getA().onTrue(ampScore);
         controller.getB().onTrue(speakerScore);
 
-        controller.getX().onTrue(ElevatorSmallUp);
+        controller.getRightTrigger().onTrue(ElevatorSmallUp);
     }
 
     private void configureSwerveDriveCommands() {
-        controller.getLeftStick()
-            .whileTrue(
-                new RunCommand(
-                    () -> swerveDrive.lockPosition(),
-                    swerveDrive
-                )
-            );
-
         controller.getRightStick()
             .whileTrue(
                 new RunCommand(
@@ -113,14 +101,14 @@ public class RobotContainer {
     }
 
     private void configureAutonomous() {
-        autoSelector.addOption("Leave", new PathPlannerAuto("Leave"));
-        autoSelector.addOption("Left Amp", new PathPlannerAuto("Left Amp"));
-        autoSelector.setDefaultOption("Right Roundhouse Amp", new PathPlannerAuto("Right Roundhouse Amp"));
-
         NamedCommands.registerCommand("PickupNote", intakePickup);
         NamedCommands.registerCommand("AmpNote", ampScore);
 
-        SmartDashboard.putData("Auto Selector", autoSelector);
+        autoSelector.addOption("Right Roundhouse Amp", new PathPlannerAuto("Right Roundhouse Amp"));
+        autoSelector.addOption("Left Amp", new PathPlannerAuto("Left Amp"));
+        autoSelector.setDefaultOption("Leave", new PathPlannerAuto("Leave"));
+
+        SmartDashboard.putData("Autonomous Path", autoSelector);
     }
 
     public Command getAutonomousCommand() {

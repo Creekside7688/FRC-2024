@@ -70,6 +70,7 @@ public class AmpAlign extends Command {
 
     @Override
     public void execute() {
+        
         Pose2d robotPose2d = poseProvider.get();
 
         // Convert the 2d robot pose to a 3d one.
