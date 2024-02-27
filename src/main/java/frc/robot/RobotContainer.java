@@ -50,14 +50,14 @@ public class RobotContainer {
     private final Command shooterSpinUp = new ShooterSpinUp(shooter);
 
     private final SequentialCommandGroup ampScore = new SequentialCommandGroup(
-        elevatorUp,
-        intakeEject,
-        elevatorDown
+        new ElevatorUp(elevator),
+        new IntakeAmpScore(intake),
+        new ElevatorDown(elevator)
     );
 
     private final ParallelCommandGroup speakerScore = new ParallelCommandGroup(
-        shooterSpinUp,
-        Commands.waitSeconds(2).andThen(intakeShooterFeed)
+        new ShooterSpinUp(shooter),
+        Commands.waitSeconds(2).andThen(new IntakeShooterFeed(intake))
     );
 
     SendableChooser<Command> autoSelector = new SendableChooser<>();
@@ -85,6 +85,7 @@ public class RobotContainer {
         controller.getLeftBumper().onTrue(intakeEject);
         controller.getRightBumper().whileTrue(intakePickup);
 
+        controller.getX().onTrue(elevatorUp);
         controller.getA().onTrue(ampScore);
         controller.getB().onTrue(speakerScore);
 
