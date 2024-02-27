@@ -23,10 +23,14 @@ public class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber(getName(), encoder.getVelocity());
+        
     }
 
     public void run(double speed) {
         motor.set(speed);
+    }
+    public void updateDashboard(){
+        SmartDashboard.putNumber("Shooter velocity", encoder.getVelocity()*-1);
+        SmartDashboard.putNumber("motor current", motor.getOutputCurrent());
     }
 }

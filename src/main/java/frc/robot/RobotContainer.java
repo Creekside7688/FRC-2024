@@ -50,14 +50,14 @@ public class RobotContainer {
     private final Command shooterSpinUp = new ShooterSpinUp(shooter);
 
     private final SequentialCommandGroup ampScore = new SequentialCommandGroup(
-        elevatorUp,
-        intakeEject,
-        elevatorDown
+        new ElevatorUp(elevator),
+        new IntakeAmpScore(intake),
+        new ElevatorDown(elevator)
     );
 
     private final ParallelCommandGroup speakerScore = new ParallelCommandGroup(
-        shooterSpinUp,
-        Commands.waitSeconds(2).andThen(intakeShooterFeed)
+        new ShooterSpinUp(shooter),
+        Commands.waitSeconds(2).andThen(new IntakeShooterFeed(intake))
     );
 
     SendableChooser<Command> autoSelector = new SendableChooser<>();
@@ -82,11 +82,13 @@ public class RobotContainer {
     }
 
     private void configureSubsystemCommands() {
-        controller.getLeftBumper().onTrue(intakeEject);
+        controller.getLeftBumper().onTrue(intakeShooterFeed);
         controller.getRightBumper().whileTrue(intakePickup);
 
+        //controller.getX().onTrue(elevatorUp);
         controller.getA().onTrue(ampScore);
-        controller.getB().onTrue(speakerScore);
+        //controller.getB().onTrue(speakerScore);
+        controller.getB().whileTrue(shooterSpinUp);
 
         controller.getRightTrigger().onTrue(ElevatorSmallUp);
         controller.getY().onTrue(ampScoreKill);
@@ -103,7 +105,7 @@ public class RobotContainer {
     }
 
     private void configureAutonomous() {
-        NamedCommands.registerCommand("PickupNote", intakePickup);
+        NamedCommands.registerCommand("PickupNote", new IntakePickup(intake));
         NamedCommands.registerCommand("AmpNote", ampScore);
 
         autoSelector.addOption("Right Roundhouse Amp", new PathPlannerAuto("Right Roundhouse Amp"));
