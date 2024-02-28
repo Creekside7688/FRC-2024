@@ -82,7 +82,7 @@ public class RobotContainer {
     }
 
     private void configureSubsystemCommands() {
-        controller.getLeftBumper().onTrue(intakeShooterFeed);
+        controller.getLeftBumper().onTrue(intakeEject);
         controller.getRightBumper().whileTrue(intakePickup);
 
         //controller.getX().onTrue(elevatorUp);

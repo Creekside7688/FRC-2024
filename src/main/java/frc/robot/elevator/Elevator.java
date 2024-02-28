@@ -42,7 +42,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public double getEncoderPosition() {
-        return encoder.getPosition();
+        return encoder.getPosition()/210;
     }
 
     public void resetEncoder() {
