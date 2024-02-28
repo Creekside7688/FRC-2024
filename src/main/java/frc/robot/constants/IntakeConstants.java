@@ -14,7 +14,7 @@ public class IntakeConstants {
     public static final double AMP_SPEED = -1.0;
     public static final double AMP_DURATION = 1;
 
-    public static final double PICKUP_SPEED = 1;
+    public static final double PICKUP_SPEED = 0.8;
 
     public static final double SHOOTER_FEED_SPEED = 1;
     public static final double SHOOTER_FEED_DURATION = 0.75;
