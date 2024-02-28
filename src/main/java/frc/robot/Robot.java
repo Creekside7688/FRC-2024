@@ -7,16 +7,21 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.elevator.Elevator;
+import frc.robot.elevator.commands.ElevatorDown;
 
 public class Robot extends TimedRobot {
     private Command autonomousCommand;
 
+    //private Elevator elevator = new Elevator();
     private RobotContainer robotContainer;
     private Alliance alliance = Alliance.Red;
 
     @Override
     public void robotInit() {
         robotContainer = new RobotContainer();
+        
         checkDriverStationUpdate();
     }
 
@@ -60,9 +65,11 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         checkDriverStationUpdate();
+
         if(autonomousCommand != null) {
             autonomousCommand.cancel();
         }
+        //CommandScheduler.getInstance().schedule(new ElevatorDown(elevator));
     }
 
     @Override

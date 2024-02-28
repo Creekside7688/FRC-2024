@@ -11,6 +11,7 @@ import frc.lib.zylve.Controller;
 import frc.robot.auto.PhotonRunnable;
 import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
+import frc.robot.elevator.commands.AmpScoreKill;
 import frc.robot.elevator.commands.ElevatorDown;
 import frc.robot.elevator.commands.ElevatorUp;
 import frc.robot.elevator.commands.ElevatorSmallUp;
@@ -45,18 +46,18 @@ public class RobotContainer {
     private final Command intakePickup = new IntakePickup(intake);
     private final Command intakeShooterFeed = new IntakeShooterFeed(intake);
     private final Command intakeEject = new IntakeAmpScore(intake);
-
+    private final Command ampScoreKill = new AmpScoreKill(elevator);
     private final Command shooterSpinUp = new ShooterSpinUp(shooter);
 
     private final SequentialCommandGroup ampScore = new SequentialCommandGroup(
-        elevatorUp,
-        intakeEject,
-        elevatorDown
+        new ElevatorUp(elevator),
+        new IntakeAmpScore(intake),
+        new ElevatorDown(elevator)
     );
 
     private final ParallelCommandGroup speakerScore = new ParallelCommandGroup(
-        shooterSpinUp,
-        Commands.waitSeconds(2).andThen(intakeShooterFeed)
+        new ShooterSpinUp(shooter),
+        Commands.waitSeconds(2).andThen(new IntakeShooterFeed(intake))
     );
 
     SendableChooser<Command> autoSelector = new SendableChooser<>();
@@ -81,13 +82,16 @@ public class RobotContainer {
     }
 
     private void configureSubsystemCommands() {
-        controller.getLeftBumper().onTrue(intakeEject);
+        controller.getLeftBumper().onTrue(intakeShooterFeed);
         controller.getRightBumper().whileTrue(intakePickup);
 
+        //controller.getX().onTrue(elevatorUp);
         controller.getA().onTrue(ampScore);
-        controller.getB().onTrue(speakerScore);
+        //controller.getB().onTrue(speakerScore);
+        controller.getB().whileTrue(shooterSpinUp);
 
         controller.getRightTrigger().onTrue(ElevatorSmallUp);
+        controller.getY().onTrue(ampScoreKill);
     }
 
     private void configureSwerveDriveCommands() {
@@ -101,7 +105,7 @@ public class RobotContainer {
     }
 
     private void configureAutonomous() {
-        NamedCommands.registerCommand("PickupNote", intakePickup);
+        NamedCommands.registerCommand("PickupNote", new IntakePickup(intake));
         NamedCommands.registerCommand("AmpNote", ampScore);
 
         autoSelector.addOption("Right Roundhouse Amp", new PathPlannerAuto("Right Roundhouse Amp"));

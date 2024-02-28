@@ -24,6 +24,7 @@ public class Intake extends SubsystemBase {
         sensor = new DigitalInput(IntakeConstants.SENSOR_CHANNEL);
 
         encoder = motor.getEncoder();
+        encoder.setPositionConversionFactor(1);
         rotationController = motor.getPIDController();
         rotationController.setP(IntakeConstants.P);
     }
@@ -48,5 +49,9 @@ public class Intake extends SubsystemBase {
 
     public void run(double speed) {
         motor.set(speed);
+    }
+
+    public void updateDashboard(){
+        SmartDashboard.putNumber("intake RPM", encoder.getVelocity());
     }
 }

@@ -1,0 +1,44 @@
+* Robot Controller Manual *
+
+- Before you start -
+
+Make sure that you always have someone ready to disable the controls at any time!
+
+Make sure that no one is in the way before you start driving
+
+- Commands (that are binded) -
+
+intakeEject (IntakeAmpScore): Ejects the note out or scores into the ampScore
+
+intakePickup: Picks up a note of the ground
+
+speakerScore: Fires the shooter, used to score into speakerScore
+
+ampScore: Lifts elevator up to max, fires the note into the speaker, lowers elevator down.
+
+ElevatorSmallUp: Lifts the elevator up very slightly. Use this to get rid of anything in the way.
+
+ampScoreKill: Stops the ampScore command midway incase anything happens.
+
+If anything goes wrong with ampScore, use ampScoreKill.
+If a note is stuck in the wheel, use ElevatorSmallUp.
+
+- Bindings -
+
+intakeEject: Left Bumper
+
+intakePickup: Right Bumper 
+
+speakerScore: B
+
+ampScore: A 
+
+ElevatorSmallUp: Right Trigger
+
+ampScoreKill: Y 
+
+Movement: Left Stick
+
+Rotation: Right Stick
+
+Gyro Reset: Press Right Stick

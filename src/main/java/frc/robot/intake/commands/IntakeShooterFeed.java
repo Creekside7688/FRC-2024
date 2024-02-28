@@ -22,6 +22,7 @@ public class IntakeShooterFeed extends Command {
 
     @Override
     public void execute() {
+        this.intake.updateDashboard();
         
     }
 
@@ -32,7 +33,7 @@ public class IntakeShooterFeed extends Command {
 
     @Override
     public boolean isFinished() {
-        return Timer.getFPGATimestamp() - startTime > IntakeConstants.SHOOTER_FEED_DURATION;
-    
+        //return Timer.getFPGATimestamp() - startTime > IntakeConstants.SHOOTER_FEED_DURATION;
+        return false;
     }
 }
