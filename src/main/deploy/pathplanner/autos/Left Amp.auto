@@ -32,24 +32,6 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Amp"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AmpNote"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left Pickup 2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
             "pathName": "Left Amp Return"
           }
         },

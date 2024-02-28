@@ -82,8 +82,8 @@ public class RobotContainer {
     }
 
     private void configureSubsystemCommands() {
-        controller.getLeftBumper().onTrue(intakeEject);
-        controller.getRightBumper().whileTrue(intakePickup);
+        controller.getLeftBumper().onTrue(intakePickup);
+        controller.getRightBumper().whileTrue(intakeShooterFeed);
 
         controller.getX().onTrue(elevatorUp);
         controller.getA().onTrue(ampScore);
@@ -105,7 +105,7 @@ public class RobotContainer {
     }
 
     private void configureAutonomous() {
-        NamedCommands.registerCommand("PickupNote", intakePickup);
+        NamedCommands.registerCommand("PickupNote", new IntakePickup(intake));
         NamedCommands.registerCommand("AmpNote", ampScore);
 
         autoSelector.addOption("Right Roundhouse Amp", new PathPlannerAuto("Right Roundhouse Amp"));

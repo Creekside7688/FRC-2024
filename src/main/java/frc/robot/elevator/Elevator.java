@@ -17,15 +17,24 @@ public class Elevator extends SubsystemBase {
         motor.restoreFactoryDefaults();
         motor.setIdleMode(ElevatorConstants.IDLE_MODE);
         motor.setSmartCurrentLimit(ElevatorConstants.CURRENT_LIMIT);
-        motor.burnFlash();
+        
 
         encoder = motor.getEncoder();
         encoder.setPosition(0);
+        encoder.setPositionConversionFactor(1);
+        motor.burnFlash();
+    }
+
+    
+
+    public void getMotorRPM() {
+        SmartDashboard.putNumber("Evt. Motor RPM", encoder.getVelocity());
     }
 
     @Override
+
     public void periodic() {
-        SmartDashboard.putNumber("Elevator Height (Inches)", this.getEncoderPosition() * 210);
+        SmartDashboard.putNumber("Elevator Height (Inches)", this.getEncoderPosition() );
     }
 
     public void run(double speed) {
@@ -33,7 +42,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public double getEncoderPosition() {
-        return encoder.getPosition() / 210;
+        return encoder.getPosition()/210;
     }
 
     public void resetEncoder() {
