@@ -88,6 +88,7 @@ public class RobotContainer {
         controller.getX().onTrue(elevatorUp);
         controller.getA().onTrue(ampScore);
         controller.getB().onTrue(speakerScore);
+        controller.getY().whileTrue(elevatorDown);
 
         controller.getRightTrigger().onTrue(ElevatorSmallUp);
         controller.getY().onTrue(ampScoreKill);
