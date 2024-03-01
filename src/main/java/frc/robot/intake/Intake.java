@@ -33,6 +33,7 @@ public class Intake extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putBoolean("Has Note", this.hasNote());
         SmartDashboard.putBoolean("Intaking", encoder.getVelocity() > 10);
+        SmartDashboard.putNumber("intake amps", motor.getOutputCurrent());
     }
 
     public boolean hasNote() {

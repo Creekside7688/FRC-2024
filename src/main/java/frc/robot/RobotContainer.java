@@ -12,6 +12,7 @@ import frc.robot.auto.PhotonRunnable;
 import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
 import frc.robot.elevator.commands.AmpScoreKill;
+import frc.robot.elevator.commands.ElevatorClimb;
 import frc.robot.elevator.commands.ElevatorDown;
 import frc.robot.elevator.commands.ElevatorUp;
 import frc.robot.elevator.commands.ElevatorSmallUp;
@@ -21,6 +22,7 @@ import frc.robot.intake.commands.IntakeShooterFeed;
 import frc.robot.intake.commands.IntakeAmpScore;
 import frc.robot.shooter.Shooter;
 import frc.robot.shooter.commands.ShooterSpinUp;
+import frc.robot.shooter.commands.ShooterPreload;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -48,6 +50,9 @@ public class RobotContainer {
     private final Command intakeEject = new IntakeAmpScore(intake);
     private final Command ampScoreKill = new AmpScoreKill(elevator);
     private final Command shooterSpinUp = new ShooterSpinUp(shooter);
+    private final Command shooterPreload = new ShooterPreload(shooter);
+
+    //private final Command elevatorClimb = new ElevatorClimb(elevator);
 
     private final SequentialCommandGroup ampScore = new SequentialCommandGroup(
         new ElevatorUp(elevator),
@@ -55,9 +60,18 @@ public class RobotContainer {
         new ElevatorDown(elevator)
     );
 
-    private final ParallelCommandGroup speakerScore = new ParallelCommandGroup(
+   /*  private final ParallelCommandGroup speakerScore = new ParallelCommandGroup(
         new ShooterSpinUp(shooter),
-        Commands.waitSeconds(2).andThen(new IntakeShooterFeed(intake))
+        Commands.waitSeconds(3).andThen(new IntakeShooterFeed(intake))
+    );*/
+    private final SequentialCommandGroup speakerScore = new SequentialCommandGroup(
+        new ShooterSpinUp(shooter),
+        new IntakeShooterFeed(intake)
+    );
+
+    private final SequentialCommandGroup speakerScorePreload = new SequentialCommandGroup(
+        new ShooterPreload(shooter),
+        new IntakeShooterFeed(intake)
     );
 
     SendableChooser<Command> autoSelector = new SendableChooser<>();
@@ -82,16 +96,22 @@ public class RobotContainer {
     }
 
     private void configureSubsystemCommands() {
-        controller.getLeftBumper().onTrue(intakePickup);
-        controller.getRightBumper().whileTrue(intakeShooterFeed);
-
-        //controller.getX().onTrue(elevatorUp);
+        controller.getLeftBumper().whileTrue(intakeEject);
+        controller.getRightBumper().onTrue(intakePickup);
+        //controller.getRightTrigger().whileTrue(elevatorClimb);
+    // controller.getX().onTrue(elevatorUp);
+        //controller.getA().onTrue(elevatorDown);
+        //controller.getY().whileTrue(intakeShooterFeed);
         controller.getA().onTrue(ampScore);
-        //controller.getB().onTrue(speakerScore);
         controller.getB().whileTrue(shooterSpinUp);
+    //    controller.getX().onTrue(ampScoreKill);
+        //controller.getX().whileTrue(speakerScorePreload);
 
-        controller.getRightTrigger().onTrue(ElevatorSmallUp);
-        controller.getY().onTrue(ampScoreKill);
+        //controller.getB().onTrue(speakerScore);
+        //controller.getB().whileTrue(shooterSpinUp);
+
+       // controller.getRightTrigger().onTrue(ElevatorSmallUp);
+        controller.getY().whileTrue(intakeShooterFeed);
     }
 
     private void configureSwerveDriveCommands() {

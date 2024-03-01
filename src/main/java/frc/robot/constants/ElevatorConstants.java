@@ -36,12 +36,13 @@ public class ElevatorConstants {
 
     public static final double TEMP_MAX_HEIGHT = 5.0;
 
-    public static final double MOTOR_SLOWRAISE_SPEED = 0.25;
-    public static final double MOTOR_SLOWRAISE_STALLSPEED = 0.06;
+    public static final double MOTOR_SLOWRAISE_SPEED = 0.75;
+    public static final double MOTOR_SLOWRAISE_STALLSPEED = 0.02;
 
-    public static final double MOTOR_SLOWFALL_SPEED = -0.19;
+    public static final double MOTOR_SLOWFALL_SPEED = -0.35;
+    public static final double MOTOR_CLIMB_SPEED = -1;
 
-    public static final double MOTOR_MAX_STEPS = 0.1615;
+    public static final double MOTOR_MAX_STEPS = 0.3781;
     public static final double MOTOR_MIN_STEPS = 0;
 
     public static final double MOTOR_TEMP_STEPS = 6;
