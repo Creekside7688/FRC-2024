@@ -43,6 +43,7 @@ public class ElevatorConstants {
     public static final double MOTOR_CLIMB_SPEED = -1;
 
     public static final double MOTOR_MAX_STEPS = 0.3781;
+
     public static final double MOTOR_MIN_STEPS = 0;
 
     public static final double MOTOR_TEMP_STEPS = 6;

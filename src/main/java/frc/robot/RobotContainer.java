@@ -96,6 +96,7 @@ public class RobotContainer {
     }
 
     private void configureSubsystemCommands() {
+<<<<<<< HEAD
         controller.getLeftBumper().whileTrue(intakeEject);
         controller.getRightBumper().onTrue(intakePickup);
         //controller.getRightTrigger().whileTrue(elevatorClimb);
@@ -106,6 +107,15 @@ public class RobotContainer {
         controller.getB().whileTrue(shooterSpinUp);
     //    controller.getX().onTrue(ampScoreKill);
         //controller.getX().whileTrue(speakerScorePreload);
+=======
+        controller.getLeftBumper().onTrue(intakePickup);
+        controller.getRightBumper().whileTrue(intakeShooterFeed);
+
+        controller.getX().onTrue(elevatorUp);
+        controller.getA().onTrue(ampScore);
+        controller.getB().onTrue(speakerScore);
+        controller.getY().whileTrue(elevatorDown);
+>>>>>>> 909cedc7c1648cad8a086d60bd1c9045cbc7a39d
 
         //controller.getB().onTrue(speakerScore);
         //controller.getB().whileTrue(shooterSpinUp);
