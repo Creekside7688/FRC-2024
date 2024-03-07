@@ -31,7 +31,10 @@
     "gradle": true,
     ".wpilib": true,
     ".vscode": true,
-    ".github": true
+    ".github": true,
+    ".DataLogTool": true,
+    ".pathplanner": true,
+    ".SysId": true
   },
   "java.test.config": [
     {

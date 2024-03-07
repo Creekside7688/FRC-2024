@@ -31,9 +31,25 @@ public class ElevatorConstants {
 
     // Inches
 
-    public static final double MAX_HEIGHT = 12.0;
-    public static final double TARGET_HEIGHT = 12.0;
-    public static final double TOLERANCE = 1;
+    public static final double MAX_HEIGHT = 28.0;
+    public static final double TARGET_HEIGHT = 28.0;
+    public static final double TOLERANCE = 0.1;
+
 
     public static final double TEMP_MAX_HEIGHT = 5.0;
+
+    public static final double MOTOR_SLOWRAISE_SPEED = 0.75;
+    public static final double MOTOR_SLOWRAISE_STALLSPEED = 0.02;
+
+    public static final double MOTOR_SLOWFALL_SPEED = -0.35;
+    public static final double MOTOR_CLIMB_SPEED = -1;
+
+    public static final double MOTOR_MAX_STEPS = 0.3781;
+
+    public static final double MOTOR_MIN_STEPS = 0;
+
+    public static final double MOTOR_TEMP_STEPS = 6;
+    public static final double MOTOR_TEMPDROP_SPEED = -0.1;
+    public static final double MOTOR_TEMPDROP_DELAY = 0.5;
 }
+

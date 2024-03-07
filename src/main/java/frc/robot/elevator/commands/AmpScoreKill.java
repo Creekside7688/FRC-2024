@@ -8,34 +8,39 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.ElevatorConstants;
 import frc.robot.elevator.Elevator;
 
-public class ElevatorTempUp extends Command {
+public class AmpScoreKill extends Command {
     private final Elevator elevator;
 
-    public ElevatorTempUp(Elevator elevator) {
+    public AmpScoreKill(Elevator elevator) {
         this.elevator = elevator;
         addRequirements(elevator);
-    
+        
     }
-
 
     @Override
-    public void initialize() {
-        elevator.setHeight(ElevatorConstants.TEMP_MAX_HEIGHT);
+
+     public void initialize() {
+        elevator.run(ElevatorConstants.MOTOR_SLOWFALL_SPEED);
     }
 
-
+  
     @Override
     public void execute() {}
 
-
     @Override
     public void end(boolean interrupted) {
-        elevator.setHeight(0);
+        elevator.run(0);
     }
 
-
+  
     @Override
     public boolean isFinished() {
-        return false;
+        double steps = elevator.getEncoderPosition();
+        if (steps < ElevatorConstants.MOTOR_MIN_STEPS) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }
