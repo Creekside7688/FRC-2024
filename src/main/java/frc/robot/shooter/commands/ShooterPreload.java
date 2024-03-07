@@ -8,7 +8,6 @@ import frc.robot.shooter.Shooter;
 
 public class ShooterPreload extends Command {
     private final Shooter shooter;
-    private double startTime;
 
     public ShooterPreload(Shooter shooter) {
         this.shooter = shooter;
@@ -28,12 +27,13 @@ public class ShooterPreload extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        
 
     }
 
     @Override
     public boolean isFinished() {
-        return (shooter.getVelocity() >= 2300);
+        return (shooter.getVelocity() >= 2800);
         //return Timer.getFPGATimestamp() - startTime > ShooterConstants.SHOOTER_SPINUP_DELAY;
         
     }

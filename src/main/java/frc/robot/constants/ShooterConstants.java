@@ -8,5 +8,5 @@ public class ShooterConstants {
     public static final IdleMode IDLE_MODE = IdleMode.kCoast;
 
     public static final double SHOOTER_SPINUP_DELAY = 10;
-    public static final double SHOOTER_RUN_DURATION = 2;
+    public static final double SHOOTER_RUN_DURATION = 1;
 }

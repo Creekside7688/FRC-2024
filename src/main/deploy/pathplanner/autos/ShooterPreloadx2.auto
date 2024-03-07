@@ -1,0 +1,63 @@
+{
+  "version": 1.0,
+  "startingPose": null,
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShooterPreload"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeShooterFeedPreload"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "NotePickupFront"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "FrontNoteToSpeaker"
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShooterPreload"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeShooterFeedPreload"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

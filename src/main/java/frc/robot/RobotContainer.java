@@ -19,6 +19,7 @@ import frc.robot.elevator.commands.ElevatorSmallUp;
 import frc.robot.intake.Intake;
 import frc.robot.intake.commands.IntakePickup;
 import frc.robot.intake.commands.IntakeShooterFeed;
+import frc.robot.intake.commands.IntakeShooterFeedPreload;
 import frc.robot.intake.commands.IntakeAmpScore;
 import frc.robot.shooter.Shooter;
 import frc.robot.shooter.commands.ShooterSpinUp;
@@ -47,6 +48,8 @@ public class RobotContainer {
 
     private final Command intakePickup = new IntakePickup(intake);
     private final Command intakeShooterFeed = new IntakeShooterFeed(intake);
+    private final Command intakeShooterFeedPreload = new IntakeShooterFeedPreload(intake,shooter);
+
     private final Command intakeEject = new IntakeAmpScore(intake);
     private final Command ampScoreKill = new AmpScoreKill(elevator);
     private final Command shooterSpinUp = new ShooterSpinUp(shooter);
@@ -69,10 +72,10 @@ public class RobotContainer {
         new IntakeShooterFeed(intake)
     );
 
-    private final SequentialCommandGroup speakerScorePreload = new SequentialCommandGroup(
-        new ShooterPreload(shooter),
-        new IntakeShooterFeed(intake)
-    );
+     private final SequentialCommandGroup speakerScorePreload = new SequentialCommandGroup(
+         new ShooterPreload(shooter),
+         new IntakeShooterFeedPreload(intake,shooter)
+     );
 
     SendableChooser<Command> autoSelector = new SendableChooser<>();
 
@@ -96,32 +99,22 @@ public class RobotContainer {
     }
 
     private void configureSubsystemCommands() {
-<<<<<<< HEAD
         controller.getLeftBumper().whileTrue(intakeEject);
-        controller.getRightBumper().onTrue(intakePickup);
-        //controller.getRightTrigger().whileTrue(elevatorClimb);
-    // controller.getX().onTrue(elevatorUp);
-        //controller.getA().onTrue(elevatorDown);
+        controller.getRightBumper().whileTrue(intakePickup);
+        //controller.getB().whileTrue(elevatorClimb);
+        controller.getUp().whileTrue(elevatorUp);
+        controller.getDown().whileTrue(elevatorDown);
         //controller.getY().whileTrue(intakeShooterFeed);
-        controller.getA().onTrue(ampScore);
-        controller.getB().whileTrue(shooterSpinUp);
-    //    controller.getX().onTrue(ampScoreKill);
+        
+        controller.getA().whileTrue(shooterSpinUp);
+        //controller.getX().onTrue(speakerScorePreload);
         //controller.getX().whileTrue(speakerScorePreload);
-=======
-        controller.getLeftBumper().onTrue(intakePickup);
-        controller.getRightBumper().whileTrue(intakeShooterFeed);
-
-        controller.getX().onTrue(elevatorUp);
-        controller.getA().onTrue(ampScore);
-        controller.getB().onTrue(speakerScore);
-        controller.getY().whileTrue(elevatorDown);
->>>>>>> 909cedc7c1648cad8a086d60bd1c9045cbc7a39d
 
         //controller.getB().onTrue(speakerScore);
         //controller.getB().whileTrue(shooterSpinUp);
 
        // controller.getRightTrigger().onTrue(ElevatorSmallUp);
-        controller.getY().whileTrue(intakeShooterFeed);
+        controller.getX().whileTrue(intakeShooterFeed);
     }
 
     private void configureSwerveDriveCommands() {
@@ -132,13 +125,22 @@ public class RobotContainer {
                     swerveDrive
                 )
             );
+
+            controller.getLeftStick().whileTrue(new RunCommand(() -> swerveDrive.lockPosition(), swerveDrive));
     }
 
     private void configureAutonomous() {
         NamedCommands.registerCommand("PickupNote", new IntakePickup(intake));
         NamedCommands.registerCommand("AmpNote", ampScore);
+        NamedCommands.registerCommand("IntakeShooterFeedPreload", new IntakeShooterFeedPreload(intake,shooter));
+        NamedCommands.registerCommand("ShooterPreload", new ShooterPreload(shooter));
+        NamedCommands.registerCommand("speaker score", speakerScorePreload);
+
+
 
         autoSelector.addOption("Right Roundhouse Amp", new PathPlannerAuto("Right Roundhouse Amp"));
+        autoSelector.addOption("Score speaker 1x", new PathPlannerAuto("Score Leave"));
+        //autoSelector.addOption("Score speaker 1x", speakerScorePreload);
         autoSelector.addOption("Left Amp", new PathPlannerAuto("Left Amp"));
         autoSelector.setDefaultOption("Leave", new PathPlannerAuto("Leave"));
 

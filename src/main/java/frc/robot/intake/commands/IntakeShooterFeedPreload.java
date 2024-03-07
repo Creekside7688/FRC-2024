@@ -3,6 +3,7 @@ package frc.robot.intake.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.IntakeConstants;
+import frc.robot.constants.ShooterConstants;
 import frc.robot.intake.Intake;
 import frc.robot.shooter.Shooter;
 
@@ -31,7 +32,9 @@ public class IntakeShooterFeedPreload extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        Timer.delay(ShooterConstants.SHOOTER_RUN_DURATION);
         intake.run(0);
+        shooter.run(0);
         
     }
 

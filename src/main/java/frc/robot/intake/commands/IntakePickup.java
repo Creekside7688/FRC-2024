@@ -1,5 +1,6 @@
 package frc.robot.intake.commands;
 
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,7 +17,8 @@ public class IntakePickup extends Command {
 
     @Override
     public void initialize() {
-        intake.run(IntakeConstants.PICKUP_SPEED);
+        //double speed = Preferences.getDouble(intake.pickUpSpeedKey, intake.pickUpSpeedDefault);
+        intake.run(0.8);
     }
 
     @Override

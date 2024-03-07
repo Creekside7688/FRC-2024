@@ -6,6 +6,7 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.IntakeConstants;
@@ -15,8 +16,13 @@ public class Intake extends SubsystemBase {
     private final DigitalInput sensor;
     private final RelativeEncoder encoder;
     private final SparkPIDController rotationController;
+    
+    public final String pickUpSpeedKey = "pick up speed";
+    public double pickUpSpeedDefault = 0.8;
 
     public Intake() {
+        Preferences.initDouble(pickUpSpeedKey, pickUpSpeedDefault);
+        
         motor = new CANSparkMax(IntakeConstants.MOTOR_ID, MotorType.kBrushless);
         motor.setSmartCurrentLimit(IntakeConstants.CURRENT_LIMIT);
         motor.setIdleMode(IntakeConstants.IDLE_MODE);

@@ -15,7 +15,7 @@ public class ElevatorDown extends Command {
 
     @Override
     public void initialize() {
-        elevator.run(ElevatorConstants.MOTOR_SLOWFALL_SPEED);
+        elevator.run(-0.75);
         SmartDashboard.putBoolean("Ele. Down finished", false);
     }
 

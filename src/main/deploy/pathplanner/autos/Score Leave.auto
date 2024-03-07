@@ -6,6 +6,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "speaker score"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "SimpleForward"
