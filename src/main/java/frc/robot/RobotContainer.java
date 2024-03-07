@@ -11,11 +11,13 @@ import frc.lib.zylve.Controller;
 import frc.robot.auto.PhotonRunnable;
 import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
+
 import frc.robot.elevator.commands.AmpScoreKill;
 import frc.robot.elevator.commands.ElevatorClimb;
 import frc.robot.elevator.commands.ElevatorDown;
 import frc.robot.elevator.commands.ElevatorUp;
 import frc.robot.elevator.commands.ElevatorSmallUp;
+
 import frc.robot.intake.Intake;
 import frc.robot.intake.commands.IntakePickup;
 import frc.robot.intake.commands.IntakeShooterFeed;
@@ -47,6 +49,7 @@ public class RobotContainer {
     private final Command ElevatorSmallUp = new ElevatorSmallUp(elevator);
 
     private final Command intakePickup = new IntakePickup(intake);
+
     private final Command intakeShooterFeed = new IntakeShooterFeed(intake);
     private final Command intakeShooterFeedPreload = new IntakeShooterFeedPreload(intake,shooter);
 
@@ -77,12 +80,14 @@ public class RobotContainer {
          new IntakeShooterFeedPreload(intake,shooter)
      );
 
+
     SendableChooser<Command> autoSelector = new SendableChooser<>();
 
     public RobotContainer() {
         configureAutonomous();
         configureSubsystemCommands();
         configureSwerveDriveCommands();
+
 
         swerveDrive.setDefaultCommand(
             new RunCommand(
@@ -96,6 +101,7 @@ public class RobotContainer {
                 swerveDrive
             )
         );
+
     }
 
     private void configureSubsystemCommands() {
@@ -126,7 +132,9 @@ public class RobotContainer {
                 )
             );
 
+
             controller.getLeftStick().whileTrue(new RunCommand(() -> swerveDrive.lockPosition(), swerveDrive));
+
     }
 
     private void configureAutonomous() {
