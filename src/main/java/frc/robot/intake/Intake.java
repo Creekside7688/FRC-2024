@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
-    private final CANSparkMax motor;
+    private final static CANSparkMax motor = new CANSparkMax(IntakeConstants.MOTOR_ID, MotorType.kBrushless);
     private final DigitalInput sensor;
     private final RelativeEncoder encoder;
     private final SparkPIDController rotationController;
@@ -23,7 +23,7 @@ public class Intake extends SubsystemBase {
     public Intake() {
         Preferences.initDouble(pickUpSpeedKey, pickUpSpeedDefault);
         
-        motor = new CANSparkMax(IntakeConstants.MOTOR_ID, MotorType.kBrushless);
+        
         motor.setSmartCurrentLimit(IntakeConstants.CURRENT_LIMIT);
         motor.setIdleMode(IntakeConstants.IDLE_MODE);
 
@@ -45,6 +45,12 @@ public class Intake extends SubsystemBase {
     public boolean hasNote() {
         return !sensor.get();
     }
+
+    public static void getMotorAU() {
+        SmartDashboard.putNumber("Ink. Motor Amp Usage", motor.getOutputCurrent());
+    }
+
+
 
     public double getRPM() {
         return encoder.getVelocity() / IntakeConstants.INTAKE_GEAR_RATIO;

@@ -24,6 +24,7 @@ public class IntakePickup extends Command {
     @Override
     public void execute() {
         SmartDashboard.putBoolean("sensorSub", intake.hasNote());
+        Intake.getMotorAU();
         
     }
 

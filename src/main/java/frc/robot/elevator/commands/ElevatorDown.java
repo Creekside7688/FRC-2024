@@ -23,6 +23,7 @@ public class ElevatorDown extends Command {
     public void execute() {
         double maxSteps = elevator.getEncoderPosition();
         SmartDashboard.putNumber("EncoderSteps", maxSteps);
+        elevator.getMotorAU();
     }
 
     @Override

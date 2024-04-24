@@ -10,6 +10,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -17,6 +18,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Elevator extends SubsystemBase {
     private final CANSparkMax motor;
     private final RelativeEncoder encoder;
+
+    
 
     public Elevator() {
         motor = new CANSparkMax(ElevatorConstants.MOTOR_ID, MotorType.kBrushless);
@@ -33,6 +36,12 @@ public class Elevator extends SubsystemBase {
 
     public void getMotorRPM() {
         SmartDashboard.putNumber("Evt. Motor RPM", encoder.getVelocity());
+    }
+
+    //AU = Amp usage
+
+    public void getMotorAU() {
+        SmartDashboard.putNumber("Evt. Motor Amp Usage", motor.getOutputCurrent());
     }
 
     @Override
