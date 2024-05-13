@@ -1,15 +1,10 @@
 package frc.robot.shooter.commands;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.constants.ShooterConstants;
-import frc.robot.intake.Intake;
 import frc.robot.shooter.Shooter;
 
 public class ShooterSpinUp extends Command {
     private final Shooter shooter;
-    private double startTime;
 
     public ShooterSpinUp(Shooter shooter) {
         this.shooter = shooter;

@@ -5,12 +5,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import frc.robot.constants.ElevatorConstants;
-import edu.wpi.first.math.controller.ElevatorFeedforward;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -47,7 +41,7 @@ public class Elevator extends SubsystemBase {
     @Override
 
     public void periodic() {
-        SmartDashboard.putNumber("Elevator Height (Inches)", this.getEncoderPosition() );
+        SmartDashboard.putNumber("Elevator Height (Inches)", this.getEncoderPosition());
     }
 
     public void run(double speed) {
@@ -55,7 +49,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public double getEncoderPosition() {
-        return encoder.getPosition()/210;
+        return encoder.getPosition() / 210;
     }
 
     public void resetEncoder() {
