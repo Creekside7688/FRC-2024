@@ -1,10 +1,12 @@
 package frc.robot.shooter.commands;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.shooter.Shooter;
 
 public class ShooterSpinUp extends Command {
     private final Shooter shooter;
+    private final SlewRateLimiter filter = new SlewRateLimiter(0.1);
 
     public ShooterSpinUp(Shooter shooter) {
         this.shooter = shooter;
@@ -13,12 +15,11 @@ public class ShooterSpinUp extends Command {
 
     @Override
     public void initialize() {
-        //startTime = Timer.getFPGATimestamp();
-        shooter.run(-1);
     }
 
     @Override
     public void execute() {
+        shooter.run(filter.calculate(-1));
         shooter.updateDashboard();
     }
 

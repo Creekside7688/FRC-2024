@@ -26,6 +26,7 @@ public class Intake extends SubsystemBase {
         
         motor.setSmartCurrentLimit(IntakeConstants.CURRENT_LIMIT);
         motor.setIdleMode(IntakeConstants.IDLE_MODE);
+        motor.setInverted(true);
 
         sensor = new DigitalInput(IntakeConstants.SENSOR_CHANNEL);
 
