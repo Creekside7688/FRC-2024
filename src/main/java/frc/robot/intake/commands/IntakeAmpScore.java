@@ -24,6 +24,7 @@ public class IntakeAmpScore extends Command {
     @Override
     public void execute() {
         SmartDashboard.putNumber("intake rpm", intake.getRPM());
+        intake.getMotorAU();
     }
 
     @Override

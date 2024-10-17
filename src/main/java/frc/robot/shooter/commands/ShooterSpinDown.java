@@ -18,6 +18,7 @@ public class ShooterSpinDown extends Command {
 
     @Override
     public void execute() {
+        //shooter.getMotorAU();
     }
 
     @Override
