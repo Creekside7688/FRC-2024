@@ -5,11 +5,19 @@
 package frc.robot.limelight.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.limelight.Limelight;
+import frc.robot.swerve.SwerveDrive;
 
 public class AprilTagCheck extends Command {
-  /** Creates a new AprilTagCheck. */
-  public AprilTagCheck() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  private final Limelight limelight;
+  private final SwerveDrive swerveDrive;
+  public AprilTagCheck(Limelight limelight, SwerveDrive swerveDrive) {
+    this.limelight = limelight;
+    this.swerveDrive = swerveDrive;
+    addRequirements( limelight, swerveDrive);
+
+
+
   }
 
   // Called when the command is initially scheduled.
@@ -18,7 +26,13 @@ public class AprilTagCheck extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if (limelight.CameraHasTargets()) {
+      limelight.TargetPitch();
+      limelight.TargetYaw();
+      limelight.getAprilTag();
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override
