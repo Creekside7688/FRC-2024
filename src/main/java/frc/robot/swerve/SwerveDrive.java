@@ -63,7 +63,6 @@ public class SwerveDrive extends SubsystemBase {
 
     // Gyro
     private final AHRS gyro = new AHRS(SerialPort.Port.kUSB1);
-    private final PhotonRunnable photonEstimator;
 
     /*
      * Kalman Filter Configuration. These can be "tuned-to-taste" based on how much you trust your various sensors. Smaller numbers will cause the
@@ -86,7 +85,6 @@ public class SwerveDrive extends SubsystemBase {
     private final SwerveDrivePoseEstimator poseEstimator;
 
     private final Field2d field = new Field2d();
-    private final Notifier photonNotifier;
 
     private OriginPosition originPosition = kBlueAllianceWallRightSide;
     private boolean sawTag = false;
@@ -101,14 +99,9 @@ public class SwerveDrive extends SubsystemBase {
 
     private double previousTime = WPIUtilJNI.now() * 1e-6;
 
-    public SwerveDrive(PhotonRunnable photonEstimator) {
+    public SwerveDrive() {
         this.zeroHeading();
 
-        this.photonEstimator = photonEstimator;
-
-        photonNotifier = new Notifier(this.photonEstimator);
-        photonNotifier.setName("PhotonRunnable");
-        photonNotifier.startPeriodic(0.02);
 
         this.poseEstimator = new SwerveDrivePoseEstimator(
             DriveConstants.SWERVE_KINEMATICS,
@@ -168,25 +161,8 @@ public class SwerveDrive extends SubsystemBase {
         poseEstimator.update(this.getRotation2d(), this.getModulePositions());
 
         // Get the latest vision pose
-        EstimatedRobotPose latestVisionPose = photonEstimator.getLatestEstimatedPose();
 
         // If the vision pose has changed
-        if(latestVisionPose != null) {
-
-            // Flag that we saw a tag
-            sawTag = true;
-
-            // Get the latest pose2d
-            Pose2d pose2d = latestVisionPose.estimatedPose.toPose2d();
-
-            // Flip the alliance if necessary
-            if(originPosition != kBlueAllianceWallRightSide) {
-                pose2d = flipAlliance(pose2d);
-            }
-
-            // Include the vision measurement in the pose estimator
-            poseEstimator.addVisionMeasurement(pose2d, latestVisionPose.timestampSeconds);
-        }
 
         // Add the pose to the dashboard
         Pose2d dashboardPose = poseEstimator.getEstimatedPosition();

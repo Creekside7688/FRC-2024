@@ -32,7 +32,7 @@ public class PhotonRunnable implements Runnable {
 
         // Try to load the field layout
         try {
-            AprilTagFieldLayout layout = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
+            AprilTagFieldLayout layout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
 
             // PV estimates will always be blue, they'll get flipped by robot thread
             layout.setOrigin(OriginPosition.kBlueAllianceWallRightSide);

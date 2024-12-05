@@ -4,6 +4,9 @@
 
 package frc.robot.limelight.commands;
 
+import javax.swing.text.StyleContext.SmallAttributeSet;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.limelight.Limelight;
 import frc.robot.swerve.SwerveDrive;
@@ -22,7 +25,9 @@ public class AprilTagCheck extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    SmartDashboard.putBoolean("command running", true);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
