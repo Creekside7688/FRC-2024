@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.zylve.Controller;
+import frc.lib.zylve.FlightControl;
 import frc.robot.auto.PhotonRunnable;
 import frc.robot.constants.OperatorConstants;
 import frc.robot.elevator.Elevator;
@@ -35,7 +36,7 @@ import frc.robot.swerve.SwerveDrive;
 
 public class RobotContainer {
     private final Controller controller = new Controller(OperatorConstants.CONTROLLER_PORT);
-
+    private final FlightControl flightControl = new FlightControl(OperatorConstants.CONTROLLER_PORT);
     private final PhotonCamera photonCamera = new PhotonCamera("limelight");
     private final PhotonRunnable photonRunnable = new PhotonRunnable(photonCamera);
 
@@ -85,14 +86,27 @@ public class RobotContainer {
     public RobotContainer() {
         configureAutonomous();
         configureSubsystemCommands();
+       
         configureSwerveDriveCommands();
 
-        swerveDrive.setDefaultCommand(
+        /*swerveDrive.setDefaultCommand(
             new RunCommand(
                 () -> swerveDrive.drive(
                     -MathUtil.applyDeadband(controller.getLeftY(), OperatorConstants.DEADBAND),
                     -MathUtil.applyDeadband(controller.getLeftX(), OperatorConstants.DEADBAND),
                     -MathUtil.applyDeadband(controller.getRightX(), OperatorConstants.DEADBAND),
+                    controller.getLeftTrigger().getAsBoolean(),
+                    true, true
+                ),
+                swerveDrive
+            )
+        );*/
+        swerveDrive.setDefaultCommand(
+            new RunCommand(
+                () -> swerveDrive.drive(
+                    -MathUtil.applyDeadband(flightControl.getJoyY(), OperatorConstants.DEADBAND),
+                    -MathUtil.applyDeadband(flightControl.getJoyX(), OperatorConstants.DEADBAND),
+                    -MathUtil.applyDeadband(flightControl.getTwist(), OperatorConstants.DEADBAND),
                     controller.getLeftTrigger().getAsBoolean(),
                     true, true
                 ),
@@ -134,6 +148,10 @@ public class RobotContainer {
 
     }
 
+
+    
+
+
     private void configureAutonomous() {
         NamedCommands.registerCommand("PickupNote", new IntakePickup(intake));
         NamedCommands.registerCommand("AmpNote", ampScore);
@@ -158,3 +176,4 @@ public class RobotContainer {
         swerveDrive.setAlliance(alliance);
     }
 }
+//swerveDrive
