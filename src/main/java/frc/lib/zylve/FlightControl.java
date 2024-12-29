@@ -18,7 +18,7 @@ public class FlightControl {
     public  FlightControl(int port) {
         joystick = new Joystick(port);
 
-        button1 = new JoystickButton(joystick, Joystick.ButtonType.kTrigger.value);
+        button1 = new JoystickButton(joystick, 1);
 
     }
     
