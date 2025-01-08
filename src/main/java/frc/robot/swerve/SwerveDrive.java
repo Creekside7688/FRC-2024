@@ -34,6 +34,7 @@ import frc.robot.auto.PhotonRunnable;
 import frc.robot.constants.AutonomousConstants;
 import frc.robot.constants.DriveConstants;
 import frc.robot.constants.VisionConstants;
+import frc.robot.limelight.Limelight;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SwerveDrive extends SubsystemBase {
@@ -93,6 +94,10 @@ public class SwerveDrive extends SubsystemBase {
     private double currentTranslationDirection = 0.0;
     private double currentTranslationMagnitude = 0.0;
 
+    //here for testing reasons
+    private final Limelight limelight = new Limelight();
+
+
     // Slew Rate filters to control acceleration.
     private SlewRateLimiter magnitudeLimiter = new SlewRateLimiter(DriveConstants.MAGNITUDE_SLEW_RATE);
     private SlewRateLimiter rotationLimiter = new SlewRateLimiter(DriveConstants.ROTATION_SLEW_RATE);
@@ -100,6 +105,8 @@ public class SwerveDrive extends SubsystemBase {
     private double previousTime = WPIUtilJNI.now() * 1e-6;
 
     public SwerveDrive() {
+        limelight.CameraHasTargets();
+
         this.zeroHeading();
 
 
