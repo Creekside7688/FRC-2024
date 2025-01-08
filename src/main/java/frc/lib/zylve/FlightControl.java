@@ -40,7 +40,7 @@ public class FlightControl {
 
     public double getTwist() {
         SmartDashboard.putNumber("Joystick Twist", joystick.getRawAxis(Joystick.AxisType.kTwist.value));
-        return joystick.getRawAxis(Joystick.AxisType.kTwist.value);
+        return joystick.getRawAxis(2);
     }
 
     public Trigger getButton1() {

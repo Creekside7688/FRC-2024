@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         checkDriverStationUpdate();
-        autonomousCommand = robotContainer.getAutonomousCommand();
+       // autonomousCommand = robotContainer.getAutonomousCommand();
 
         if(autonomousCommand != null) {
             autonomousCommand.schedule();
@@ -91,7 +91,7 @@ public class Robot extends TimedRobot {
 
         // If we have data, and have a new alliance from last time
         if(DriverStation.isDSAttached() && currentAlliance != alliance) {
-            robotContainer.onAllianceChanged(currentAlliance);
+           // robotContainer.onAllianceChanged(currentAlliance);
             alliance = currentAlliance;
         }
     }

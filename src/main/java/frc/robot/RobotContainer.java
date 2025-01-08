@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.swerve.SwerveDrive;
 
+
 public class RobotContainer {
     private final Controller controller = new Controller(OperatorConstants.CONTROLLER_PORT);
     private final FlightControl flightControl = new FlightControl(OperatorConstants.CONTROLLER_PORT);
@@ -84,10 +85,10 @@ public class RobotContainer {
     SendableChooser<Command> autoSelector = new SendableChooser<>();
 
     public RobotContainer() {
-        configureAutonomous();
-        configureSubsystemCommands();
+        //configureAutonomous();
+        //configureSubsystemCommands();
        
-        configureSwerveDriveCommands();
+        //configureSwerveDriveCommands();
 
         /*swerveDrive.setDefaultCommand(
             new RunCommand(
@@ -101,6 +102,7 @@ public class RobotContainer {
                 swerveDrive
             )
         );*/
+        
         swerveDrive.setDefaultCommand(
             new RunCommand(
                 () -> swerveDrive.drive(
@@ -113,9 +115,10 @@ public class RobotContainer {
                 swerveDrive
             )
         );
+        
 
     }
-
+    /* 
     private void configureSubsystemCommands() {
         controller.getLeftBumper().whileTrue(intakeEject);
         controller.getRightBumper().whileTrue(intakePickup);
@@ -175,5 +178,6 @@ public class RobotContainer {
     public void onAllianceChanged(Alliance alliance) {
         swerveDrive.setAlliance(alliance);
     }
+        */
 }
 //swerveDrive
